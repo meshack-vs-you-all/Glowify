@@ -1,0 +1,135 @@
+<div class="collection-page section">
+  <div class="page-width">
+    {%- if collection.image != blank -%}
+      <div class="collection-banner">
+        <img 
+          src="{{ collection.image | image_url: width: 1920 }}"
+          alt="{{ collection.title | escape }}"
+          class="collection-banner__image"
+        >
+        <div class="collection-banner__overlay"></div>
+        <div class="collection-banner__content">
+          <h1 class="collection-banner__title">{{ collection.title }}</h1>
+          {%- if collection.description != blank -%}
+            <p class="collection-banner__description">{{ collection.description }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- else -%}
+      <h1 class="collection-page__title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="collection-page__description">{{ collection.description }}</div>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="collection-page__products">
+      <div class="collection-page__grid">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="collection-page__empty">{{ 'collections.general.no_products' | t }}</p>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .collection-banner {
+    position: relative;
+    height: 400px;
+    margin-bottom: var(--space-4xl);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+
+  .collection-banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(26, 26, 26, 0.3), rgba(26, 26, 26, 0.6));
+  }
+
+  .collection-banner__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-3xl);
+    color: var(--color-white);
+    z-index: 2;
+  }
+
+  .collection-banner__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .collection-banner__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .collection-banner__description {
+    font-size: var(--font-size-body-large);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .collection-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .collection-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .collection-page__description {
+    margin-bottom: var(--space-3xl);
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+  }
+
+  .collection-page__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .collection-page__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .collection-page__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xl);
+    }
+  }
+
+  .collection-page__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-4xl);
+    color: var(--color-text-secondary);
+  }
+</style>
+
