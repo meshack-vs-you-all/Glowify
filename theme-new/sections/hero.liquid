@@ -1,0 +1,318 @@
+<div class="hero-section" id="shopify-section-{{ section.id }}">
+  {%- if section.blocks.size > 0 -%}
+    <div class="hero-slider" data-hero-slider>
+      {%- for block in section.blocks -%}
+        <div class="hero-slide" {{ block.shopify_attributes }}>
+          <div class="hero-slide__container">
+            <div class="hero-slide__image">
+              {%- if block.settings.image != blank -%}
+                <img 
+                  src="{{ block.settings.image | image_url: width: 1920 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  loading="eager"
+                  width="1920"
+                  height="1080"
+                >
+              {%- else -%}
+                <div class="hero-slide__placeholder">
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+              <div class="hero-slide__overlay"></div>
+            </div>
+            <div class="hero-slide__content">
+              <div class="hero-slide__text">
+                {%- if block.settings.subtitle != blank -%}
+                  <p class="hero-slide__subtitle">{{ block.settings.subtitle }}</p>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <h1 class="hero-slide__title">{{ block.settings.title }}</h1>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="hero-slide__description">{{ block.settings.text }}</p>
+                {%- endif -%}
+                {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                  <a href="{{ block.settings.button_link }}" class="button button--primary button--large hero-slide__button">
+                    {{ block.settings.button_label }}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    
+    {%- if section.blocks.size > 1 -%}
+      <div class="hero-dots">
+        {%- for block in section.blocks -%}
+          <button 
+            class="hero-dot {% if forloop.first %}hero-dot--active{% endif %}" 
+            data-slide-index="{{ forloop.index0 }}"
+            aria-label="{{ 'general.accessibility.slide' | t }} {{ forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+<style>
+  .hero-section {
+    position: relative;
+    margin-top: 80px; /* Account for fixed header */
+    overflow: hidden;
+  }
+
+  .hero-slider {
+    position: relative;
+  }
+
+  .hero-slide {
+    position: relative;
+    min-height: 500px;
+  }
+
+  .hero-slide__container {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 500px;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-slide__container {
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+  }
+
+  .hero-slide__image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  .hero-slide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-slide__placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--color-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-slide__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(26, 26, 26, 0.3), rgba(26, 26, 26, 0.6));
+  }
+
+  .hero-slide__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4xl) var(--space-md);
+    background: var(--color-off-white);
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-slide__content {
+      padding: var(--space-5xl);
+    }
+  }
+
+  .hero-slide__text {
+    max-width: 600px;
+    text-align: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-slide__text {
+      text-align: left;
+    }
+  }
+
+  .hero-slide__subtitle {
+    font-size: var(--font-size-small);
+    letter-spacing: var(--letter-spacing-nav);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero-slide__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .hero-slide__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .hero-slide__description {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .hero-slide__button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .hero-dots {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--space-sm);
+    z-index: 10;
+  }
+
+  .hero-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-white);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-in-out);
+    padding: 0;
+  }
+
+  .hero-dot--active,
+  .hero-dot:hover {
+    background: var(--color-white);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.querySelector('[data-hero-slider]');
+    const dots = document.querySelectorAll('.hero-dot');
+    let currentSlide = 0;
+    let slideInterval;
+
+    if (!slider || dots.length === 0) return;
+
+    const slides = slider.querySelectorAll('.hero-slide');
+    if (slides.length <= 1) return;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.display = i === index ? 'block' : 'none';
+      });
+      
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('hero-dot--active', i === index);
+      });
+      
+      currentSlide = index;
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        showSlide(index);
+        resetInterval();
+      });
+    });
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function resetInterval() {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 5000);
+    }
+
+    // Initialize
+    showSlide(0);
+    resetInterval();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "New Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Discover Our Latest"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Explore our curated selection of premium products."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

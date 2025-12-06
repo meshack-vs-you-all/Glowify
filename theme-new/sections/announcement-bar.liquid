@@ -1,0 +1,133 @@
+{%- if section.settings.message != blank -%}
+  <div id="shopify-section-{{ section.id }}" class="announcement-bar" data-section-id="{{ section.id }}">
+    <div class="announcement-bar__wrapper">
+      <p class="announcement-bar__message">
+        {{ section.settings.message }}
+        {%- if section.settings.link != blank -%}
+          <a href="{{ section.settings.link }}" class="announcement-bar__link">
+            {{ section.settings.link_text | default: 'Learn more' }}
+          </a>
+        {%- endif -%}
+      </p>
+      {%- if section.settings.show_dismiss -%}
+        <button type="button" class="announcement-bar__close" aria-label="{{ 'general.accessibility.close' | t }}">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  .announcement-bar {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: var(--space-sm) 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .announcement-bar__wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .announcement-bar__message {
+    font-size: var(--font-size-small);
+    text-align: center;
+    margin: 0;
+    letter-spacing: var(--letter-spacing-nav);
+    text-transform: uppercase;
+  }
+
+  .announcement-bar__link {
+    color: var(--color-white);
+    text-decoration: underline;
+    margin-left: var(--space-sm);
+    transition: opacity var(--duration-fast) var(--ease-in-out);
+  }
+
+  .announcement-bar__link:hover {
+    opacity: 0.8;
+  }
+
+  .announcement-bar__close {
+    position: absolute;
+    right: var(--space-md);
+    background: none;
+    border: none;
+    color: var(--color-white);
+    cursor: pointer;
+    padding: var(--space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--duration-fast) var(--ease-in-out);
+  }
+
+  .announcement-bar__close:hover {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 639px) {
+    .announcement-bar__close {
+      right: var(--space-sm);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const announcementBar = document.querySelector('.announcement-bar');
+    const closeButton = announcementBar?.querySelector('.announcement-bar__close');
+    
+    if (closeButton) {
+      closeButton.addEventListener('click', function() {
+        const dismissed = sessionStorage.getItem('announcement-dismissed');
+        if (!dismissed) {
+          announcementBar?.style.setProperty('display', 'none');
+          sessionStorage.setItem('announcement-dismissed', 'true');
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Learn more"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dismiss",
+      "label": "Show dismiss button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+

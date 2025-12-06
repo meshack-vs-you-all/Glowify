@@ -1,0 +1,139 @@
+{%- if section.settings.collection != blank -%}
+  <div class="featured-collection section" id="shopify-section-{{ section.id }}">
+    <div class="page-width">
+      {%- if section.settings.title != blank -%}
+        <div class="featured-collection__header">
+          <h2 class="featured-collection__title">{{ section.settings.title }}</h2>
+          {%- if section.settings.show_view_all -%}
+            <a href="{{ collections[section.settings.collection].url }}" class="featured-collection__link">
+              {{ 'sections.featured_collection.view_all' | t }}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="featured-collection__grid">
+        {%- assign collection = collections[section.settings.collection] -%}
+        {%- assign product_limit = section.settings.products_to_show | default: 8 -%}
+        
+        {%- for product in collection.products limit: product_limit -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          {%- for i in (1..product_limit) -%}
+            <div class="product-card">
+              <div class="product-card__image-wrapper">
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
+              </div>
+              <div class="product-card__content">
+                <h3 class="product-card__title">{{ 'products.product.placeholder_title' | t }}</h3>
+                <div class="product-card__price">{{ 1999 | money }}</div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  .featured-collection__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3xl);
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .featured-collection__title {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .featured-collection__title {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .featured-collection__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition: color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .featured-collection__link:hover {
+    color: var(--color-accent);
+  }
+
+  .featured-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .featured-collection__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-collection__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xl);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
+
