@@ -1,0 +1,94 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "accessibility": {
+      "skip_to_text": "Skip to content",
+      "menu": "Menu",
+      "close": "Close",
+      "refresh_page": "Refresh page"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search products...",
+      "submit": "Search",
+      "results_for": "Search results for \"{{ terms }}\"",
+      "results_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      },
+      "no_results": "No results found",
+      "no_results_text": "Sorry, we couldn't find any results for \"{{ terms }}\". Try searching for something else.",
+      "view_all": "View all products",
+      "instructions": "Search for products, articles, or pages",
+      "article": "Article",
+      "page": "Page"
+    },
+    "breadcrumbs": {
+      "home": "Home"
+    },
+    "newsletter_form": {
+      "email_placeholder": "Your email address"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you're looking for doesn't exist.",
+      "link": "Continue shopping",
+      "products_link": "View all products"
+    }
+  },
+  "layout": {
+    "cart": {
+      "items_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      }
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Cart",
+      "empty": "Your cart is empty",
+      "empty_text": "Continue browsing to add items to your cart.",
+      "continue_shopping": "Continue shopping",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "shipping_at_checkout": "Shipping, taxes, and discount codes calculated at checkout",
+      "checkout": "Checkout",
+      "note": "Order special instructions",
+      "note_placeholder": "Add a note to your order...",
+      "remove_confirm": "Remove this item from your cart?",
+      "order_summary": "Order Summary"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": {
+        "label": "Quantity"
+      },
+      "on_sale": "Sale",
+      "quick_view": "Quick view",
+      "placeholder_title": "Product title"
+    }
+  },
+  "sections": {
+    "featured_collection": {
+      "view_all": "View all"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account"
+    }
+  },
+  "footer": {
+    "copyright": "All rights reserved.",
+    "payment_methods": "We accept"
+  }
+}
+

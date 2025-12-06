@@ -1,5 +1,5 @@
-{%- if section.settings.collection != blank -%}
-  <div class="featured-collection section" id="shopify-section-{{ section.id }}">
+<div class="featured-collection section" id="shopify-section-{{ section.id }}">
+  {%- if section.settings.collection != blank -%}
     <div class="page-width">
       {%- if section.settings.title != blank -%}
         <div class="featured-collection__header">
@@ -36,8 +36,43 @@
         {%- endfor -%}
       </div>
     </div>
-  </div>
-{%- endif -%}
+  {%- else -%}
+    {%- comment -%} Default featured collection when not configured {%- endcomment -%}
+    <div class="page-width">
+      <div class="featured-collection__header">
+        <h2 class="featured-collection__title">{{ section.settings.title | default: 'Featured Products' }}</h2>
+        <a href="{{ routes.all_products_collection_url }}" class="featured-collection__link">
+          {{ 'sections.featured_collection.view_all' | t }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="featured-collection__grid">
+        {%- assign default_collection = collections.all | default: collections['all'] -%}
+        {%- if default_collection != blank -%}
+          {%- for product in default_collection.products limit: 8 -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Show placeholder products if no collection exists {%- endcomment -%}
+          {%- for i in (1..4) -%}
+            <div class="product-card">
+              <div class="product-card__image-wrapper">
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
+              </div>
+              <div class="product-card__content">
+                <h3 class="product-card__title">{{ 'products.product.placeholder_title' | t }}</h3>
+                <div class="product-card__price">{{ 1999 | money }}</div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
 
 <style>
   .featured-collection__header {
