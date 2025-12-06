@@ -1,0 +1,9 @@
+# Python requirements for Shopify theme development
+# Note: Shopify CLI is installed via npm, not pip
+
+# For PDF processing (if needed)
+# PyPDF2>=3.0.0
+
+# For environment variable management
+python-dotenv>=1.0.0
+

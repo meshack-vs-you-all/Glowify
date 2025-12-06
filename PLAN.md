@@ -71,3 +71,4 @@ Negus/
 - Use Shopify CLI for all deployments
 - Follow enhanced_design.md specifications strictly
 
+
