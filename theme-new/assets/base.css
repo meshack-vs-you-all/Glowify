@@ -335,3 +335,30 @@ a:hover {
   }
 }
 
+/* Responsive Typography Adjustments */
+@media (max-width: 639px) {
+  body {
+    font-size: 15px;
+  }
+  
+  .page-width {
+    padding: 0 var(--space-md);
+  }
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch-friendly tap targets on mobile */
+@media (max-width: 639px) {
+  .button,
+  a,
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+

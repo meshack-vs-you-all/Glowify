@@ -1,0 +1,245 @@
+<div class="contact-page section">
+  <div class="page-width">
+    <h1 class="contact-page__title">{{ page.title }}</h1>
+    
+    <div class="contact-page__grid">
+      <div class="contact-page__content">
+        {%- if page.content != blank -%}
+          <div class="contact-page__text">
+            {{ page.content }}
+          </div>
+        {%- endif -%}
+
+        {%- form 'contact', class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="contact-form__success">
+              <p>{{ 'contact.form.post_success' | t }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="contact-form__errors">
+              <p>{{ 'contact.form.error_heading' | t }}</p>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>{{ form.errors[field] }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="contact-form__field">
+            <label for="ContactFormName" class="contact-form__label">{{ 'contact.form.name' | t }}</label>
+            <input 
+              type="text" 
+              id="ContactFormName" 
+              name="contact[name]" 
+              class="contact-form__input"
+              required
+            >
+          </div>
+
+          <div class="contact-form__field">
+            <label for="ContactFormEmail" class="contact-form__label">{{ 'contact.form.email' | t }}</label>
+            <input 
+              type="email" 
+              id="ContactFormEmail" 
+              name="contact[email]" 
+              class="contact-form__input"
+              required
+            >
+          </div>
+
+          <div class="contact-form__field">
+            <label for="ContactFormPhone" class="contact-form__label">{{ 'contact.form.phone' | t }}</label>
+            <input 
+              type="tel" 
+              id="ContactFormPhone" 
+              name="contact[phone]" 
+              class="contact-form__input"
+            >
+          </div>
+
+          <div class="contact-form__field">
+            <label for="ContactFormMessage" class="contact-form__label">{{ 'contact.form.message' | t }}</label>
+            <textarea 
+              id="ContactFormMessage" 
+              name="contact[body]" 
+              class="contact-form__textarea"
+              rows="6"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="button button--primary button--large contact-form__submit">
+            {{ 'contact.form.send' | t }}
+          </button>
+        {%- endform -%}
+      </div>
+
+      <div class="contact-page__info">
+        <div class="contact-info">
+          <h2 class="contact-info__title">{{ 'contact.general.title' | t }}</h2>
+          
+          {%- if shop.email != blank -%}
+            <div class="contact-info__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/>
+                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <div>
+                <strong>{{ 'contact.general.email' | t }}</strong>
+                <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if shop.phone != blank -%}
+            <div class="contact-info__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <div>
+                <strong>{{ 'contact.general.phone' | t }}</strong>
+                <a href="tel:{{ shop.phone }}">{{ shop.phone }}</a>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div class="contact-info__hours">
+            <strong>{{ 'contact.general.hours' | t }}</strong>
+            <p>{{ 'contact.general.hours_text' | t }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .contact-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-3xl);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .contact-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .contact-page__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4xl);
+  }
+
+  @media (min-width: 1024px) {
+    .contact-page__grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .contact-page__text {
+    margin-bottom: var(--space-3xl);
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+  }
+
+  .contact-form__field {
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-form__label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .contact-form__input,
+  .contact-form__textarea {
+    width: 100%;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    font-family: inherit;
+    transition: border-color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .contact-form__input:focus,
+  .contact-form__textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(124, 152, 133, 0.1);
+  }
+
+  .contact-form__textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact-form__submit {
+    width: 100%;
+  }
+
+  .contact-form__success {
+    background: var(--color-success);
+    color: white;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-form__errors {
+    background: var(--color-error);
+    color: white;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-info {
+    background: var(--color-light-gray);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-info__title {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-info__item {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  .contact-info__item svg {
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .contact-info__item a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .contact-info__item a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-info__hours {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border-gray);
+  }
+</style>
+

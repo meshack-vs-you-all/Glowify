@@ -1,0 +1,153 @@
+<div class="trust-badges section" id="shopify-section-{{ section.id }}">
+  <div class="page-width">
+    <div class="trust-badges__grid">
+      {%- for block in section.blocks -%}
+        <div class="trust-badge" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}
+            <div class="trust-badge__icon">
+              <img 
+                src="{{ block.settings.icon | image_url: width: 48 }}"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {%- else -%}
+            <div class="trust-badge__icon trust-badge__icon--default">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <h3 class="trust-badge__title">{{ block.settings.title }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="trust-badge__text">{{ block.settings.text }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .trust-badges__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 640px) {
+    .trust-badges__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .trust-badge {
+    text-align: center;
+    padding: var(--space-xl);
+  }
+
+  .trust-badge__icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+  }
+
+  .trust-badge__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .trust-badge__icon--default {
+    opacity: 0.8;
+  }
+
+  .trust-badge__title {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+  }
+
+  .trust-badge__text {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "On orders over $50"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Free Shipping",
+            "text": "On orders over $50"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Secure Checkout",
+            "text": "100% secure payment"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Easy Returns",
+            "text": "30-day return policy"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "24/7 Support",
+            "text": "We're here to help"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

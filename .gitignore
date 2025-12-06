@@ -65,4 +65,7 @@ Thumbs.db
 # Zone.Identifier (Windows)
 *:Zone.Identifier
 
+# Project Summary (contains sensitive info)
+.project-summary.md
+
 

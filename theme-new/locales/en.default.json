@@ -89,6 +89,29 @@
   "footer": {
     "copyright": "All rights reserved.",
     "payment_methods": "We accept"
+  },
+  "contact": {
+    "general": {
+      "title": "Get in Touch",
+      "email": "Email",
+      "phone": "Phone",
+      "hours": "Business Hours",
+      "hours_text": "Monday - Friday: 9am - 5pm"
+    },
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send Message",
+      "post_success": "Thank you for your message. We'll get back to you soon!",
+      "error_heading": "Please correct the errors below:"
+    }
+  },
+  "general": {
+    "newsletter_form": {
+      "success": "Thank you for subscribing!"
+    }
   }
 }
 
