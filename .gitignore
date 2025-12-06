@@ -1,0 +1,67 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Credentials & Sensitive Files
+credentials/
+**/credentials/
+*.pdf
+*.key
+*.pem
+*.p12
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Node (if using Node.js tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Shopify
+.shopify/
+theme-check.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+*.zip
+*.tar.gz
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Zone.Identifier (Windows)
+*:Zone.Identifier
+
