@@ -1,0 +1,246 @@
+<div class="search-page section">
+  <div class="page-width">
+    <h1 class="search-page__title">
+      {%- if search.performed -%}
+        {{ 'general.search.results_for' | t: terms: search.terms }}
+      {%- else -%}
+        {{ 'general.search.title' | t }}
+      {%- endif -%}
+    </h1>
+
+    <form action="{{ routes.search_url }}" method="get" class="search-form">
+      <div class="search-form__wrapper">
+        <input 
+          type="search" 
+          name="q" 
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          class="search-form__input"
+          autofocus
+        >
+        <button type="submit" class="search-form__button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <div class="search-results">
+          <p class="search-results__count">
+            {{ 'general.search.results_count' | t: count: search.results_count }}
+          </p>
+
+          <div class="search-results__grid">
+            {%- for item in search.results -%}
+              {%- case item.object_type -%}
+                {%- when 'product' -%}
+                  {% render 'product-card', product: item %}
+                {%- when 'article' -%}
+                  <article class="search-result-card">
+                    <a href="{{ item.url }}" class="search-result-card__link">
+                      {%- if item.image != blank -%}
+                        <div class="search-result-card__image">
+                          <img 
+                            src="{{ item.image | image_url: width: 400 }}"
+                            alt="{{ item.title | escape }}"
+                            loading="lazy"
+                          >
+                        </div>
+                      {%- endif -%}
+                      <div class="search-result-card__content">
+                        <h3 class="search-result-card__title">{{ item.title }}</h3>
+                        <p class="search-result-card__excerpt">{{ item.excerpt | strip_html | truncate: 150 }}</p>
+                        <span class="search-result-card__type">{{ 'general.search.article' | t }}</span>
+                      </div>
+                    </a>
+                  </article>
+                {%- when 'page' -%}
+                  <article class="search-result-card">
+                    <a href="{{ item.url }}" class="search-result-card__link">
+                      <div class="search-result-card__content">
+                        <h3 class="search-result-card__title">{{ item.title }}</h3>
+                        <p class="search-result-card__excerpt">{{ item.content | strip_html | truncate: 150 }}</p>
+                        <span class="search-result-card__type">{{ 'general.search.page' | t }}</span>
+                      </div>
+                    </a>
+                  </article>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="search-empty">
+          <h2 class="search-empty__title">{{ 'general.search.no_results' | t }}</h2>
+          <p class="search-empty__text">
+            {{ 'general.search.no_results_text' | t: terms: search.terms }}
+          </p>
+          <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+            {{ 'general.search.view_all' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="search-empty">
+        <p class="search-empty__text">{{ 'general.search.instructions' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .search-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (min-width: 768px) {
+    .search-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .search-form {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .search-form__wrapper {
+    display: flex;
+    max-width: 600px;
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .search-form__input {
+    flex: 1;
+    padding: var(--space-md) var(--space-lg);
+    border: none;
+    font-size: var(--font-size-body);
+    outline: none;
+  }
+
+  .search-form__button {
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-accent);
+    color: var(--color-white);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .search-form__button:hover {
+    background: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .search-results__count {
+    margin-bottom: var(--space-xl);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body);
+  }
+
+  .search-results__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .search-results__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .search-results__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .search-result-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--duration-normal) var(--ease-in-out);
+  }
+
+  .search-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .search-result-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .search-result-card__image {
+    width: 100%;
+    padding-top: 75%;
+    position: relative;
+    background: var(--color-light-gray);
+    overflow: hidden;
+  }
+
+  .search-result-card__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .search-result-card__content {
+    padding: var(--space-lg);
+  }
+
+  .search-result-card__title {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+  }
+
+  .search-result-card__excerpt {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
+    line-height: 1.5;
+  }
+
+  .search-result-card__type {
+    font-size: var(--font-size-small);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-nav);
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: var(--space-5xl) var(--space-md);
+  }
+
+  .search-empty__title {
+    font-size: var(--font-size-h2-mobile);
+    margin-bottom: var(--space-lg);
+  }
+
+  .search-empty__text {
+    font-size: var(--font-size-body-large);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xl);
+  }
+</style>
+
