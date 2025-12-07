@@ -28,13 +28,29 @@
       <!-- Desktop Navigation -->
       <nav class="header__nav hidden-mobile" aria-label="Main navigation">
         <ul class="header__nav-list">
-          {%- for link in linklists[section.settings.menu].links -%}
+          {%- if section.settings.menu != blank -%}
+            {%- for link in linklists[section.settings.menu].links -%}
+              <li class="header__nav-item">
+                <a href="{{ link.url }}" class="header__nav-link {% if link.active %}header__nav-link--active{% endif %}">
+                  {{ link.title | upcase }}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Default navigation links if menu not configured {%- endcomment -%}
             <li class="header__nav-item">
-              <a href="{{ link.url }}" class="header__nav-link {% if link.active %}header__nav-link--active{% endif %}">
-                {{ link.title | upcase }}
-              </a>
+              <a href="{{ routes.root_url }}" class="header__nav-link {% if request.page_type == 'index' %}header__nav-link--active{% endif %}">HOME</a>
             </li>
-          {%- endfor -%}
+            <li class="header__nav-item">
+              <a href="{{ routes.all_products_collection_url }}" class="header__nav-link {% if request.page_type == 'collection' %}header__nav-link--active{% endif %}">CATALOG</a>
+            </li>
+            <li class="header__nav-item">
+              <a href="{{ pages.contact.url | default: routes.root_url }}" class="header__nav-link {% if request.page_type == 'page' and page.handle == 'contact' %}header__nav-link--active{% endif %}">CONTACT</a>
+            </li>
+            <li class="header__nav-item">
+              <a href="{{ pages.about.url | default: routes.root_url }}" class="header__nav-link {% if request.page_type == 'page' and page.handle == 'about' %}header__nav-link--active{% endif %}">ABOUT</a>
+            </li>
+          {%- endif -%}
         </ul>
       </nav>
 
@@ -74,13 +90,29 @@
       </div>
       <nav class="mobile-menu__nav">
         <ul class="mobile-menu__list">
-          {%- for link in linklists[section.settings.menu].links -%}
+          {%- if section.settings.menu != blank -%}
+            {%- for link in linklists[section.settings.menu].links -%}
+              <li class="mobile-menu__item">
+                <a href="{{ link.url }}" class="mobile-menu__link {% if link.active %}mobile-menu__link--active{% endif %}">
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Default navigation links if menu not configured {%- endcomment -%}
             <li class="mobile-menu__item">
-              <a href="{{ link.url }}" class="mobile-menu__link {% if link.active %}mobile-menu__link--active{% endif %}">
-                {{ link.title }}
-              </a>
+              <a href="{{ routes.root_url }}" class="mobile-menu__link {% if request.page_type == 'index' %}mobile-menu__link--active{% endif %}">Home</a>
             </li>
-          {%- endfor -%}
+            <li class="mobile-menu__item">
+              <a href="{{ routes.all_products_collection_url }}" class="mobile-menu__link {% if request.page_type == 'collection' %}mobile-menu__link--active{% endif %}">Catalog</a>
+            </li>
+            <li class="mobile-menu__item">
+              <a href="{{ pages.contact.url | default: routes.root_url }}" class="mobile-menu__link {% if request.page_type == 'page' and page.handle == 'contact' %}mobile-menu__link--active{% endif %}">Contact</a>
+            </li>
+            <li class="mobile-menu__item">
+              <a href="{{ pages.about.url | default: routes.root_url }}" class="mobile-menu__link {% if request.page_type == 'page' and page.handle == 'about' %}mobile-menu__link--active{% endif %}">About</a>
+            </li>
+          {%- endif -%}
         </ul>
       </nav>
     </div>
@@ -262,8 +294,10 @@
     background: var(--color-white);
     transform: translateX(-100%);
     transition: transform var(--duration-normal) var(--ease-in-out);
-    padding: var(--space-2xl);
+    padding: var(--space-xl) var(--space-lg);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .mobile-menu.active .mobile-menu__content {
@@ -273,7 +307,8 @@
   .mobile-menu__header {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-lg);
+    flex-shrink: 0;
   }
 
   .mobile-menu__close {
@@ -288,16 +323,29 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .mobile-menu__item {
+    flex-shrink: 0;
   }
 
   .mobile-menu__link {
-    display: block;
-    padding: var(--space-md) 0;
+    display: flex;
+    align-items: center;
+    padding: var(--space-lg) var(--space-md);
     font-size: var(--font-size-body-large);
     color: var(--color-text-primary);
     text-decoration: none;
     border-bottom: 1px solid var(--color-border-gray);
-    transition: color var(--duration-fast) var(--ease-in-out);
+    transition: all var(--duration-fast) var(--ease-in-out);
+    min-height: 48px;
+  }
+
+  .mobile-menu__link:active {
+    background-color: var(--color-light-gray);
   }
 
   .mobile-menu__link:hover,

@@ -33,14 +33,16 @@
           </svg>
         </div>
         
-        {%- comment -%} PayPal - Official brand colors and logo {%- endcomment -%}
+        {%- comment -%} PayPal - Official monogram logo {%- endcomment -%}
         <div class="footer__payment-icon" title="PayPal" aria-label="PayPal">
-          <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PayPal">
-            <rect width="120" height="80" rx="4" fill="white"/>
-            <path d="M45 25C44.25 25 43.5 25.75 43.5 26.5V30.25H48C48.375 30.25 48.75 29.875 48.75 29.5C48.75 29.125 48.375 28.75 48 28.75H45V25ZM40.5 25H46.5C47.25 25 48 25.75 48 26.5V29.5C48 30.25 47.25 31 46.5 31H43.5L42 35.5H39L40.5 31H40.5V25ZM52.5 25H58.5C59.25 25 60 25.75 60 26.5V29.5C60 30.25 59.25 31 58.5 31H55.5L54 35.5H51L52.5 31H52.5V25ZM60 25H66C66.75 25 67.5 25.75 67.5 26.5V29.5C67.5 30.25 66.75 31 66 31H63L61.5 35.5H58.5L60 31H60V25ZM66 25H69C69.75 25 70.5 25.75 70.5 26.5V29.5C70.5 30.25 69.75 31 69 31H66L64.5 35.5H61.5L63 31H66V25Z" fill="#009CDE"/>
-            <path d="M66 25H69C69.75 25 70.5 25.75 70.5 26.5V29.5C70.5 30.25 69.75 31 69 31H66L64.5 35.5H61.5L63 31H66V25Z" fill="#012169"/>
-            <path d="M30 35C29.25 35 28.5 35.75 28.5 36.5V40.25H33C33.375 40.25 33.75 39.875 33.75 39.5C33.75 39.125 33.375 38.75 33 38.75H30V35ZM25.5 35H31.5C32.25 35 33 35.75 33 36.5V39.5C33 40.25 32.25 41 31.5 41H28.5L27 45.5H24L25.5 41H25.5V35ZM37.5 35H43.5C44.25 35 45 35.75 45 36.5V39.5C45 40.25 44.25 41 43.5 41H40.5L39 45.5H36L37.5 41H37.5V35ZM45 35H51C51.75 35 52.5 35.75 52.5 36.5V39.5C52.5 40.25 51.75 41 51 41H48L46.5 45.5H43.5L45 41H45V35ZM51 35H54C54.75 35 55.5 35.75 55.5 36.5V39.5C55.5 40.25 54.75 41 54 41H51L49.5 45.5H46.5L48 41H51V35Z" fill="#003087"/>
-          </svg>
+          <img 
+            src="{{ 'paypal-monogram.png' | asset_url }}"
+            alt="PayPal"
+            width="60"
+            height="40"
+            style="object-fit: contain; width: 100%; height: 100%;"
+            loading="lazy"
+          >
         </div>
       </div>
 
@@ -410,21 +412,31 @@
     .footer__payment-badges {
       justify-content: center;
       width: 100%;
-      gap: var(--space-sm);
+      gap: var(--space-md);
+      flex-wrap: wrap;
     }
 
     .footer__payment-icon {
-      width: 50px;
-      height: 33px;
+      width: 55px;
+      height: 36px;
     }
 
     .footer__social-icons {
       justify-content: center;
       width: 100%;
     }
+
+    .footer__trust-badges-section {
+      gap: var(--space-xl);
+      padding: var(--space-lg) 0;
+    }
   }
 
   @media (max-width: 767px) {
+    .footer__wrapper {
+      padding: 0 var(--space-md);
+    }
+
     .footer__trust-row {
       gap: var(--space-md);
       margin-bottom: var(--space-lg);
@@ -432,12 +444,38 @@
     }
 
     .footer__payment-badges {
-      gap: var(--space-xs);
+      gap: var(--space-sm);
+      justify-content: center;
     }
 
     .footer__payment-icon {
-      width: 45px;
-      height: 30px;
+      width: 50px;
+      height: 33px;
+    }
+
+    .footer__social-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .footer__trust-badges-section {
+      flex-direction: column;
+      gap: var(--space-lg);
+      padding: var(--space-md) 0;
+    }
+
+    .footer__trust-badge {
+      min-width: 100px;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+
+    .footer__legal-links {
+      font-size: var(--font-size-xs);
     }
 
     .footer__trust-badges-section {
