@@ -232,20 +232,24 @@ a:hover {
 }
 
 .section {
-  padding: var(--space-4xl) 0;
+  padding: var(--space-3xl) 0; /* Reduced from 4xl for premium spacing */
 }
 
 .section--padded {
-  padding: var(--space-5xl) 0;
+  padding: var(--space-4xl) 0; /* Reduced from 5xl */
 }
 
 .section--compact {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-xl) 0; /* Reduced from 2xl */
 }
 
 @media (max-width: 639px) {
+  .section {
+    padding: var(--space-2xl) 0; /* Reduced on mobile */
+  }
+  
   .section--compact {
-    padding: var(--space-xl) 0;
+    padding: var(--space-lg) 0; /* Reduced on mobile */
   }
 }
 
