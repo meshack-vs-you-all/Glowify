@@ -1,4 +1,4 @@
-<div class="trust-badges section" id="shopify-section-{{ section.id }}">
+<div class="trust-badges section section--compact" id="shopify-section-{{ section.id }}">
   <div class="page-width">
     <div class="trust-badges__grid">
       {%- if section.blocks.size > 0 -%}
@@ -36,7 +36,7 @@
             </svg>
           </div>
           <h3 class="trust-badge__title">Free Shipping</h3>
-          <p class="trust-badge__text">On orders over $50</p>
+          <p class="trust-badge__text">On orders over $100</p>
         </div>
         <div class="trust-badge">
           <div class="trust-badge__icon trust-badge__icon--default">
@@ -76,7 +76,7 @@
   .trust-badges__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-2xl);
+    gap: var(--space-lg);
   }
 
   @media (min-width: 640px) {
@@ -87,7 +87,7 @@
 
   .trust-badge {
     text-align: center;
-    padding: var(--space-xl);
+    padding: var(--space-lg);
   }
 
   .trust-badge__icon {
@@ -150,7 +150,7 @@
           "type": "textarea",
           "id": "text",
           "label": "Text",
-          "default": "On orders over $50"
+          "default": "On orders over $100"
         }
       ]
     }
@@ -163,7 +163,7 @@
           "type": "badge",
           "settings": {
             "title": "Free Shipping",
-            "text": "On orders over $50"
+            "text": "On orders over $100"
           }
         },
         {

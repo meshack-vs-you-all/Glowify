@@ -70,6 +70,15 @@
       {%- endfor -%}
     </div>
 
+    {%- comment -%} Trust Badges App Block Support {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == '@app' -%}
+        <div class="footer__app-block" {{ block.shopify_attributes }}>
+          {% render block %}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
     <div class="footer__bottom">
       <div class="footer__copyright">
         &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ 'footer.copyright' | t }}
@@ -253,9 +262,20 @@
     transform: translateY(-2px);
   }
 
+  .footer__app-block {
+    margin: var(--space-2xl) 0;
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--color-border-gray);
+    border-bottom: 1px solid var(--color-border-gray);
+  }
+
+  .footer__app-block > * {
+    max-width: 100%;
+  }
+
   .footer__bottom {
     border-top: 1px solid var(--color-border-gray);
-    padding-top: var(--space-2xl);
+    padding-top: var(--space-xl);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -408,6 +428,9 @@
           "label": "Twitter"
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ]
 }

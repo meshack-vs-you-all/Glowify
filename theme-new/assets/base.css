@@ -238,6 +238,16 @@ a:hover {
   padding: var(--space-5xl) 0;
 }
 
+.section--compact {
+  padding: var(--space-2xl) 0;
+}
+
+@media (max-width: 639px) {
+  .section--compact {
+    padding: var(--space-xl) 0;
+  }
+}
+
 /* ==========================================================================
    BUTTONS
    ========================================================================== */
