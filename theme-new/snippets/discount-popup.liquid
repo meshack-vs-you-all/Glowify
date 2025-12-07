@@ -1,0 +1,246 @@
+{% comment %}
+  Discount Popup Modal
+  Shows a discount offer when user interacts with the page
+{% endcomment %}
+
+<div class="discount-popup" id="discount-popup" data-discount-popup>
+  <div class="discount-popup__overlay"></div>
+  <div class="discount-popup__modal">
+    <button class="discount-popup__close" aria-label="Close discount popup">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    
+    <div class="discount-popup__content">
+      <div class="discount-popup__icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+        </svg>
+      </div>
+      
+      <h2 class="discount-popup__title">Love saving money?</h2>
+      <p class="discount-popup__subtitle">Us too! Join to save 15%</p>
+      
+      <div class="discount-popup__actions">
+        <a href="{{ routes.account_register_url }}" class="button button--primary discount-popup__cta">
+          Join Now & Save
+        </a>
+        <button class="discount-popup__skip" data-skip-popup>Maybe Later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .discount-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility var(--duration-normal) var(--ease-in-out),
+                opacity var(--duration-normal) var(--ease-in-out);
+  }
+
+  .discount-popup.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .discount-popup__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .discount-popup__modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4xl) var(--space-3xl);
+    max-width: 480px;
+    width: 90%;
+    box-shadow: var(--shadow-2xl);
+    transition: transform var(--duration-normal) var(--ease-in-out);
+    text-align: center;
+  }
+
+  .discount-popup.active .discount-popup__modal {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .discount-popup__close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--duration-fast) var(--ease-in-out);
+    z-index: 10;
+  }
+
+  .discount-popup__close:hover {
+    color: var(--color-text-primary);
+  }
+
+  .discount-popup__content {
+    position: relative;
+  }
+
+  .discount-popup__icon {
+    color: var(--color-accent);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    justify-content: center;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .discount-popup__title {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .discount-popup__title {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .discount-popup__subtitle {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .discount-popup__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: stretch;
+  }
+
+  .discount-popup__cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .discount-popup__skip {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body);
+    cursor: pointer;
+    padding: var(--space-sm);
+    text-decoration: underline;
+    transition: color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .discount-popup__skip:hover {
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 639px) {
+    .discount-popup__modal {
+      padding: var(--space-3xl) var(--space-xl);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('discount-popup');
+    const closeBtn = popup?.querySelector('.discount-popup__close');
+    const skipBtn = popup?.querySelector('[data-skip-popup]');
+    const overlay = popup?.querySelector('.discount-popup__overlay');
+    
+    if (!popup) return;
+
+    // Check if user has already seen/dismissed the popup
+    const popupDismissed = sessionStorage.getItem('discount-popup-dismissed');
+    const popupShown = sessionStorage.getItem('discount-popup-shown');
+    
+    function showPopup() {
+      if (popupDismissed || popupShown) return;
+      popup.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      sessionStorage.setItem('discount-popup-shown', 'true');
+    }
+
+    function hidePopup() {
+      popup.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function dismissPopup() {
+      hidePopup();
+      sessionStorage.setItem('discount-popup-dismissed', 'true');
+    }
+
+    // Show popup after 3 seconds or on scroll
+    let scrollTriggered = false;
+    window.addEventListener('scroll', function() {
+      if (!scrollTriggered && window.scrollY > 300) {
+        scrollTriggered = true;
+        setTimeout(showPopup, 500);
+      }
+    });
+
+    // Fallback: show after 3 seconds if not scrolled
+    setTimeout(function() {
+      if (!scrollTriggered && !popupDismissed && !popupShown) {
+        showPopup();
+      }
+    }, 3000);
+
+    // Close handlers
+    if (closeBtn) {
+      closeBtn.addEventListener('click', dismissPopup);
+    }
+
+    if (skipBtn) {
+      skipBtn.addEventListener('click', dismissPopup);
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', dismissPopup);
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && popup.classList.contains('active')) {
+        dismissPopup();
+      }
+    });
+  });
+</script>
+

@@ -15,7 +15,14 @@
         </div>
       {%- endif -%}
 
-      <div class="featured-collection__grid">
+      <div class="featured-collection__carousel-wrapper">
+        <button class="featured-collection__nav-button featured-collection__nav-button--prev" aria-label="Previous products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="featured-collection__carousel" data-carousel>
+          <div class="featured-collection__carousel-track">
         {%- assign collection = collections[section.settings.collection] -%}
         {%- assign product_limit = section.settings.products_to_show | default: 8 -%}
         
@@ -34,6 +41,13 @@
             </div>
           {%- endfor -%}
         {%- endfor -%}
+          </div>
+        </div>
+        <button class="featured-collection__nav-button featured-collection__nav-button--next" aria-label="Next products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </div>
   {%- else -%}
@@ -49,7 +63,14 @@
         </a>
       </div>
 
-      <div class="featured-collection__grid">
+      <div class="featured-collection__carousel-wrapper">
+        <button class="featured-collection__nav-button featured-collection__nav-button--prev" aria-label="Previous products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="featured-collection__carousel" data-carousel>
+          <div class="featured-collection__carousel-track">
         {%- assign default_collection = collections.all | default: collections['all'] -%}
         {%- if default_collection != blank -%}
           {%- for product in default_collection.products limit: 8 -%}
@@ -69,6 +90,13 @@
             </div>
           {%- endfor -%}
         {%- endif -%}
+          </div>
+        </div>
+        <button class="featured-collection__nav-button featured-collection__nav-button--next" aria-label="Next products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </div>
   {%- endif -%}
@@ -115,25 +143,173 @@
     color: var(--color-accent);
   }
 
-  .featured-collection__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  .featured-collection__carousel-wrapper {
+    position: relative;
+    margin: 0 calc(-1 * var(--space-md));
+    padding: 0 var(--space-md);
+  }
+
+  .featured-collection__carousel {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .featured-collection__carousel-track {
+    display: flex;
     gap: var(--space-lg);
+    transition: transform 0.5s var(--ease-in-out);
+    will-change: transform;
+  }
+
+  .featured-collection__carousel-track .product-card {
+    flex: 0 0 calc(50% - var(--space-lg) / 2);
+    min-width: 0;
   }
 
   @media (min-width: 640px) {
-    .featured-collection__grid {
-      grid-template-columns: repeat(3, 1fr);
+    .featured-collection__carousel-track .product-card {
+      flex: 0 0 calc(33.333% - var(--space-lg) * 2 / 3);
     }
   }
 
   @media (min-width: 1024px) {
-    .featured-collection__grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-xl);
+    .featured-collection__carousel-track .product-card {
+      flex: 0 0 calc(25% - var(--space-lg) * 3 / 4);
+    }
+  }
+
+  .featured-collection__nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-full);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-in-out);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text-primary);
+  }
+
+  .featured-collection__nav-button:hover {
+    background: var(--color-accent);
+    color: var(--color-white);
+    border-color: var(--color-accent);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .featured-collection__nav-button--prev {
+    left: var(--space-sm);
+  }
+
+  .featured-collection__nav-button--next {
+    right: var(--space-sm);
+  }
+
+  .featured-collection__nav-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: 639px) {
+    .featured-collection__nav-button {
+      width: 40px;
+      height: 40px;
+    }
+
+    .featured-collection__nav-button--prev {
+      left: var(--space-xs);
+    }
+
+    .featured-collection__nav-button--next {
+      right: var(--space-xs);
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('[data-carousel]');
+    if (!carousel) return;
+
+    const track = carousel.querySelector('.featured-collection__carousel-track');
+    const prevButton = carousel.closest('.featured-collection__carousel-wrapper')?.querySelector('.featured-collection__nav-button--prev');
+    const nextButton = carousel.closest('.featured-collection__carousel-wrapper')?.querySelector('.featured-collection__nav-button--next');
+    
+    if (!track || !prevButton || !nextButton) return;
+
+    const cards = track.querySelectorAll('.product-card');
+    if (cards.length === 0) return;
+
+    let currentIndex = 0;
+    let cardWidth = 0;
+    let visibleCards = 1;
+
+    function updateCardWidth() {
+      const firstCard = cards[0];
+      if (!firstCard) return;
+      
+      const cardStyle = window.getComputedStyle(firstCard);
+      const cardMargin = parseFloat(cardStyle.marginRight) || 0;
+      cardWidth = firstCard.offsetWidth + cardMargin;
+      
+      const containerWidth = carousel.offsetWidth;
+      if (window.innerWidth >= 1024) {
+        visibleCards = 4;
+      } else if (window.innerWidth >= 640) {
+        visibleCards = 3;
+      } else {
+        visibleCards = 2;
+      }
+      
+      updateButtons();
+    }
+
+    function updateButtons() {
+      const maxIndex = Math.max(0, cards.length - visibleCards);
+      prevButton.disabled = currentIndex === 0;
+      nextButton.disabled = currentIndex >= maxIndex;
+    }
+
+    function scrollToIndex(index) {
+      const maxIndex = Math.max(0, cards.length - visibleCards);
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+      
+      const offset = -currentIndex * cardWidth;
+      track.style.transform = `translateX(${offset}px)`;
+      updateButtons();
+    }
+
+    prevButton.addEventListener('click', () => {
+      scrollToIndex(currentIndex - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+      scrollToIndex(currentIndex + 1);
+    });
+
+    // Update on resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        updateCardWidth();
+        scrollToIndex(currentIndex);
+      }, 250);
+    });
+
+    // Initialize
+    updateCardWidth();
+    scrollToIndex(0);
+  });
+</script>
 
 {% schema %}
 {

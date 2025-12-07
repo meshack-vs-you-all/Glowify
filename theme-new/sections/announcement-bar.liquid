@@ -1,32 +1,31 @@
-{%- if section.settings.message != blank -%}
-  <div id="shopify-section-{{ section.id }}" class="announcement-bar" data-section-id="{{ section.id }}">
-    <div class="announcement-bar__wrapper">
-      <p class="announcement-bar__message">
-        {{ section.settings.message }}
-        {%- if section.settings.link != blank -%}
-          <a href="{{ section.settings.link }}" class="announcement-bar__link">
-            {{ section.settings.link_text | default: 'Learn more' }}
-          </a>
-        {%- endif -%}
-      </p>
-      {%- if section.settings.show_dismiss -%}
-        <button type="button" class="announcement-bar__close" aria-label="{{ 'general.accessibility.close' | t }}">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+<div id="shopify-section-{{ section.id }}" class="announcement-bar" data-section-id="{{ section.id }}">
+  <div class="announcement-bar__wrapper">
+    <p class="announcement-bar__message">
+      {{ section.settings.message | default: 'Free shipping on orders above $100 – US Only' }}
+      {%- if section.settings.link != blank -%}
+        <a href="{{ section.settings.link }}" class="announcement-bar__link">
+          {{ section.settings.link_text | default: 'Learn more' }}
+        </a>
       {%- endif -%}
-    </div>
+    </p>
+    {%- if section.settings.show_dismiss -%}
+      <button type="button" class="announcement-bar__close" aria-label="{{ 'general.accessibility.close' | t }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
   </div>
-{%- endif -%}
+</div>
 
 <style>
   .announcement-bar {
-    background-color: var(--color-black);
+    background-color: #4A5568; /* Medium grey for better visibility */
     color: var(--color-white);
     padding: var(--space-sm) 0;
     position: relative;
     z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .announcement-bar__wrapper {
@@ -40,11 +39,14 @@
   }
 
   .announcement-bar__message {
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-body); /* Larger font for better readability */
     text-align: center;
     margin: 0;
     letter-spacing: var(--letter-spacing-nav);
     text-transform: uppercase;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-white);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow for contrast */
   }
 
   .announcement-bar__link {
@@ -108,7 +110,7 @@
       "type": "text",
       "id": "message",
       "label": "Message",
-      "default": "Welcome to our store"
+      "default": "Free shipping on orders above $100 – US Only"
     },
     {
       "type": "url",

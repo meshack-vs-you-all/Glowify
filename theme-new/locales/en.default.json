@@ -30,7 +30,8 @@
       "home": "Home"
     },
     "newsletter_form": {
-      "email_placeholder": "Your email address"
+      "email_placeholder": "Your email address",
+      "success": "Thank you for subscribing!"
     },
     "404": {
       "title": "Page not found",
@@ -106,11 +107,6 @@
       "send": "Send Message",
       "post_success": "Thank you for your message. We'll get back to you soon!",
       "error_heading": "Please correct the errors below:"
-    }
-  },
-  "general": {
-    "newsletter_form": {
-      "success": "Thank you for subscribing!"
     }
   }
 }

@@ -89,7 +89,7 @@
 
 <style>
   .site-header {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -98,6 +98,8 @@
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow-sm);
     transition: all var(--duration-normal) var(--ease-in-out);
+    margin: 0;
+    padding: 0;
   }
 
   .site-header.scrolled {

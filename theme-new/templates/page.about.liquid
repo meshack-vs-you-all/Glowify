@@ -1,0 +1,229 @@
+{% comment %}
+  About Us Page Template
+{% endcomment %}
+
+<div class="page-about">
+  <div class="page-width">
+    <div class="page-about__header">
+      <h1 class="page-about__title">{{ page.title }}</h1>
+      {%- if page.content != blank -%}
+        <div class="page-about__content rte">
+          {{ page.content }}
+        </div>
+      {%- else -%}
+        {%- comment -%} Default content if page is empty {%- endcomment -%}
+        <div class="page-about__content rte">
+          <div class="page-about__intro">
+            <h2>Where Little Moments Become Big Memories</h2>
+            <p>At Glowify, we believe that every moment with your little one is precious. That's why we're dedicated to creating thoughtfully designed baby products that bring comfort, style, and peace of mind to families everywhere.</p>
+          </div>
+
+          <div class="page-about__section">
+            <h2>Our Mission</h2>
+            <p>Our mission is simple: to provide parents with high-quality, safe, and beautifully designed products that make parenting easier and more enjoyable. We understand that when it comes to your baby, only the best will do.</p>
+          </div>
+
+          <div class="page-about__section">
+            <h2>What We Stand For</h2>
+            <ul>
+              <li><strong>Safety First:</strong> All our products meet or exceed the highest safety standards.</li>
+              <li><strong>Quality Craftsmanship:</strong> We carefully select and test every product to ensure durability and reliability.</li>
+              <li><strong>Thoughtful Design:</strong> Our products are designed with both parents and babies in mind, combining functionality with style.</li>
+              <li><strong>Customer Care:</strong> Your satisfaction is our priority. We're here to support you every step of the way.</li>
+            </ul>
+          </div>
+
+          <div class="page-about__section">
+            <h2>Our Story</h2>
+            <p>Glowify was born from a simple idea: parenting should be joyful, not overwhelming. We started with a vision to curate the best baby products that combine safety, quality, and style. Today, we're proud to serve families across the United States, helping them create beautiful memories with products they can trust.</p>
+          </div>
+
+          <div class="page-about__cta">
+            <h2>Join Our Community</h2>
+            <p>We'd love to hear from you! Whether you have questions, feedback, or just want to share your story, we're here for you.</p>
+            <a href="{{ pages.contact.url | default: '/pages/contact' }}" class="button button--primary">
+              Get in Touch
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .page-about {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .page-about__header {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-about__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-2xl);
+    text-align: center;
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-about__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .page-about__content {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-primary);
+  }
+
+  .page-about__intro {
+    margin-bottom: var(--space-4xl);
+    text-align: center;
+  }
+
+  .page-about__intro h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-about__intro h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .page-about__intro p {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .page-about__section {
+    margin-bottom: var(--space-4xl);
+  }
+
+  .page-about__section h2 {
+    font-size: var(--font-size-h3-mobile);
+    line-height: var(--line-height-h3-mobile);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-about__section h2 {
+      font-size: var(--font-size-h3-desktop);
+      line-height: var(--line-height-h3-desktop);
+    }
+  }
+
+  .page-about__section p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .page-about__section ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-lg) 0;
+  }
+
+  .page-about__section li {
+    padding: var(--space-md) 0;
+    padding-left: var(--space-2xl);
+    position: relative;
+    color: var(--color-text-secondary);
+  }
+
+  .page-about__section li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+    font-size: 1.2em;
+  }
+
+  .page-about__section strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .page-about__cta {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    margin-top: var(--space-5xl);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4xl);
+  }
+
+  .page-about__cta h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-about__cta h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .page-about__cta p {
+    margin-bottom: var(--space-2xl);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .rte {
+    line-height: var(--line-height-body-large);
+  }
+
+  .rte h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .rte h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .rte p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .rte ul,
+  .rte ol {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-2xl);
+    color: var(--color-text-secondary);
+  }
+
+  .rte li {
+    margin-bottom: var(--space-sm);
+  }
+</style>
+

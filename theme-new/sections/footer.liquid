@@ -76,7 +76,50 @@
       </div>
       <div class="footer__payment">
         <span class="footer__payment-text">{{ 'footer.payment_methods' | t }}</span>
-        <!-- Payment icons placeholder -->
+        <div class="footer__payment-icons">
+          {%- comment -%} Using Shopify's payment icons if available {%- endcomment -%}
+          {%- if shop.enabled_payment_types.size > 0 -%}
+            {%- for type in shop.enabled_payment_types -%}
+              <div class="footer__payment-icon">
+                {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Default payment icons if none configured {%- endcomment -%}
+            <div class="footer__payment-icon" title="Visa">
+              <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="24" rx="4" fill="#1434CB"/>
+                <path d="M16.5 8.5L14.5 15.5H12.8L11.2 9.7C11.1 9.3 10.8 9.1 10.4 9.1H7.5L7.4 9.4C8.2 9.6 9 10 9.6 10.6L11.8 15.5H9.8L7.2 8.5H9.1L10.5 13.1L11.9 8.5H16.5ZM24.2 8.5L22.1 15.5H20.4L19.1 10.1C19 9.7 18.8 9.5 18.4 9.5H17.2L17.1 9.8C17.6 10 18.1 10.2 18.4 10.4L19.6 15.5H17.6L15.5 8.5H17.2L18.5 13.9L19.9 8.5H24.2ZM30.5 8.5L28.4 15.5H26.7L28.1 9.7C28.2 9.3 28.4 9.1 28.8 9.1H30.5L32.6 15.5H30.9L30.5 8.5Z" fill="white"/>
+              </svg>
+            </div>
+            <div class="footer__payment-icon" title="Mastercard">
+              <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="24" rx="4" fill="#EB001B"/>
+                <circle cx="15" cy="12" r="7" fill="#F79E1B"/>
+                <circle cx="17" cy="12" r="7" fill="#FF5F00"/>
+              </svg>
+            </div>
+            <div class="footer__payment-icon" title="American Express">
+              <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="24" rx="4" fill="#006FCF"/>
+                <path d="M8 7H12L13.5 10L15 7H19V17H16V11L14.5 14H12.5L11 11V17H8V7ZM21 7H26C27.1 7 28 7.9 28 9V15C28 16.1 27.1 17 26 17H21V7ZM24 15V9H23V15H24Z" fill="white"/>
+              </svg>
+            </div>
+            <div class="footer__payment-icon" title="PayPal">
+              <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="24" rx="4" fill="#003087"/>
+                <path d="M15 8C14.5 8 14 8.5 14 9V12H17C17.5 12 18 11.5 18 11C18 10.5 17.5 10 17 10H15V8ZM12 9C12 8.4 12.4 8 13 8H18C18.6 8 19 8.4 19 9V11C19 11.6 18.6 12 18 12H16L15 15H13L14 12H12V9Z" fill="#009CDE"/>
+                <path d="M20 8H23C23.6 8 24 8.4 24 9V11C24 11.6 23.6 12 23 12H21L20 15H18L19 12H20V8Z" fill="#012169"/>
+              </svg>
+            </div>
+            <div class="footer__payment-icon" title="Apple Pay">
+              <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="24" rx="4" fill="#000"/>
+                <path d="M12.5 7C12.2 7.3 11.7 7.5 11.1 7.5C10.5 7.5 10 7.2 9.7 6.9C9.4 6.6 9.2 6.1 9.2 5.5C9.2 4.9 9.5 4.4 9.8 4.1C10.1 3.8 10.6 3.6 11.2 3.6C11.8 3.6 12.3 3.9 12.6 4.2C12.9 4.5 13.1 5 13.1 5.6C13.1 6.2 12.8 6.7 12.5 7ZM9.5 8.5H12.8L12.1 16.5H9.5V8.5ZM14.2 8.5H16.9C18.5 8.5 19.6 9.1 20.1 10.2C20.6 11.3 20.4 12.6 19.5 13.4C20.2 13.6 20.7 14.1 20.9 14.8C21.1 15.5 20.9 16.3 20.3 16.9C19.7 17.5 18.8 17.8 17.6 17.8H16.2L15.5 20.5H13.2L14.2 8.5ZM16.5 11.2V13.2H17.2C17.8 13.2 18.2 13 18.4 12.6C18.6 12.2 18.5 11.8 18.1 11.5C17.7 11.2 17.3 11.1 16.8 11.1H16.5V11.2ZM16.5 14.8V16.5H17.1C17.7 16.5 18.1 16.3 18.3 15.9C18.5 15.5 18.4 15.1 18 14.8C17.6 14.5 17.2 14.4 16.7 14.4H16.5V14.8Z" fill="white"/>
+              </svg>
+            </div>
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </div>
@@ -228,6 +271,52 @@
   .footer__payment {
     font-size: var(--font-size-small);
     color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .footer__payment-text {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .footer__payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer__payment-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    opacity: 0.8;
+    transition: opacity var(--duration-fast) var(--ease-in-out);
+  }
+
+  .footer__payment-icon:hover {
+    opacity: 1;
+  }
+
+  .footer__payment-icon svg,
+  .footer__payment-icon .payment-icon {
+    height: 24px;
+    width: auto;
+    max-width: 50px;
+  }
+
+  @media (min-width: 768px) {
+    .footer__payment {
+      align-items: flex-end;
+    }
+
+    .footer__payment-icons {
+      justify-content: flex-end;
+    }
   }
 
   @media (min-width: 768px) {
