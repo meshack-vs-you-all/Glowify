@@ -80,10 +80,22 @@
   "sections": {
     "featured_collection": {
       "view_all": "View all"
+    },
+    "testimonials": {
+      "no_reviews": "No reviews yet. Add reviews in the theme editor."
+    },
+    "recently_viewed": {
+      "loading": "Loading..."
+    },
+    "faq": {
+      "no_items": "No FAQs yet. Add FAQ items in the theme editor."
     }
   },
   "customer": {
     "account": {
+      "title": "Account"
+    },
+    "login": {
       "title": "Account"
     }
   },

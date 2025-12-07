@@ -5,15 +5,25 @@
 
   // Initialize cart functionality
   function initCart() {
-    // Handle add to cart forms
-    const addToCartForms = document.querySelectorAll('form[action*="/cart/add"]');
+    // Handle add to cart forms - check for both class and action
+    const addToCartForms = document.querySelectorAll('form.product-form, form[action*="/cart/add"], form[action="/cart/add"]');
+    
+    if (addToCartForms.length === 0) {
+      console.log('No add to cart forms found');
+      return;
+    }
     
     addToCartForms.forEach(form => {
+      // Make sure form has action attribute
+      if (!form.action || !form.action.includes('/cart/add')) {
+        form.action = '/cart/add';
+      }
+      
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
-        const originalText = submitButton?.textContent || submitButton?.value;
+        const originalText = submitButton?.textContent || submitButton?.value || 'Add to cart';
         
         // Disable button and show loading state
         if (submitButton) {
@@ -23,14 +33,27 @@
         
         try {
           const formData = new FormData(form);
+          
+          // Log for debugging
+          console.log('Submitting to cart:', form.action);
+          
           const response = await fetch('/cart/add.js', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
             body: formData
           });
           
           if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.description || 'Failed to add item to cart');
+            let errorMessage = 'Failed to add item to cart';
+            try {
+              const error = await response.json();
+              errorMessage = error.description || error.message || errorMessage;
+            } catch (e) {
+              errorMessage = `Server error: ${response.status}`;
+            }
+            throw new Error(errorMessage);
           }
           
           const item = await response.json();
@@ -38,14 +61,8 @@
           // Update cart count
           updateCartCount();
           
-          // Show success toast
-          if (window.Toast) {
-            window.Toast.show(
-              `${item.product_title} added to cart`,
-              'success',
-              'Added to Cart'
-            );
-          }
+          // Show success message
+          showCartMessage(`${item.product_title || 'Item'} added to cart!`, 'success');
           
           // Optional: Open cart drawer or redirect
           // Uncomment if you want to redirect to cart
@@ -54,14 +71,11 @@
         } catch (error) {
           console.error('Cart error:', error);
           
-          // Show error toast
-          if (window.Toast) {
-            window.Toast.show(
-              error.message || 'Failed to add item to cart. Please try again.',
-              'error',
-              'Error'
-            );
-          }
+          // Show error message
+          showCartMessage(
+            error.message || 'Failed to add item to cart. Please try again.',
+            'error'
+          );
         } finally {
           // Re-enable button
           if (submitButton) {
@@ -119,9 +133,7 @@
           
         } catch (error) {
           console.error('Cart update error:', error);
-          if (window.Toast) {
-            window.Toast.show('Failed to update cart. Please try again.', 'error');
-          }
+          showCartMessage('Failed to update cart. Please try again.', 'error');
         }
       });
     });
@@ -150,22 +162,85 @@
           
         } catch (error) {
           console.error('Cart remove error:', error);
-          if (window.Toast) {
-            window.Toast.show('Failed to remove item. Please try again.', 'error');
-          }
+          showCartMessage('Failed to remove item. Please try again.', 'error');
         }
       });
     });
   }
   
+  // Show cart message (toast or alert fallback)
+  function showCartMessage(message, type) {
+    // Try to use Toast system if available
+    if (window.Toast && typeof window.Toast.show === 'function') {
+      window.Toast.show(message, type, type === 'success' ? 'Success' : 'Error');
+      return;
+    }
+    
+    // Fallback: Create simple toast notification
+    const toast = document.createElement('div');
+    toast.className = `cart-toast cart-toast--${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      background: ${type === 'success' ? '#10B981' : '#EF4444'};
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      animation: slideIn 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.animation = 'slideOut 0.3s ease-out';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+  
+  // Add CSS for toast animation
+  if (!document.getElementById('cart-toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'cart-toast-styles';
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   // Update cart count in header
   function updateCartCount() {
     fetch('/cart.js')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch cart');
+        return response.json();
+      })
       .then(cart => {
         const cartCountElements = document.querySelectorAll('[data-cart-count]');
         cartCountElements.forEach(el => {
-          el.textContent = cart.item_count;
+          el.textContent = cart.item_count || 0;
           if (cart.item_count > 0) {
             el.style.display = 'flex';
           } else {
@@ -173,7 +248,10 @@
           }
         });
       })
-      .catch(err => console.error('Error fetching cart:', err));
+      .catch(err => {
+        console.error('Error fetching cart:', err);
+        // Don't show error to user for cart count updates
+      });
   }
   
   // Initialize on DOM ready

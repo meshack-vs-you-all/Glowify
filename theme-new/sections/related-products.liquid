@@ -1,0 +1,162 @@
+{%- comment -%}
+  Related / Recommended Products Section
+  Cross-sell section based on tags, collections, or Shopify recommendations
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = 'related-products-' | append: section.id
+  assign heading = section.settings.heading | default: 'You may also like'
+  assign product_limit = section.settings.product_limit | default: 4
+  assign algorithm = section.settings.algorithm | default: 'tags'
+  assign show_quick_add = section.settings.show_quick_add
+-%}
+
+{%- if template.name == 'product' -%}
+  {%- liquid
+    assign related_products = blank
+    assign current_product = product
+    
+    if algorithm == 'tags' and current_product.tags.size > 0
+      assign related_products = collections.all.products | where: 'tags', current_product.tags.first | limit: product_limit | where: 'id', '!=', current_product.id
+    elsif algorithm == 'collection' and collection
+      assign related_products = collection.products | limit: product_limit | where: 'id', '!=', current_product.id
+    elsif algorithm == 'shopify_ai'
+      comment
+        Shopify AI recommendations would require app integration
+        For now, fallback to collection-based
+      endcomment
+      if collection
+        assign related_products = collection.products | limit: product_limit | where: 'id', '!=', current_product.id
+      else
+        assign related_products = collections.all.products | limit: product_limit | where: 'id', '!=', current_product.id
+      endif
+    else
+      assign related_products = collections.all.products | limit: product_limit | where: 'id', '!=', current_product.id
+    endif
+  -%}
+
+  {%- if related_products.size > 0 -%}
+    <section class="related-products-section section" id="{{ section_id }}" data-section-type="related-products">
+      <div class="page-width">
+        {%- if heading != blank -%}
+          <div class="related-products-section__header">
+            <h2 class="related-products-section__title">{{ heading }}</h2>
+          </div>
+        {%- endif -%}
+
+        <div class="related-products__grid">
+          {%- for related_product in related_products limit: product_limit -%}
+            <div class="related-products__item">
+              {% render 'product-card', product: related_product, show_quick_add: show_quick_add %}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .related-products-section {
+        padding: var(--space-4xl) 0;
+        background: var(--color-off-white);
+      }
+
+      .related-products-section__header {
+        margin-bottom: var(--space-3xl);
+        text-align: center;
+      }
+
+      .related-products-section__title {
+        font-size: var(--font-size-h2-mobile);
+        line-height: var(--line-height-h2-mobile);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+      }
+
+      @media (min-width: 768px) {
+        .related-products-section__title {
+          font-size: var(--font-size-h2-desktop);
+          line-height: var(--line-height-h2-desktop);
+        }
+      }
+
+      .related-products__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--space-xl);
+      }
+
+      @media (min-width: 640px) {
+        .related-products__grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .related-products__grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .related-products__item {
+        width: 100%;
+      }
+    </style>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related Products",
+  "tag": "section",
+  "class": "section-related-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "algorithm",
+      "label": "Recommendation Algorithm",
+      "options": [
+        {
+          "value": "tags",
+          "label": "Based on Tags"
+        },
+        {
+          "value": "collection",
+          "label": "Based on Collection"
+        },
+        {
+          "value": "shopify_ai",
+          "label": "Shopify AI (requires app)"
+        }
+      ],
+      "default": "tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products"
+    }
+  ]
+}
+{% endschema %}
+

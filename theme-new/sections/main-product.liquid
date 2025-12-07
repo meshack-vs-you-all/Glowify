@@ -1,0 +1,506 @@
+{%- comment -%}
+  Premium Product Page Section
+  High-conversion product page with enhanced features
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = 'main-product-' | append: section.id
+  assign current_variant = product.selected_or_first_available_variant
+  assign show_stock_indicator = section.settings.show_stock_indicator
+  assign show_trust_badges = section.settings.show_trust_badges
+  assign show_why_love = section.settings.show_why_love
+-%}
+
+<div class="product-page section" data-product-id="{{ product.id }}" data-product-info>
+  {%- comment -%} Product JSON for JavaScript {%- endcomment -%}
+  <script type="application/json" data-product-json>
+    {{ product | json }}
+  </script>
+
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item">
+          <a href="{{ routes.root_url }}" class="breadcrumbs__link">{{ 'general.breadcrumbs.home' | t }}</a>
+        </li>
+        {%- if collection -%}
+          <li class="breadcrumbs__item">
+            <a href="{{ collection.url }}" class="breadcrumbs__link">{{ collection.title }}</a>
+          </li>
+        {%- endif -%}
+        <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+          {{ product.title }}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="product-page__grid">
+      {%- comment -%} Product Gallery {%- endcomment -%}
+      <div class="product-page__gallery">
+        <div class="product-gallery">
+          <div class="product-gallery__main">
+            {%- if product.featured_image != blank -%}
+              <img 
+                src="{{ product.featured_image | image_url: width: 1600 }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                data-product-main-image
+                class="product-gallery__main-image"
+                loading="eager"
+                width="1600"
+                height="1600"
+              >
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'product-gallery__placeholder' }}
+            {%- endif -%}
+          </div>
+          
+          {%- if product.images.size > 1 -%}
+            <div class="product-gallery__thumbnails">
+              {%- for image in product.images -%}
+                <button 
+                  type="button" 
+                  class="product-gallery__thumbnail {% if forloop.first %}product-gallery__thumbnail--active{% endif %}"
+                  data-product-thumbnail
+                  data-image-src="{{ image | image_url: width: 1600 }}"
+                  aria-label="View {{ image.alt | escape }}"
+                >
+                  <img 
+                    src="{{ image | image_url: width: 150 }}"
+                    alt="{{ image.alt | escape }}"
+                    loading="lazy"
+                    width="150"
+                    height="150"
+                  >
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Product Info {%- endcomment -%}
+      <div class="product-page__info" data-product-info>
+        {%- comment -%} Vendor (optional) {%- endcomment -%}
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="product-page__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="product-page__title">{{ product.title }}</h1>
+        
+        {%- comment -%} Price {%- endcomment -%}
+        <div class="product-page__price" data-product-price>
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="product-price__current">{{ current_variant.price | money }}</span>
+            <span class="product-price__compare">{{ current_variant.compare_at_price | money }}</span>
+            {%- if section.settings.show_savings -%}
+              <span class="product-price__savings">
+                Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}
+              </span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="product-price__current">{{ current_variant.price | money }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Stock Indicator {%- endcomment -%}
+        {%- if show_stock_indicator -%}
+          <div class="product-page__stock" data-product-stock>
+            {%- if current_variant.available -%}
+              {%- if current_variant.inventory_quantity <= 10 and current_variant.inventory_quantity > 0 -%}
+                <span class="product-stock product-stock--low">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 4V8L10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Only {{ current_variant.inventory_quantity }} left in stock
+                </span>
+              {%- else -%}
+                <span class="product-stock product-stock--in-stock">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  In Stock
+                </span>
+              {%- endif -%}
+            {%- else -%}
+              <span class="product-stock product-stock--out">
+                Out of Stock
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Why People Love This Product {%- endcomment -%}
+        {%- if show_why_love -%}
+          <div class="product-page__why-love">
+            <h3 class="product-why-love__title">{{ section.settings.why_love_title | default: 'Why People Love This Product' }}</h3>
+            <ul class="product-why-love__list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'benefit' -%}
+                  <li class="product-why-love__item" {{ block.shopify_attributes }}>
+                    <svg class="product-why-love__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    {{ block.settings.benefit_text }}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Product Description (Short) {%- endcomment -%}
+        {%- if product.description != blank -%}
+          <div class="product-page__description">
+            {{ product.description | truncatewords: 30 }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Product Form {%- endcomment -%}
+        <div class="product-form-wrapper" data-product-form>
+        {%- form 'product', product, class: 'product-form' -%}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="product-form__option">
+                <label class="product-form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                  {{ option.name }}
+                  {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                    <span class="product-form__selected-value" data-selected-{{ option.name | handle }}></span>
+                  {%- endif -%}
+                </label>
+                <div class="product-form__options product-form__options--{{ option.name | handle }}">
+                  {%- for value in option.values -%}
+                    {%- liquid
+                      assign option_handle = value | handle
+                      assign color_swatch = false
+                      if option.name == 'Color' or option.name == 'Colour'
+                        assign color_swatch = true
+                      endif
+                    -%}
+                    <input 
+                      type="radio" 
+                      id="Option-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                      name="options[{{ option.name | escape }}]"
+                      value="{{ value | escape }}"
+                      {% if option.selected_value == value %}checked{% endif %}
+                      class="product-form__radio"
+                      data-option-value="{{ value | handle }}"
+                    >
+                    <label 
+                      for="Option-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                      class="product-form__option-label {% if color_swatch %}product-form__option-label--swatch{% endif %}"
+                      {% if color_swatch %}{% render 'color-swatch', value: value %}{% endif %}
+                      data-option-label
+                      data-option-value="{{ value | escape }}"
+                    >
+                      {%- if color_swatch -%}
+                        <span class="visually-hidden">{{ value }}</span>
+                      {%- else -%}
+                        {{ value }}
+                      {%- endif -%}
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          {%- comment -%} Quantity Selector {%- endcomment -%}
+          <div class="product-form__quantity">
+            <label class="product-form__label" for="Quantity-{{ section.id }}">{{ 'products.product.quantity.label' | t }}</label>
+            <div class="product-form__quantity-controls">
+              <button type="button" class="product-form__quantity-btn" data-quantity-decrease aria-label="Decrease quantity">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 8H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <input 
+                type="number" 
+                id="Quantity-{{ section.id }}"
+                name="quantity" 
+                value="1" 
+                min="1"
+                class="product-form__quantity-input"
+                data-quantity-input
+              >
+              <button type="button" class="product-form__quantity-btn" data-quantity-increase aria-label="Increase quantity">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 4V12M4 8H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {%- comment -%} Add to Cart Button {%- endcomment -%}
+          <button 
+            type="submit" 
+            name="add"
+            class="button button--primary button--large product-form__submit"
+            data-add-to-cart
+            data-add-text="{{ 'products.product.add_to_cart' | t }}"
+            data-sold-out-text="{{ 'products.product.sold_out' | t }}"
+            {% if current_variant.available == false %}disabled{% endif %}
+          >
+            {%- if current_variant.available -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </button>
+
+          {%- comment -%} Trust Badges {%- endcomment -%}
+          {%- if show_trust_badges -%}
+            <div class="product-form__trust-badges">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'trust_badge' -%}
+                  <div class="product-trust-badge" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon != blank -%}
+                      <img src="{{ block.settings.icon | image_url: width: 24 }}" alt="" width="24" height="24" loading="lazy">
+                    {%- else -%}
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    {%- endif -%}
+                    <span>{{ block.settings.text }}</span>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+        </div>
+
+        {%- comment -%} Product Details Tabs (if needed) {%- endcomment -%}
+        {%- if section.settings.show_tabs -%}
+          <div class="product-page__tabs">
+            <div class="product-tabs">
+              <button class="product-tabs__button product-tabs__button--active" data-tab="description">
+                Description
+              </button>
+              {%- if section.settings.show_specs -%}
+                <button class="product-tabs__button" data-tab="specs">
+                  Specifications
+                </button>
+              {%- endif -%}
+              {%- if section.settings.show_shipping -%}
+                <button class="product-tabs__button" data-tab="shipping">
+                  Shipping & Returns
+                </button>
+              {%- endif -%}
+            </div>
+            <div class="product-tabs__content">
+              <div class="product-tabs__panel product-tabs__panel--active" data-tab-content="description">
+                {{ product.description }}
+              </div>
+              {%- if section.settings.show_specs -%}
+                <div class="product-tabs__panel" data-tab-content="specs">
+                  {{ section.settings.specs_content }}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.show_shipping -%}
+                <div class="product-tabs__panel" data-tab-content="shipping">
+                  {{ section.settings.shipping_content }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Sticky Add to Cart (Mobile) {%- endcomment -%}
+  <div class="sticky-cart" data-sticky-cart>
+    <div class="sticky-cart__content">
+      <div class="sticky-cart__info">
+        {%- if product.featured_image != blank -%}
+          <img 
+            src="{{ product.featured_image | image_url: width: 60 }}"
+            alt="{{ product.title | escape }}"
+            class="sticky-cart__image"
+            width="60"
+            height="60"
+          >
+        {%- endif -%}
+        <div class="sticky-cart__details">
+          <p class="sticky-cart__title">{{ product.title }}</p>
+          <p class="sticky-cart__price">{{ current_variant.price | money }}</p>
+        </div>
+      </div>
+      <button 
+        type="button"
+        class="button button--primary sticky-cart__button"
+        data-sticky-add-to-cart
+        {% if current_variant.available == false %}disabled{% endif %}
+      >
+        {%- if current_variant.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    </div>
+  </div>
+</div>
+
+{{ 'product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer></script>
+
+<script>
+  // Handle sticky cart button click
+  document.addEventListener('DOMContentLoaded', function() {
+    const stickyBtn = document.querySelector('[data-sticky-add-to-cart]');
+    const formWrapper = document.querySelector('[data-product-form]');
+    const mainForm = formWrapper ? formWrapper.querySelector('form.product-form') : null;
+    
+    if (stickyBtn && mainForm) {
+      stickyBtn.addEventListener('click', () => {
+        mainForm.requestSubmit();
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "tag": "section",
+  "class": "section-main-product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_savings",
+      "label": "Show savings amount",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock_indicator",
+      "label": "Show stock indicator",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show trust badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_why_love",
+      "label": "Show 'Why People Love This Product' section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "why_love_title",
+      "label": "Why Love Title",
+      "default": "Why People Love This Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Show product tabs",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_specs",
+      "label": "Show specifications tab",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "specs_content",
+      "label": "Specifications content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping",
+      "label": "Show shipping & returns tab",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_content",
+      "label": "Shipping & Returns content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "benefit_text",
+          "label": "Benefit text",
+          "default": "Premium quality materials"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Badge text",
+          "default": "Free shipping on orders over $100"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "Premium quality materials"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "Fast & free shipping"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_text": "30-day money-back guarantee"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "text": "Free shipping on orders over $100"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "text": "Secure checkout"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

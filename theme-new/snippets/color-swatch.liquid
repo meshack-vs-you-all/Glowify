@@ -1,0 +1,71 @@
+{%- comment -%}
+  Color Swatch Snippet
+  Converts color names to hex values for CSS
+{%- endcomment -%}
+
+{%- liquid
+  assign color_name = value | downcase | strip
+  assign color_hex = ''
+  
+  case color_name
+    when 'red'
+      assign color_hex = '#EF4444'
+    when 'blue'
+      assign color_hex = '#3B82F6'
+    when 'green'
+      assign color_hex = '#10B981'
+    when 'yellow'
+      assign color_hex = '#FBBF24'
+    when 'orange'
+      assign color_hex = '#F97316'
+    when 'purple'
+      assign color_hex = '#A855F7'
+    when 'pink'
+      assign color_hex = '#EC4899'
+    when 'black'
+      assign color_hex = '#1A1A1A'
+    when 'white'
+      assign color_hex = '#FFFFFF'
+    when 'gray', 'grey'
+      assign color_hex = '#6B7280'
+    when 'brown'
+      assign color_hex = '#92400E'
+    when 'navy'
+      assign color_hex = '#1E3A8A'
+    when 'beige'
+      assign color_hex = '#F5F5DC'
+    when 'tan'
+      assign color_hex = '#D2B48C'
+    when 'burgundy'
+      assign color_hex = '#800020'
+    when 'maroon'
+      assign color_hex = '#800000'
+    when 'teal'
+      assign color_hex = '#14B8A6'
+    when 'turquoise'
+      assign color_hex = '#06B6D4'
+    when 'coral'
+      assign color_hex = '#FF7F50'
+    when 'lavender'
+      assign color_hex = '#E6E6FA'
+    when 'mint'
+      assign color_hex = '#A7F3D0'
+    when 'sage'
+      assign color_hex = '#7C9885'
+    when 'cream'
+      assign color_hex = '#FFFDD0'
+    when 'ivory'
+      assign color_hex = '#FFFFF0'
+    when 'charcoal'
+      assign color_hex = '#36454F'
+    else
+      assign color_hex = ''
+  endcase
+-%}
+
+{%- if color_hex != blank -%}
+  style="background-color: {{ color_hex }};"
+{%- else -%}
+  data-color-name="{{ color_name }}"
+{%- endif -%}
+

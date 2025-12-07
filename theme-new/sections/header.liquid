@@ -57,7 +57,11 @@
       <!-- Header Icons -->
       <div class="header__icons">
         {%- if shop.customer_accounts_enabled -%}
-          <a href="{{ routes.account_url }}" class="header__icon-link" aria-label="{{ 'customer.account.title' | t }}">
+          {%- if customer -%}
+            <a href="{{ routes.account_url }}" class="header__icon-link" aria-label="{{ 'customer.account.title' | t }}">
+          {%- else -%}
+            <a href="{{ routes.account_login_url }}" class="header__icon-link" aria-label="{{ 'customer.login.title' | t }}">
+          {%- endif -%}
             <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>

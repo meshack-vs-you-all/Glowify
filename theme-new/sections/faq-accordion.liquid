@@ -1,0 +1,464 @@
+{%- comment -%}
+  FAQ Accordion Section
+  Expandable FAQ with search and optional category filters
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = 'faq-accordion-' | append: section.id
+  assign heading = section.settings.heading | default: 'Frequently Asked Questions'
+  assign show_search = section.settings.show_search
+  assign show_categories = section.settings.show_categories
+-%}
+
+<section class="faq-section section" id="{{ section_id }}" data-section-type="faq-accordion">
+  <div class="page-width">
+    {%- if heading != blank -%}
+      <div class="faq-section__header">
+        <h2 class="faq-section__title">{{ heading }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="faq-section__subtitle">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if show_search -%}
+      <div class="faq-section__search">
+        <input 
+          type="text" 
+          class="faq-section__search-input" 
+          placeholder="{{ section.settings.search_placeholder | default: 'Search FAQs...' }}"
+          data-faq-search
+          aria-label="Search FAQs"
+        >
+        <svg class="faq-section__search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    {%- endif -%}
+
+    {%- if show_categories and section.blocks.size > 0 -%}
+      {%- assign categories = section.blocks | map: 'settings' | map: 'category' | uniq | compact -%}
+      {%- if categories.size > 1 -%}
+        <div class="faq-section__categories" data-faq-categories>
+          <button class="faq-section__category-btn faq-section__category-btn--active" data-category="all">
+            All
+          </button>
+          {%- for category in categories -%}
+            <button class="faq-section__category-btn" data-category="{{ category | handle }}">
+              {{ category }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="faq-section__accordion" data-faq-accordion>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign faq_id = 'faq-' | append: section.id | append: '-' | append: forloop.index
+          assign category_handle = block.settings.category | handle | default: 'all'
+        -%}
+        <div class="faq-item" 
+             data-faq-item 
+             data-category="{{ category_handle }}"
+             {{ block.shopify_attributes }}>
+          <button 
+            class="faq-item__button" 
+            type="button"
+            aria-expanded="false"
+            aria-controls="{{ faq_id }}"
+            data-faq-toggle
+          >
+            <span class="faq-item__question">{{ block.settings.question }}</span>
+            <svg class="faq-item__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div 
+            class="faq-item__content" 
+            id="{{ faq_id }}"
+            data-faq-content
+            hidden
+          >
+            <div class="faq-item__answer">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.blocks.size == 0 -%}
+      <div class="faq-section__empty">
+        <p>{{ 'sections.faq.no_items' | t: default: 'No FAQs yet. Add FAQ items in the theme editor.' }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: var(--space-4xl) 0;
+  }
+
+  .faq-section__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .faq-section__title {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .faq-section__title {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .faq-section__subtitle {
+    font-size: var(--font-size-body-large);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .faq-section__search {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto var(--space-2xl);
+  }
+
+  .faq-section__search-input {
+    width: 100%;
+    padding: var(--space-md) var(--space-xl) var(--space-md) var(--space-lg);
+    border: 2px solid var(--color-border-gray);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-body);
+    transition: border-color 0.3s var(--ease-in-out);
+    padding-right: 48px;
+  }
+
+  .faq-section__search-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .faq-section__search-icon {
+    position: absolute;
+    right: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+
+  .faq-section__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .faq-section__category-btn {
+    padding: var(--space-sm) var(--space-lg);
+    border: 2px solid var(--color-border-gray);
+    border-radius: var(--radius-full);
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all 0.3s var(--ease-in-out);
+  }
+
+  .faq-section__category-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .faq-section__category-btn--active,
+  .faq-section__category-btn--active:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .faq-section__accordion {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-border-gray);
+    transition: opacity 0.3s var(--ease-in-out);
+  }
+
+  .faq-item[data-hidden="true"] {
+    display: none;
+  }
+
+  .faq-item__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-xl) 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.3s var(--ease-in-out);
+  }
+
+  .faq-item__button:hover {
+    color: var(--color-accent);
+  }
+
+  .faq-item__button[aria-expanded="true"] {
+    color: var(--color-accent);
+  }
+
+  .faq-item__button[aria-expanded="true"] .faq-item__icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-item__question {
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-semibold);
+    color: inherit;
+    flex: 1;
+    padding-right: var(--space-lg);
+  }
+
+  .faq-item__icon {
+    flex-shrink: 0;
+    transition: transform 0.3s var(--ease-in-out);
+    color: var(--color-text-secondary);
+  }
+
+  .faq-item__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s var(--ease-in-out), padding 0.4s var(--ease-in-out);
+    padding: 0;
+  }
+
+  .faq-item__content[aria-hidden="false"] {
+    max-height: 1000px;
+    padding-bottom: var(--space-xl);
+  }
+
+  .faq-item__answer {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-secondary);
+  }
+
+  .faq-item__answer p {
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .faq-item__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq-section__empty {
+    text-align: center;
+    padding: var(--space-4xl);
+    color: var(--color-text-secondary);
+  }
+</style>
+
+<script>
+  (function() {
+    const accordion = document.querySelector('[data-faq-accordion]');
+    if (!accordion) return;
+
+    const items = accordion.querySelectorAll('[data-faq-item]');
+    const searchInput = document.querySelector('[data-faq-search]');
+    const categoryButtons = document.querySelectorAll('[data-faq-category-btn]');
+
+    let activeCategory = 'all';
+
+    // Toggle FAQ item
+    function toggleItem(button) {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      const content = button.nextElementSibling;
+      
+      // Close all other items (optional - remove if you want multiple open)
+      // items.forEach(item => {
+      //   const btn = item.querySelector('[data-faq-toggle]');
+      //   const cont = item.querySelector('[data-faq-content]');
+      //   if (btn !== button) {
+      //     btn.setAttribute('aria-expanded', 'false');
+      //     cont.setAttribute('aria-hidden', 'true');
+      //     cont.hidden = true;
+      //   }
+      // });
+
+      button.setAttribute('aria-expanded', !isExpanded);
+      content.setAttribute('aria-hidden', isExpanded);
+      content.hidden = isExpanded;
+    }
+
+    // Initialize toggle buttons
+    items.forEach(item => {
+      const button = item.querySelector('[data-faq-toggle]');
+      if (button) {
+        button.addEventListener('click', () => toggleItem(button));
+      }
+    });
+
+    // Search functionality
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        filterItems(query, activeCategory);
+      });
+    }
+
+    // Category filter
+    const categoryContainer = document.querySelector('[data-faq-categories]');
+    if (categoryContainer) {
+      categoryContainer.addEventListener('click', (e) => {
+        const button = e.target.closest('.faq-section__category-btn');
+        if (button) {
+          // Update active button
+          categoryContainer.querySelectorAll('.faq-section__category-btn').forEach(btn => {
+            btn.classList.remove('faq-section__category-btn--active');
+          });
+          button.classList.add('faq-section__category-btn--active');
+
+          // Update active category
+          activeCategory = button.dataset.category || 'all';
+          
+          // Filter items
+          const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+          filterItems(query, activeCategory);
+        }
+      });
+    }
+
+    // Filter items based on search and category
+    function filterItems(query, category) {
+      items.forEach(item => {
+        const question = item.querySelector('.faq-item__question').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-item__answer').textContent.toLowerCase();
+        const itemCategory = item.dataset.category || 'all';
+
+        const matchesSearch = !query || question.includes(query) || answer.includes(query);
+        const matchesCategory = category === 'all' || itemCategory === category;
+
+        if (matchesSearch && matchesCategory) {
+          item.removeAttribute('data-hidden');
+          item.style.display = '';
+        } else {
+          item.setAttribute('data-hidden', 'true');
+          item.style.display = 'none';
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder text",
+      "default": "Search FAQs..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "Show category filters",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a 30-day return policy on all items. Items must be in original condition with tags attached.</p>"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category (optional)",
+          "info": "Group FAQs by category"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy on all items.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Standard shipping takes 5-7 business days.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to most countries worldwide.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

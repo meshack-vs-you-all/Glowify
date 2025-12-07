@@ -1,0 +1,478 @@
+{%- comment -%}
+  Testimonials / Reviews Section
+  High-conversion section with customer reviews, star ratings, and optional product filtering
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = 'testimonials-' | append: section.id
+  assign show_on_product_only = section.settings.show_on_product_only
+  assign show_verified_badge = section.settings.show_verified_badge
+-%}
+
+{%- if show_on_product_only == false or template.name == 'product' -%}
+  <section class="testimonials-section section" id="{{ section_id }}" data-section-type="testimonials">
+    <div class="page-width">
+      {%- if section.settings.heading != blank -%}
+        <div class="testimonials-section__header">
+          <h2 class="testimonials-section__title">{{ section.settings.heading }}</h2>
+          {%- if section.settings.subheading != blank -%}
+            <p class="testimonials-section__subtitle">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="testimonials-carousel" data-testimonials-carousel>
+          <div class="testimonials-carousel__track" data-carousel-track>
+            {%- for block in section.blocks -%}
+              <div class="testimonial-card" {{ block.shopify_attributes }}>
+                <div class="testimonial-card__content">
+                  {%- if block.settings.rating > 0 -%}
+                    <div class="testimonial-card__rating" aria-label="Rating: {{ block.settings.rating }} out of 5 stars">
+                      {%- for i in (1..5) -%}
+                        <svg class="testimonial-card__star {% if i <= block.settings.rating %}testimonial-card__star--filled{% endif %}" 
+                             width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                          <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" 
+                                fill="{% if i <= block.settings.rating %}#FBBF24{% else %}#E5E7EB{% endif %}"/>
+                        </svg>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.review_text != blank -%}
+                    <blockquote class="testimonial-card__text">
+                      {{ block.settings.review_text }}
+                    </blockquote>
+                  {%- endif -%}
+
+                  <div class="testimonial-card__author">
+                    {%- if block.settings.reviewer_image != blank -%}
+                      <div class="testimonial-card__avatar">
+                        <img 
+                          src="{{ block.settings.reviewer_image | image_url: width: 80 }}"
+                          alt="{{ block.settings.reviewer_name | escape }}"
+                          width="80"
+                          height="80"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- endif -%}
+                    
+                    <div class="testimonial-card__author-info">
+                      <p class="testimonial-card__name">{{ block.settings.reviewer_name }}</p>
+                      {%- if block.settings.reviewer_location != blank -%}
+                        <p class="testimonial-card__location">{{ block.settings.reviewer_location }}</p>
+                      {%- endif -%}
+                      {%- if show_verified_badge and block.settings.verified_purchase -%}
+                        <span class="testimonial-card__verified" aria-label="Verified Purchase">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M8 0L9.79608 5.52786H15.6085L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09381 8.94427L0.391528 5.52786H6.20392L8 0Z" fill="#10B981"/>
+                          </svg>
+                          Verified Purchase
+                        </span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- if section.blocks.size > 1 -%}
+            <div class="testimonials-carousel__controls">
+              <button class="testimonials-carousel__button testimonials-carousel__button--prev" 
+                      aria-label="Previous testimonial" 
+                      data-carousel-prev>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="testimonials-carousel__button testimonials-carousel__button--next" 
+                      aria-label="Next testimonial" 
+                      data-carousel-next>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <div class="testimonials-section__empty">
+          <p>{{ 'sections.testimonials.no_reviews' | t: default: 'No reviews yet. Add reviews in the theme editor.' }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <style>
+    .testimonials-section {
+      padding: var(--space-4xl) 0;
+      background: var(--color-off-white);
+    }
+
+    .testimonials-section__header {
+      text-align: center;
+      margin-bottom: var(--space-3xl);
+    }
+
+    .testimonials-section__title {
+      font-size: var(--font-size-h2-mobile);
+      line-height: var(--line-height-h2-mobile);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--space-md);
+      color: var(--color-text-primary);
+    }
+
+    @media (min-width: 768px) {
+      .testimonials-section__title {
+        font-size: var(--font-size-h2-desktop);
+        line-height: var(--line-height-h2-desktop);
+      }
+    }
+
+    .testimonials-section__subtitle {
+      font-size: var(--font-size-body-large);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .testimonials-carousel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonials-carousel__track {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-xl);
+      transition: transform 0.5s var(--ease-in-out);
+    }
+
+    @media (min-width: 768px) {
+      .testimonials-carousel__track {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .testimonial-card {
+      background: var(--color-white);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s var(--ease-in-out), box-shadow 0.3s var(--ease-in-out);
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .testimonial-card__rating {
+      display: flex;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-lg);
+    }
+
+    .testimonial-card__star {
+      flex-shrink: 0;
+    }
+
+    .testimonial-card__text {
+      font-size: var(--font-size-body);
+      line-height: var(--line-height-body);
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-xl) 0;
+      font-style: italic;
+    }
+
+    .testimonial-card__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .testimonial-card__avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--color-light-gray);
+    }
+
+    .testimonial-card__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .testimonial-card__author-info {
+      flex: 1;
+    }
+
+    .testimonial-card__name {
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      margin: 0 0 var(--space-xs) 0;
+      font-size: var(--font-size-body);
+    }
+
+    .testimonial-card__location {
+      font-size: var(--font-size-small);
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    .testimonial-card__verified {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-xs);
+      font-size: var(--font-size-small);
+      color: var(--color-success);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .testimonials-carousel__controls {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-md);
+      margin-top: var(--space-2xl);
+    }
+
+    .testimonials-carousel__button {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--color-border-gray);
+      background: var(--color-white);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease-in-out);
+    }
+
+    .testimonials-carousel__button:hover:not(:disabled) {
+      border-color: var(--color-accent);
+      background: var(--color-accent);
+      color: var(--color-white);
+      transform: scale(1.1);
+    }
+
+    .testimonials-carousel__button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .testimonials-section__empty {
+      text-align: center;
+      padding: var(--space-4xl);
+      color: var(--color-text-secondary);
+    }
+  </style>
+
+  <script>
+    (function() {
+      const carousel = document.querySelector('[data-testimonials-carousel]');
+      if (!carousel) return;
+
+      const track = carousel.querySelector('[data-carousel-track]');
+      const prevBtn = carousel.querySelector('[data-carousel-prev]');
+      const nextBtn = carousel.querySelector('[data-carousel-next]');
+      const cards = track.querySelectorAll('.testimonial-card');
+      
+      if (cards.length <= 1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        return;
+      }
+
+      let currentIndex = 0;
+      const itemsPerView = window.innerWidth >= 768 ? 3 : 1;
+
+      function updateCarousel() {
+        const offset = -currentIndex * (100 / itemsPerView);
+        track.style.transform = `translateX(${offset}%)`;
+        
+        if (prevBtn) prevBtn.disabled = currentIndex === 0;
+        if (nextBtn) nextBtn.disabled = currentIndex >= cards.length - itemsPerView;
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (currentIndex < cards.length - itemsPerView) {
+            currentIndex++;
+            updateCarousel();
+          }
+        });
+      }
+
+      // Touch/swipe support
+      let startX = 0;
+      let isDragging = false;
+
+      track.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      });
+
+      track.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+      });
+
+      track.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+
+        if (Math.abs(diff) > 50) {
+          if (diff > 0 && currentIndex < cards.length - itemsPerView) {
+            currentIndex++;
+          } else if (diff < 0 && currentIndex > 0) {
+            currentIndex--;
+          }
+          updateCarousel();
+        }
+
+        isDragging = false;
+      });
+
+      // Responsive update
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          updateCarousel();
+        }, 250);
+      });
+
+      updateCarousel();
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonials / Reviews",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Real reviews from real customers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_product_only",
+      "label": "Show on product pages only",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_verified_badge",
+      "label": "Show verified purchase badge",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "richtext",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "<p>This product exceeded my expectations! The quality is outstanding and the customer service was excellent.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "reviewer_image",
+          "label": "Reviewer Photo"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "reviewer_location",
+          "label": "Reviewer Location",
+          "default": "New York, NY"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified_purchase",
+          "label": "Verified Purchase",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials / Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "Sarah M.",
+            "reviewer_location": "New York, NY"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "Michael R.",
+            "reviewer_location": "Los Angeles, CA"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "reviewer_name": "Emily T.",
+            "reviewer_location": "Chicago, IL"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
