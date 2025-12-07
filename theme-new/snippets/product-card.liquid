@@ -48,12 +48,14 @@
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all var(--duration-normal) var(--ease-in-out);
+    transition: transform 0.3s var(--ease-in-out), box-shadow 0.3s var(--ease-in-out);
+    border: 1px solid transparent;
   }
 
   .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(124, 152, 133, 0.2);
+    border-color: rgba(124, 152, 133, 0.3);
   }
 
   .product-card__link {
