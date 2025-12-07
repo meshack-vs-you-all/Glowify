@@ -185,15 +185,20 @@
     
     if (!popup) return;
 
-    // Check if user has already seen/dismissed the popup
-    const popupDismissed = sessionStorage.getItem('discount-popup-dismissed');
-    const popupShown = sessionStorage.getItem('discount-popup-shown');
+    // Check if user has already seen/dismissed the popup (use localStorage for persistence)
+    const popupDismissed = localStorage.getItem('discount-popup-dismissed');
+    const popupShown = localStorage.getItem('discount-popup-shown');
+    const popupDismissedTime = localStorage.getItem('discount-popup-dismissed-time');
+    
+    // Don't show if dismissed in last 7 days
+    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+    const wasDismissedRecently = popupDismissedTime && parseInt(popupDismissedTime) > sevenDaysAgo;
     
     function showPopup() {
-      if (popupDismissed || popupShown) return;
+      if (popupDismissed || popupShown || wasDismissedRecently) return;
       popup.classList.add('active');
       document.body.style.overflow = 'hidden';
-      sessionStorage.setItem('discount-popup-shown', 'true');
+      localStorage.setItem('discount-popup-shown', 'true');
     }
 
     function hidePopup() {
@@ -203,24 +208,34 @@
 
     function dismissPopup() {
       hidePopup();
-      sessionStorage.setItem('discount-popup-dismissed', 'true');
+      localStorage.setItem('discount-popup-dismissed', 'true');
+      localStorage.setItem('discount-popup-dismissed-time', Date.now().toString());
     }
 
-    // Show popup after 3 seconds or on scroll
+    // Only show popup after user has been browsing for a while (10 seconds)
+    // and scrolled significantly (500px) - let them browse first
     let scrollTriggered = false;
+    let timeElapsed = false;
+    
+    // Wait 10 seconds before allowing popup
+    setTimeout(function() {
+      timeElapsed = true;
+    }, 10000);
+    
     window.addEventListener('scroll', function() {
-      if (!scrollTriggered && window.scrollY > 300) {
+      if (!scrollTriggered && timeElapsed && window.scrollY > 500) {
         scrollTriggered = true;
-        setTimeout(showPopup, 500);
+        // Additional delay after scroll to let them continue browsing
+        setTimeout(showPopup, 2000);
       }
     });
 
-    // Fallback: show after 3 seconds if not scrolled
+    // Fallback: show after 15 seconds if user hasn't scrolled much
     setTimeout(function() {
-      if (!scrollTriggered && !popupDismissed && !popupShown) {
+      if (!scrollTriggered && !popupDismissed && !popupShown && !wasDismissedRecently && timeElapsed) {
         showPopup();
       }
-    }, 3000);
+    }, 15000);
 
     // Close handlers
     if (closeBtn) {
