@@ -108,28 +108,51 @@
       {% render 'trust-badges', section: section %}
     </div>
 
-    {%- comment -%} Footer Links and Country Selector {%- endcomment -%}
+    {%- comment -%} Footer Navigation Links and Country Selector {%- endcomment -%}
     <div class="footer__bottom">
-        <div class="footer__legal-links">
-        {%- comment -%} Policy page links - always show, link to page if exists, otherwise root {%- endcomment -%}
-        {%- assign terms_page = pages['terms-of-service'] -%}
-        <a href="{% if terms_page %}{{ terms_page.url }}{% else %}{{ routes.root_url }}{% endif %}" class="footer__legal-link">Terms of Service</a>
-        <span class="footer__legal-separator">|</span>
-        
-        {%- assign privacy_page = pages['privacy-policy'] -%}
-        <a href="{% if privacy_page %}{{ privacy_page.url }}{% else %}{{ routes.root_url }}{% endif %}" class="footer__legal-link">Privacy Policy</a>
-        <span class="footer__legal-separator">|</span>
-        
-        {%- assign refund_page = pages['refund-policy'] -%}
-        <a href="{% if refund_page %}{{ refund_page.url }}{% else %}{{ routes.root_url }}{% endif %}" class="footer__legal-link">Refund Policy</a>
-            <span class="footer__legal-separator">|</span>
-        
-        {%- assign shipping_page = pages['shipping-policy'] -%}
-        <a href="{% if shipping_page %}{{ shipping_page.url }}{% else %}{{ routes.root_url }}{% endif %}" class="footer__legal-link">Shipping Policy</a>
-            <span class="footer__legal-separator">|</span>
-        
-        {%- assign cookie_page = pages['cookie-policy'] -%}
-        <a href="{% if cookie_page %}{{ cookie_page.url }}{% else %}{{ routes.root_url }}{% endif %}" class="footer__legal-link">Cookie Policy</a>
+      <div class="footer__nav-links">
+        {%- comment -%} Use footer menu from admin if configured, otherwise fallback to policy links {%- endcomment -%}
+        {%- if section.settings.footer_menu != blank and linklists[section.settings.footer_menu].links.size > 0 -%}
+          {%- comment -%} Admin-managed footer menu {%- endcomment -%}
+          {%- for link in linklists[section.settings.footer_menu].links -%}
+            <a href="{{ link.url }}" class="footer__nav-link {% if link.active %}footer__nav-link--active{% endif %}">
+              {{ link.title }}
+            </a>
+            {%- unless forloop.last -%}
+              <span class="footer__nav-separator">|</span>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Fallback: Policy page links - always show, link to page if exists, otherwise root {%- endcomment -%}
+          {%- assign terms_page = pages['terms-of-service'] -%}
+          {%- if terms_page -%}
+            <a href="{{ terms_page.url }}" class="footer__nav-link">Terms of Service</a>
+            <span class="footer__nav-separator">|</span>
+          {%- endif -%}
+          
+          {%- assign privacy_page = pages['privacy-policy'] -%}
+          {%- if privacy_page -%}
+            <a href="{{ privacy_page.url }}" class="footer__nav-link">Privacy Policy</a>
+            <span class="footer__nav-separator">|</span>
+          {%- endif -%}
+          
+          {%- assign refund_page = pages['refund-policy'] -%}
+          {%- if refund_page -%}
+            <a href="{{ refund_page.url }}" class="footer__nav-link">Refund Policy</a>
+            <span class="footer__nav-separator">|</span>
+          {%- endif -%}
+          
+          {%- assign shipping_page = pages['shipping-policy'] -%}
+          {%- if shipping_page -%}
+            <a href="{{ shipping_page.url }}" class="footer__nav-link">Shipping Policy</a>
+            <span class="footer__nav-separator">|</span>
+          {%- endif -%}
+          
+          {%- assign cookie_page = pages['cookie-policy'] -%}
+          {%- if cookie_page -%}
+            <a href="{{ cookie_page.url }}" class="footer__nav-link">Cookie Policy</a>
+          {%- endif -%}
+        {%- endif -%}
       </div>
       
       {%- if section.settings.show_country_selector -%}
@@ -302,7 +325,7 @@
     padding-top: var(--space-lg);
   }
 
-  .footer__legal-links {
+  .footer__nav-links {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -327,19 +350,22 @@
     text-align: center;
   }
 
-  .footer__legal-link {
+  .footer__nav-link {
     color: var(--color-text-secondary);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-in-out);
+    white-space: nowrap;
   }
 
-  .footer__legal-link:hover {
+  .footer__nav-link:hover,
+  .footer__nav-link--active {
     color: var(--color-text-primary);
   }
 
-  .footer__legal-separator {
+  .footer__nav-separator {
     color: var(--color-text-secondary);
     margin: 0 var(--space-xs);
+    user-select: none;
   }
 
   .footer__country-selector {
@@ -470,7 +496,7 @@
       gap: var(--space-md);
     }
 
-    .footer__legal-links {
+    .footer__nav-links {
       font-size: var(--font-size-xs);
       justify-content: center;
     }
@@ -566,6 +592,16 @@
       "id": "quality_guaranteed_text",
       "label": "Quality Guaranteed Text",
       "default": "Quality Guaranteed"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu",
+      "info": "Select a menu to display in the footer. If no menu is selected, policy page links will be shown automatically."
     },
     {
       "type": "header",

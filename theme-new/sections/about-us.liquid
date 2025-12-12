@@ -1,0 +1,243 @@
+<div class="about-us-section section" id="shopify-section-{{ section.id }}">
+  <div class="page-width">
+    <div class="about-us__container">
+      {%- if section.settings.title != blank -%}
+        <h2 class="about-us__title">{{ section.settings.title }}</h2>
+      {%- else -%}
+        <h2 class="about-us__title">Where Little Moments Become Big Memories</h2>
+      {%- endif -%}
+      
+      {%- if section.settings.intro_text != blank -%}
+        <p class="about-us__intro">{{ section.settings.intro_text }}</p>
+      {%- else -%}
+        <p class="about-us__intro">At Glowify, we believe that every moment with your little one is precious. That's why we're dedicated to creating thoughtfully designed baby products that bring comfort, style, and peace of mind to families everywhere.</p>
+      {%- endif -%}
+
+      <div class="about-us__grid">
+        <div class="about-us__item">
+          <div class="about-us__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="about-us__item-title">Safety First</h3>
+          <p class="about-us__item-text">All our products meet or exceed the highest safety standards, giving you complete peace of mind.</p>
+        </div>
+
+        <div class="about-us__item">
+          <div class="about-us__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="about-us__item-title">Quality Craftsmanship</h3>
+          <p class="about-us__item-text">We carefully select and test every product to ensure durability and reliability for your family.</p>
+        </div>
+
+        <div class="about-us__item">
+          <div class="about-us__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="about-us__item-title">Thoughtful Design</h3>
+          <p class="about-us__item-text">Our products are designed with both parents and babies in mind, combining functionality with style.</p>
+        </div>
+
+        <div class="about-us__item">
+          <div class="about-us__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="about-us__item-title">Customer Care</h3>
+          <p class="about-us__item-text">Your satisfaction is our priority. We're here to support you every step of the way.</p>
+        </div>
+      </div>
+
+      {%- if section.settings.show_cta -%}
+        <div class="about-us__cta">
+          {%- if section.settings.cta_text != blank -%}
+            <p class="about-us__cta-text">{{ section.settings.cta_text }}</p>
+          {%- else -%}
+            <p class="about-us__cta-text">We'd love to hear from you! Whether you have questions, feedback, or just want to share your story, we're here for you.</p>
+          {%- endif -%}
+          {%- if section.settings.cta_button_label != blank and section.settings.cta_button_link != blank -%}
+            <a href="{{ section.settings.cta_button_link }}" class="button button--primary">
+              {{ section.settings.cta_button_label }}
+            </a>
+          {%- else -%}
+            <a href="{{ pages.contact.url | default: '/pages/contact' }}" class="button button--primary">
+              Get in Touch
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .about-us-section {
+    padding: var(--space-5xl) 0;
+    background: var(--color-off-white);
+  }
+
+  .about-us__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-us__title {
+    font-family: var(--font-display-family);
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .about-us__title {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .about-us__intro {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+    max-width: 800px;
+    margin: 0 auto var(--space-4xl);
+  }
+
+  .about-us__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    margin-bottom: var(--space-4xl);
+  }
+
+  @media (min-width: 640px) {
+    .about-us__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-us__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-2xl);
+    }
+  }
+
+  .about-us__item {
+    text-align: center;
+  }
+
+  .about-us__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--space-lg);
+    color: var(--theme-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-us__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-us__item-title {
+    font-size: var(--font-size-h3-mobile);
+    line-height: var(--line-height-h3-mobile);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .about-us__item-title {
+      font-size: var(--font-size-h3-desktop);
+      line-height: var(--line-height-h3-desktop);
+    }
+  }
+
+  .about-us__item-text {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-secondary);
+  }
+
+  .about-us__cta {
+    margin-top: var(--space-5xl);
+    padding: var(--space-4xl);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-lg);
+  }
+
+  .about-us__cta-text {
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Us",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Where Little Moments Become Big Memories"
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Introduction Text",
+      "default": "At Glowify, we believe that every moment with your little one is precious. That's why we're dedicated to creating thoughtfully designed baby products that bring comfort, style, and peace of mind to families everywhere."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Call to Action",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "We'd love to hear from you! Whether you have questions, feedback, or just want to share your story, we're here for you."
+    },
+    {
+      "type": "text",
+      "id": "cta_button_label",
+      "label": "CTA Button Label",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us"
+    }
+  ]
+}
+{% endschema %}
+

@@ -25,6 +25,7 @@
                       loading="eager"
                       width="1920"
                       height="1080"
+                      style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;"
                     >
                   {%- elsif block.settings.image != blank -%}
                     <img 
@@ -34,6 +35,7 @@
                       loading="eager"
                       width="1920"
                       height="1080"
+                      style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;"
                     >
                   {%- endif -%}
                 </picture>
@@ -94,7 +96,7 @@
           </div>
           <div class="hero-slide__content">
             <div class="hero-slide__text">
-              <h1 class="hero-slide__title">Where Little Moments Become Big Memories.</h1>
+              <h1 class="hero-slide__title">Where Little Moments Become Big Memories</h1>
               <p class="hero-slide__description">Thoughtfully designed baby products that bring comfort, style, and peace of mind.</p>
               <a href="{{ routes.all_products_collection_url }}" class="button button--primary button--large hero-slide__button">
                 Discover Baby Essentials
@@ -146,17 +148,30 @@
   .hero-slide {
     position: relative;
     min-height: 500px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .hero-slide__container {
     display: grid;
     grid-template-columns: 1fr;
     min-height: 500px;
+    position: relative;
   }
 
   @media (min-width: 1024px) {
     .hero-slide__container {
       grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    
+    .hero-slide__image {
+      min-height: 600px;
+    }
+    
+    .hero-slide__image picture,
+    .hero-slide__image img {
       min-height: 600px;
     }
   }
@@ -171,12 +186,25 @@
     padding: 0;
   }
 
+  .hero-slide__image picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    margin: 0;
+    padding: 0;
+  }
+
   .hero-slide__image img {
     width: 100%;
     height: 100%;
     min-height: 500px;
     object-fit: cover;
+    object-position: center center;
     display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
   }
 
   .hero-slide__placeholder {

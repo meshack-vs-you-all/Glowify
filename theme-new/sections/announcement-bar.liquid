@@ -1,7 +1,11 @@
 <div id="shopify-section-{{ section.id }}" class="announcement-bar" data-section-id="{{ section.id }}">
   <div class="announcement-bar__wrapper">
     <p class="announcement-bar__message">
-      {{ section.settings.message | default: 'Free shipping on orders above $500' }}
+      {%- if section.settings.message != blank -%}
+        {{ section.settings.message }}
+      {%- else -%}
+        Free shipping on orders above $500
+      {%- endif -%}
       {%- if section.settings.link != blank -%}
         <a href="{{ section.settings.link }}" class="announcement-bar__link">
           {{ section.settings.link_text | default: 'Learn more' }}
