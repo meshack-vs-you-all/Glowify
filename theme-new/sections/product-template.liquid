@@ -23,10 +23,17 @@
             {%- if product.featured_image != blank -%}
               <img 
                 src="{{ product.featured_image | image_url: width: 1200 }}"
+                srcset="{{ product.featured_image | image_url: width: 600 }} 600w,
+                        {{ product.featured_image | image_url: width: 900 }} 900w,
+                        {{ product.featured_image | image_url: width: 1200 }} 1200w,
+                        {{ product.featured_image | image_url: width: 1600 }} 1600w"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 40vw"
                 alt="{{ product.featured_image.alt | escape }}"
                 id="ProductImage-{{ section.id }}"
                 class="product-gallery__main-image"
                 loading="eager"
+                width="1200"
+                height="1200"
               >
             {%- else -%}
               {{ 'product-1' | placeholder_svg_tag: 'product-gallery__placeholder' }}
@@ -41,11 +48,14 @@
                   class="product-gallery__thumbnail {% if forloop.first %}product-gallery__thumbnail--active{% endif %}"
                   data-image-id="{{ image.id }}"
                   data-image-url="{{ image | image_url: width: 1200 }}"
+                  aria-label="View {{ image.alt | escape }}"
                 >
                   <img 
                     src="{{ image | image_url: width: 150 }}"
                     alt="{{ image.alt | escape }}"
                     loading="lazy"
+                    width="150"
+                    height="150"
                   >
                 </button>
               {%- endfor -%}
@@ -154,6 +164,8 @@
     position: relative;
     box-shadow: var(--shadow-md);
     transition: box-shadow 0.3s var(--ease-in-out);
+    aspect-ratio: 1 / 1;
+    max-height: 800px;
   }
 
   .product-gallery__main:hover {
@@ -163,13 +175,17 @@
   .product-gallery__main-image,
   .product-gallery__placeholder {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     display: block;
     transition: transform 0.5s var(--ease-in-out);
   }
 
-  .product-gallery__main:hover .product-gallery__main-image {
-    transform: scale(1.02);
+  @media (min-width: 1024px) {
+    .product-gallery__main:hover .product-gallery__main-image {
+      transform: scale(1.15);
+      cursor: zoom-in;
+    }
   }
 
   .product-gallery__thumbnails {
@@ -196,6 +212,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s var(--ease-in-out);
+    aspect-ratio: 1 / 1;
   }
 
   .product-gallery__thumbnail:hover img {

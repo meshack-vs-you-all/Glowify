@@ -1,7 +1,7 @@
 <div id="shopify-section-{{ section.id }}" class="announcement-bar" data-section-id="{{ section.id }}">
   <div class="announcement-bar__wrapper">
     <p class="announcement-bar__message">
-      {{ section.settings.message | default: 'Free shipping on orders above $100 – US Only' }}
+      {{ section.settings.message | default: 'Free shipping on orders above $500' }}
       {%- if section.settings.link != blank -%}
         <a href="{{ section.settings.link }}" class="announcement-bar__link">
           {{ section.settings.link_text | default: 'Learn more' }}
@@ -20,7 +20,7 @@
 
 <style>
   .announcement-bar {
-    background-color: #4A5568; /* Medium grey for better visibility */
+    background-color: var(--theme-accent);
     color: var(--color-white);
     padding: var(--space-sm) 0;
     position: relative;
@@ -39,14 +39,20 @@
   }
 
   .announcement-bar__message {
-    font-size: var(--font-size-body); /* Larger font for better readability */
+    font-size: var(--font-size-body);
     text-align: center;
     margin: 0;
     letter-spacing: var(--letter-spacing-nav);
     text-transform: uppercase;
     font-weight: var(--font-weight-medium);
     color: var(--color-white);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Subtle shadow for contrast */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 767px) {
+    .announcement-bar__message {
+      text-align: center;
+    }
   }
 
   .announcement-bar__link {
@@ -110,7 +116,7 @@
       "type": "text",
       "id": "message",
       "label": "Message",
-      "default": "Free shipping on orders above $100 – US Only"
+      "default": "Free shipping on orders above $500"
     },
     {
       "type": "url",

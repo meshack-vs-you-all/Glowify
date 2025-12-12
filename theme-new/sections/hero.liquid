@@ -5,14 +5,38 @@
         <div class="hero-slide" {{ block.shopify_attributes }}>
           <div class="hero-slide__container">
             <div class="hero-slide__image">
-              {%- if block.settings.image != blank -%}
-                <img 
-                  src="{{ block.settings.image | image_url: width: 1920 }}"
-                  alt="{{ block.settings.title | escape }}"
-                  loading="eager"
-                  width="1920"
-                  height="1080"
-                >
+              {%- if block.settings.desktop_hero != blank or block.settings.tablet_hero != blank or block.settings.mobile_hero != blank or block.settings.image != blank -%}
+                <picture>
+                  {%- if block.settings.mobile_hero != blank -%}
+                    <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_hero | image_url: width: 768 }} 1x, {{ block.settings.mobile_hero | image_url: width: 1536 }} 2x">
+                  {%- elsif block.settings.image != blank -%}
+                    <source media="(max-width: 767px)" srcset="{{ block.settings.image | image_url: width: 768 }} 1x, {{ block.settings.image | image_url: width: 1536 }} 2x">
+                  {%- endif -%}
+                  {%- if block.settings.tablet_hero != blank -%}
+                    <source media="(min-width: 768px) and (max-width: 1023px)" srcset="{{ block.settings.tablet_hero | image_url: width: 1024 }} 1x, {{ block.settings.tablet_hero | image_url: width: 2048 }} 2x">
+                  {%- elsif block.settings.image != blank -%}
+                    <source media="(min-width: 768px) and (max-width: 1023px)" srcset="{{ block.settings.image | image_url: width: 1024 }} 1x, {{ block.settings.image | image_url: width: 2048 }} 2x">
+                  {%- endif -%}
+                  {%- if block.settings.desktop_hero != blank -%}
+                    <img 
+                      src="{{ block.settings.desktop_hero | image_url: width: 1920 }}"
+                      srcset="{{ block.settings.desktop_hero | image_url: width: 1920 }} 1x, {{ block.settings.desktop_hero | image_url: width: 3840 }} 2x"
+                      alt="{% if block.settings.title != blank %}{{ block.settings.title | escape }}{% else %}{{ 'general.accessibility.hero_image' | t }}{% endif %}"
+                      loading="eager"
+                      width="1920"
+                      height="1080"
+                    >
+                  {%- elsif block.settings.image != blank -%}
+                    <img 
+                      src="{{ block.settings.image | image_url: width: 1920 }}"
+                      srcset="{{ block.settings.image | image_url: width: 1920 }} 1x, {{ block.settings.image | image_url: width: 3840 }} 2x"
+                      alt="{% if block.settings.title != blank %}{{ block.settings.title | escape }}{% else %}{{ 'general.accessibility.hero_image' | t }}{% endif %}"
+                      loading="eager"
+                      width="1920"
+                      height="1080"
+                    >
+                  {%- endif -%}
+                </picture>
               {%- else -%}
                 <div class="hero-slide__placeholder">
                   {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -202,6 +226,12 @@
     }
   }
 
+  @media (max-width: 767px) {
+    .hero-slide__text {
+      text-align: center;
+    }
+  }
+
   .hero-slide__subtitle {
     font-size: var(--font-size-small);
     letter-spacing: var(--letter-spacing-nav);
@@ -328,8 +358,27 @@
       "settings": [
         {
           "type": "image_picker",
+          "id": "desktop_hero",
+          "label": "Desktop Hero Image (≥1024px)",
+          "info": "Recommended: 1920x1080px"
+        },
+        {
+          "type": "image_picker",
+          "id": "tablet_hero",
+          "label": "Tablet Hero Image (768-1023px)",
+          "info": "Recommended: 1024x768px"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_hero",
+          "label": "Mobile Hero Image (≤767px)",
+          "info": "Recommended: 768x1024px"
+        },
+        {
+          "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Fallback Image",
+          "info": "Used if responsive images are not set"
         },
         {
           "type": "text",

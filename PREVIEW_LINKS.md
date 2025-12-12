@@ -1,154 +1,118 @@
-# Preview Links & Hot-Reload Setup
+# Preview Links for Client
 
-## 🚀 Hot-Reload Development Server
+## Theme Information
+- **Store:** ccxwq4-cp.myshopify.com
+- **Development Theme ID:** #186029506930
+- **Theme Name:** Glowify Complete Pages (or check in Shopify Admin)
 
-### Start Dev Server (Hot-Reload)
+---
 
-**Option 1: Using the script**
+## Option 1: Direct Preview URL (Recommended for Client)
+
+Use this URL to share with your client:
+
+```
+https://ccxwq4-cp.myshopify.com?preview_theme_id=186029506930
+```
+
+**How to use:**
+1. Copy the URL above
+2. Share it with your client
+3. They can click it to preview the theme
+4. They'll see a banner at the top saying "You're previewing a theme"
+
+---
+
+## Option 2: Shopify Admin Preview
+
+1. Go to: **Shopify Admin → Online Store → Themes**
+2. Find your development theme (ID: #186029506930)
+3. Click **"Actions" → "Preview"**
+4. This opens the preview in a new tab
+5. Copy that URL to share with client
+
+---
+
+## Option 3: Local Development Server
+
+If you're running `shopify theme dev`, you can access:
+
+**Local URL:**
+```
+http://localhost:9292
+```
+
+**Note:** This only works on your local machine. To share with client, use Option 1 or 2.
+
+---
+
+## How to Start Dev Server (if needed)
+
 ```bash
-cd /home/meshack/crafted-edge-solutions-clients/Negus/Glowify
-./start-dev-server.sh
+cd theme-new
+npx @shopify/cli theme dev --store=$SHOPIFY_STORE_URL --port=9292
 ```
 
-**Option 2: Manual command**
-```bash
-cd /home/meshack/crafted-edge-solutions-clients/Negus/Glowify/theme-new
-source ../../venv/bin/activate
-export $(cat ../../.env | grep -v '^#' | xargs)
-npx @shopify/cli theme dev --store=$SHOPIFY_STORE_URL --theme="glowify-enhanced"
-```
-
-### Hot-Reload URL
-Once the server starts, you'll see output like:
-```
-┌─────────────────────────────────────────────────┐
-│                                                 │
-│  Your local theme is available at:              │
-│  http://127.0.0.1:9292                         │
-│                                                 │
-│  Your preview URL:                              │
-│  https://ccxwq4-cp.myshopify.com?preview_theme_id=... │
-│                                                 │
-└─────────────────────────────────────────────────┘
-```
-
-**Local Hot-Reload**: `http://127.0.0.1:9292`
-- Updates instantly on file changes
-- No need to push to Shopify
-- Perfect for development
-
-**Preview URL**: (Shown in terminal output)
-- Live preview on your Shopify store
-- Share with clients/stakeholders
+This will:
+- Start a local server at `http://localhost:9292`
+- Sync changes in real-time
+- Show preview URL in terminal
 
 ---
 
-## 📡 Shopify Admin Preview
+## Sharing with Client
 
-### Current Theme Preview
-After pushing to Shopify, access via:
+### Best Method:
+1. Use **Option 1** (Direct Preview URL) - easiest for client
+2. Send them: `https://ccxwq4-cp.myshopify.com?preview_theme_id=186029506930`
+3. They can bookmark it and access anytime
 
-**Theme Customizer Preview**:
-1. Go to Shopify Admin → Online Store → Themes
-2. Find "Glowify Enhanced" theme
-3. Click "Actions" → "Preview"
-4. Or click "Customize" to edit
-
-**Direct Preview Link**:
-```
-https://ccxwq4-cp.myshopify.com?preview_theme_id=[THEME_ID]
-```
-
-*(Theme ID will be shown after pushing)*
+### What Client Will See:
+- Full theme preview with all your changes
+- Banner at top: "You're previewing a theme"
+- All functionality works (cart, navigation, etc.)
+- They can browse products, collections, pages
 
 ---
 
-## ✅ Changes Implemented
+## Important Notes
 
-### 1. Branded Hero Section
-- ✅ Display font for headline: "Where Little Moments Become Big Memories."
-- ✅ Clean sans-serif for subline and body text
-- ✅ Proper typography hierarchy and spacing
-- ✅ Responsive scaling
+⚠️ **The preview link only works if:**
+- The theme is pushed to Shopify (✅ Done)
+- The theme ID is correct (✅ Verified: #186029506930)
+- The store is accessible
 
-### 2. Footer Trust Badges
-- ✅ Trust badges merged into footer
-- ✅ App block support with `essential-banners-block` HTML
-- ✅ Centered layout on desktop
-- ✅ Stacked on mobile
-- ✅ Old trust-badges section removed from homepage
-
-### 3. Product Card Hover Effects
-- ✅ Subtle shadow and glow on hover
-- ✅ Smooth lift effect (translateY -3px)
-- ✅ Border glow with accent color
-- ✅ Enhanced box-shadow (0 8px 20px rgba)
-- ✅ Smooth transitions (0.3s ease)
+✅ **All changes are live in the preview:**
+- Product image adjustments
+- Responsive hero section
+- Theme color updates
+- Footer trust badges
+- Announcement bar ($500 message)
+- All performance optimizations
 
 ---
 
-## 🎨 Typography Rules Applied
+## Quick Test Checklist
 
-**Hero Headline (Large)**:
-- Font: Primary display font (`--font-display-family`)
-- Weight: Bold
-- Letter spacing: -0.02em
-- Responsive: 36px mobile → 56px desktop
+Before sharing with client, verify:
 
-**Subline, Body, Footer**:
-- Font: Clean sans-serif (`--font-body-family`)
-- Weight: Regular
-- Consistent spacing and hierarchy
+1. ✅ Announcement bar shows "$500" (not $100)
+2. ✅ Announcement bar uses theme accent color (sage green)
+3. ✅ Product images are uniform size
+4. ✅ Footer trust badges are visible
+5. ✅ Hero section is responsive (test on mobile/tablet/desktop)
+6. ✅ All links work correctly
 
 ---
 
-## 📝 Next Steps
+## Troubleshooting
 
-1. **Start Dev Server**:
-   ```bash
-   ./start-dev-server.sh
-   ```
+**If preview link doesn't work:**
+1. Check theme ID in Shopify Admin → Themes
+2. Verify theme is published/pushed
+3. Try Option 2 (Admin Preview) instead
 
-2. **Access Hot-Reload**:
-   - Open `http://127.0.0.1:9292` in browser
-   - Changes update automatically
-
-3. **Push to Shopify** (when ready):
-   ```bash
-   cd theme-new
-   npx @shopify/cli theme push --store=$SHOPIFY_STORE_URL --unpublished --theme="glowify-enhanced"
-   ```
-
-4. **Add Trust Badges App**:
-   - Go to Theme Customizer → Footer
-   - Click "Add block" → Select your trust badges app
-   - The `essential-banners-block` div will render automatically
-
----
-
-## 🔧 Troubleshooting
-
-**Dev server won't start?**
-- Check `.env` file exists with `SHOPIFY_STORE_URL`
-- Ensure virtual environment is activated
-- Verify Shopify CLI is installed: `npx @shopify/cli --version`
-
-**Hot-reload not working?**
-- Check terminal for errors
-- Verify port 9292 is not in use
-- Try restarting the dev server
-
-**Trust badges not showing?**
-- Ensure app is installed in Shopify
-- Add app block in Theme Customizer → Footer
-- Check browser console for errors
-
----
-
-## 📞 Support
-
-For issues or questions:
-- Check terminal output for error messages
-- Verify all environment variables are set
-- Ensure theme is pushed to Shopify for admin preview
-
+**If client can't access:**
+- Make sure they're logged into Shopify (if required)
+- Check if store has password protection
+- Try incognito/private browser window
