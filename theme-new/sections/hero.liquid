@@ -1,4 +1,4 @@
-<div class="hero-section" id="shopify-section-{{ section.id }}" style="margin-bottom: 0; padding-bottom: 0;">
+<div class="hero-section" id="shopify-section-{{ section.id }}" style="margin: 0; padding: 0;">
   {%- if section.blocks.size > 0 -%}
     <div class="hero-slider" data-hero-slider>
       {%- for block in section.blocks -%}
@@ -115,9 +115,18 @@
 <style>
   .hero-section {
     position: relative;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: hidden;
+  }
+
+  /* Override .section class padding if applied */
+  #shopify-section-{{ section.id }}.section,
+  #shopify-section-{{ section.id }} {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   .hero-slider {
@@ -188,23 +197,25 @@
 
   .hero-slide__image picture {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     min-height: 500px;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0;
   }
 
   .hero-slide__image img {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     min-height: 500px;
-    object-fit: cover;
-    object-position: center center;
+    object-fit: cover !important;
+    object-position: center center !important;
     display: block;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     border: none;
+    vertical-align: top;
   }
 
   .hero-slide__placeholder {
@@ -378,7 +389,6 @@
 {
   "name": "Hero",
   "tag": "section",
-  "class": "section",
   "blocks": [
     {
       "type": "slide",
