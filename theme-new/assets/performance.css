@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+
+/* Image Optimization */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Lazy Loading Enhancement */
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* Preload Critical Resources */
+.link-preload {
+  rel: preload;
+  as: image;
+}
+
+/* Reduce Layout Shifts */
+.product-card__image-wrapper,
+.product-gallery__main,
+.hero-slide__image {
+  contain: layout style paint;
+}
+
+/* Optimize Font Loading */
+@font-face {
+  font-display: swap;
+}
+
+/* Critical CSS Inline - Already handled in theme.liquid */
+
+/* Reduce Repaints */
+.product-card,
+.product-gallery__thumbnail,
+.button {
+  will-change: transform;
+}
+
+/* GPU Acceleration for Animations */
+.hover-lift,
+.product-card:hover,
+.button:hover {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize Scroll Performance */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Content Visibility for Off-Screen Elements */
+.footer,
+.footer__nav-links,
+.product-reviews,
+.recently-viewed {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+
+/* Optimize Image Loading */
+picture,
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reduce Paint Complexity */
+.product-card,
+.collection-page__grid > * {
+  isolation: isolate;
+}
+
+/* Optimize Transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduce JavaScript Execution Time */
+[data-lazy-load] {
+  content-visibility: auto;
+}
+
+/* Optimize SVG */
+svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Reduce Memory Usage */
+.hidden,
+[hidden] {
+  display: none !important;
+  visibility: hidden;
+  content-visibility: hidden;
+}
+
+/* Optimize Grid Layouts */
+.collection-page__grid,
+.product-features__grid,
+.recently-viewed__grid {
+  contain: layout;
+}
+
+/* Optimize Flexbox */
+.footer__trust-row,
+.footer__social-icons,
+.header__nav-list {
+  contain: layout style;
+}
+

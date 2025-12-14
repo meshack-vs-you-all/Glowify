@@ -119,10 +119,9 @@
 
     {%- comment -%} Footer Navigation Links and Country Selector {%- endcomment -%}
     <div class="footer__bottom">
-      <div class="footer__nav-links">
-        {%- comment -%} Use footer menu from admin if configured, otherwise fallback to policy links {%- endcomment -%}
-        {%- if section.settings.footer_menu != blank and linklists[section.settings.footer_menu].links.size > 0 -%}
-          {%- comment -%} Admin-managed footer menu {%- endcomment -%}
+      {%- comment -%} Admin-managed footer menu only - no fallback links {%- endcomment -%}
+      {%- if section.settings.footer_menu != blank and linklists[section.settings.footer_menu].links.size > 0 -%}
+        <div class="footer__nav-links">
           {%- for link in linklists[section.settings.footer_menu].links -%}
             <a href="{{ link.url }}" class="footer__nav-link {% if link.active %}footer__nav-link--active{% endif %}">
               {{ link.title }}
@@ -131,38 +130,8 @@
               <span class="footer__nav-separator">|</span>
             {%- endunless -%}
           {%- endfor -%}
-        {%- else -%}
-          {%- comment -%} Fallback: Policy page links - always show, link to page if exists, otherwise root {%- endcomment -%}
-          {%- assign terms_page = pages['terms-of-service'] -%}
-          {%- if terms_page -%}
-            <a href="{{ terms_page.url }}" class="footer__nav-link">Terms of Service</a>
-            <span class="footer__nav-separator">|</span>
-          {%- endif -%}
-          
-          {%- assign privacy_page = pages['privacy-policy'] -%}
-          {%- if privacy_page -%}
-            <a href="{{ privacy_page.url }}" class="footer__nav-link">Privacy Policy</a>
-            <span class="footer__nav-separator">|</span>
-          {%- endif -%}
-          
-          {%- assign refund_page = pages['refund-policy'] -%}
-          {%- if refund_page -%}
-            <a href="{{ refund_page.url }}" class="footer__nav-link">Refund Policy</a>
-            <span class="footer__nav-separator">|</span>
-          {%- endif -%}
-          
-          {%- assign shipping_page = pages['shipping-policy'] -%}
-          {%- if shipping_page -%}
-            <a href="{{ shipping_page.url }}" class="footer__nav-link">Shipping Policy</a>
-            <span class="footer__nav-separator">|</span>
-          {%- endif -%}
-          
-          {%- assign cookie_page = pages['cookie-policy'] -%}
-          {%- if cookie_page -%}
-            <a href="{{ cookie_page.url }}" class="footer__nav-link">Cookie Policy</a>
-          {%- endif -%}
-        {%- endif -%}
-      </div>
+        </div>
+      {%- endif -%}
       
       {%- if section.settings.show_country_selector -%}
         <div class="footer__country-selector">
@@ -205,13 +174,21 @@
     </div>
   </div>
 
-  {%- comment -%} Floating Chat Button {%- endcomment -%}
-  {%- if section.settings.show_chat_button -%}
-    <button class="footer__chat-button" aria-label="Chat with us">
+  {%- comment -%} Floating Chat Button - WhatsApp {%- endcomment -%}
+  {%- if section.settings.show_chat_button and shop.phone != blank -%}
+    {%- comment -%} Get WhatsApp number from shop.phone and format it {%- endcomment -%}
+    {%- assign whatsapp_number = shop.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+    <a 
+      href="https://wa.me/{{ whatsapp_number }}" 
+      class="footer__chat-button" 
+      target="_blank" 
+      rel="noopener"
+      aria-label="Chat with us on WhatsApp"
+    >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2"/>
       </svg>
-    </button>
+    </a>
   {%- endif -%}
 </footer>
 
@@ -325,6 +302,17 @@
     height: 20px;
   }
 
+  /* Instagram icon - ensure same size as TikTok */
+  .footer__social-icon--instagram svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .footer__social-icon--tiktok svg {
+    width: 24px;
+    height: 24px;
+  }
+
   /* Divider */
   .footer__divider {
     height: 1px;
@@ -417,7 +405,7 @@
     display: block;
   }
 
-  /* Floating Chat Button */
+  /* Floating Chat Button - WhatsApp */
   .footer__chat-button {
     position: fixed;
     bottom: var(--space-xl);
@@ -425,7 +413,7 @@
     width: 56px;
     height: 56px;
     border-radius: var(--radius-full);
-    background-color: var(--color-black);
+    background-color: #25D366;
     color: var(--color-white);
     border: none;
     cursor: pointer;
@@ -435,10 +423,11 @@
     box-shadow: var(--shadow-xl);
     transition: all var(--duration-fast) var(--ease-in-out);
     z-index: 1000;
+    text-decoration: none;
   }
 
   .footer__chat-button:hover {
-    background-color: var(--color-accent);
+    background-color: #20BA5A;
     transform: scale(1.1);
     box-shadow: var(--shadow-2xl);
   }

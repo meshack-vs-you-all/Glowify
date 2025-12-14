@@ -24,21 +24,33 @@
                   {%- if block.settings.desktop_hero != blank -%}
                     <img 
                       src="{{ block.settings.desktop_hero | image_url: width: 1920 }}"
-                      srcset="{{ block.settings.desktop_hero | image_url: width: 1920 }} 1x, {{ block.settings.desktop_hero | image_url: width: 3840 }} 2x"
+                      srcset="{{ block.settings.desktop_hero | image_url: width: 960 }} 960w,
+                              {{ block.settings.desktop_hero | image_url: width: 1280 }} 1280w,
+                              {{ block.settings.desktop_hero | image_url: width: 1920 }} 1920w,
+                              {{ block.settings.desktop_hero | image_url: width: 2560 }} 2560w"
+                      sizes="100vw"
                       alt="{% if block.settings.title != blank %}{{ block.settings.title | escape }}{% else %}{{ 'general.accessibility.hero_image' | t }}{% endif %}"
                       loading="eager"
                       width="1920"
                       height="1080"
+                      decoding="async"
+                      fetchpriority="high"
                       style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;"
                     >
                   {%- elsif block.settings.image != blank -%}
                     <img 
                       src="{{ block.settings.image | image_url: width: 1920 }}"
-                      srcset="{{ block.settings.image | image_url: width: 1920 }} 1x, {{ block.settings.image | image_url: width: 3840 }} 2x"
+                      srcset="{{ block.settings.image | image_url: width: 960 }} 960w,
+                              {{ block.settings.image | image_url: width: 1280 }} 1280w,
+                              {{ block.settings.image | image_url: width: 1920 }} 1920w,
+                              {{ block.settings.image | image_url: width: 2560 }} 2560w"
+                      sizes="100vw"
                       alt="{% if block.settings.title != blank %}{{ block.settings.title | escape }}{% else %}{{ 'general.accessibility.hero_image' | t }}{% endif %}"
                       loading="eager"
                       width="1920"
                       height="1080"
+                      decoding="async"
+                      fetchpriority="high"
                       style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;"
                     >
                   {%- endif -%}

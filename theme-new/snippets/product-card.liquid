@@ -5,12 +5,16 @@
         <img 
           src="{{ product.featured_image | image_url: width: 500 }}"
           srcset="{{ product.featured_image | image_url: width: 250 }} 250w,
+                  {{ product.featured_image | image_url: width: 400 }} 400w,
                   {{ product.featured_image | image_url: width: 500 }} 500w,
                   {{ product.featured_image | image_url: width: 750 }} 750w"
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
           alt="{{ product.featured_image.alt | escape }}"
           loading="lazy"
           class="product-card__image"
+          decoding="async"
+          width="500"
+          height="500"
         >
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}

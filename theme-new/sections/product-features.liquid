@@ -1,0 +1,244 @@
+{%- comment -%}
+  Product Features Section
+  Displays key product features and specifications
+{%- endcomment -%}
+
+{%- if section.settings.show_features and section.blocks.size > 0 -%}
+  <div class="product-features section" data-product-features>
+    <div class="page-width">
+      {%- if section.settings.title != blank -%}
+        <h2 class="product-features__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      <div class="product-features__grid">
+        {%- for block in section.blocks -%}
+          <div class="product-features__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="product-features__icon">
+                <img 
+                  src="{{ block.settings.icon | image_url: width: 48 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  loading="lazy"
+                  width="48"
+                  height="48"
+                >
+              </div>
+            {%- elsif block.settings.icon_svg != blank -%}
+              <div class="product-features__icon product-features__icon--svg">
+                {{ block.settings.icon_svg }}
+              </div>
+            {%- else -%}
+              <div class="product-features__icon product-features__icon--default">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            {%- endif -%}
+            
+            {%- if block.settings.title != blank -%}
+              <h3 class="product-features__item-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            
+            {%- if block.settings.description != blank -%}
+              <p class="product-features__item-description">{{ block.settings.description }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .product-features {
+      padding: var(--space-4xl) 0;
+      background: var(--color-off-white);
+    }
+
+    .product-features__title {
+      font-size: var(--font-size-h2-mobile);
+      line-height: var(--line-height-h2-mobile);
+      margin-bottom: var(--space-3xl);
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .product-features__title {
+        font-size: var(--font-size-h2-desktop);
+        line-height: var(--line-height-h2-desktop);
+      }
+    }
+
+    .product-features__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    @media (min-width: 640px) {
+      .product-features__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .product-features__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-2xl);
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .product-features__grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .product-features__item {
+      background: var(--color-white);
+      padding: var(--space-xl);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: all var(--duration-fast) var(--ease-in-out);
+    }
+
+    .product-features__item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-features__icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--color-light-gray);
+      color: var(--color-accent);
+    }
+
+    .product-features__icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .product-features__icon--svg {
+      background: none;
+    }
+
+    .product-features__icon--svg svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .product-features__icon--default svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .product-features__item-title {
+      font-size: var(--font-size-body-large);
+      font-weight: var(--font-weight-semibold);
+      margin: 0 0 var(--space-sm) 0;
+      color: var(--color-text-primary);
+    }
+
+    .product-features__item-description {
+      font-size: var(--font-size-body);
+      line-height: var(--line-height-body);
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Features",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show product features",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product Features"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG (alternative to image)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Feature description",
+          "default": "Feature description goes here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Premium Quality",
+            "description": "Made with the finest materials for lasting durability"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Safety Certified",
+            "description": "Meets all safety standards and certifications"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Easy to Use",
+            "description": "Simple setup and intuitive design"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Warranty Included",
+            "description": "Comprehensive warranty for peace of mind"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

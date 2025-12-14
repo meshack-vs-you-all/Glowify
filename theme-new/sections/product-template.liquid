@@ -26,7 +26,8 @@
             {%- if product.featured_image != blank -%}
               <img 
                 src="{{ product.featured_image | image_url: width: 1200 }}"
-                srcset="{{ product.featured_image | image_url: width: 600 }} 600w,
+                srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                        {{ product.featured_image | image_url: width: 600 }} 600w,
                         {{ product.featured_image | image_url: width: 900 }} 900w,
                         {{ product.featured_image | image_url: width: 1200 }} 1200w,
                         {{ product.featured_image | image_url: width: 1600 }} 1600w"
@@ -37,6 +38,8 @@
                 loading="eager"
                 width="1200"
                 height="1200"
+                decoding="async"
+                fetchpriority="high"
               >
             {%- else -%}
               {{ 'product-1' | placeholder_svg_tag: 'product-gallery__placeholder' }}
@@ -55,10 +58,12 @@
                 >
                   <img 
                     src="{{ image | image_url: width: 150 }}"
+                    srcset="{{ image | image_url: width: 150 }} 1x, {{ image | image_url: width: 300 }} 2x"
                     alt="{{ image.alt | escape }}"
                     loading="lazy"
                     width="150"
                     height="150"
+                    decoding="async"
                   >
                 </button>
               {%- endfor -%}
@@ -141,6 +146,9 @@
         {%- endform -%}
       </div>
     </div>
+    
+    {%- comment -%} Product Features {%- endcomment -%}
+    {% section 'product-features' %}
     
     {%- comment -%} Recently Viewed Products {%- endcomment -%}
     {% section 'recently-viewed-products' %}
