@@ -80,7 +80,7 @@
 
   <body class="template-{{ template.name | handle }} template-{{ template.suffix | handle }}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
-      {{ 'accessibility.skip_to_text' | t }}
+      {{ 'general.accessibility.skip_to_text' | t }}
     </a>
 
     {% section 'announcement-bar' %}
@@ -89,6 +89,9 @@
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
+
+    {%- comment -%} FAQ Section - Before Footer {%- endcomment -%}
+    {% section 'faq-accordion' %}
 
     {% section 'footer' %}
     

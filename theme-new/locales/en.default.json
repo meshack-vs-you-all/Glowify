@@ -120,6 +120,35 @@
       "post_success": "Thank you for your message. We'll get back to you soon!",
       "error_heading": "Please correct the errors below:"
     }
+  },
+  "collections": {
+    "general": {
+      "products": "products",
+      "product": "product",
+      "no_products": "No products found",
+      "load_more": "Load more",
+      "grid_view": "Grid view",
+      "list_view": "List view"
+    },
+    "filters": {
+      "title": "Filters",
+      "price": "Price",
+      "availability": "Availability",
+      "in_stock": "In stock",
+      "out_of_stock": "Out of stock",
+      "apply": "Apply filters",
+      "clear": "Clear all"
+    },
+    "sorting": {
+      "title": "Sort by",
+      "featured": "Featured",
+      "price_ascending": "Price: Low to High",
+      "price_descending": "Price: High to Low",
+      "az": "Alphabetically: A-Z",
+      "za": "Alphabetically: Z-A",
+      "date_ascending": "Date: Old to New",
+      "date_descending": "Date: New to Old"
+    }
   }
 }
 
