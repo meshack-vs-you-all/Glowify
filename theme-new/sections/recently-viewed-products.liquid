@@ -1,0 +1,83 @@
+{%- comment -%}
+  Recently Viewed Products Section
+  Shows products the customer has recently viewed
+{%- endcomment -%}
+
+{%- if section.settings.show_recently_viewed -%}
+  <div class="recently-viewed section" data-recently-viewed-section>
+    <div class="page-width">
+      <h2 class="recently-viewed__title">{{ section.settings.title | default: 'Recently Viewed' }}</h2>
+      <div class="recently-viewed__grid" data-recently-viewed-grid>
+        {% render 'skeleton-loader', type: 'collection-grid' %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .recently-viewed {
+      padding: var(--space-4xl) 0;
+      background: var(--color-off-white);
+    }
+
+    .recently-viewed__title {
+      font-size: var(--font-size-h2-mobile);
+      line-height: var(--line-height-h2-mobile);
+      margin-bottom: var(--space-2xl);
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .recently-viewed__title {
+        font-size: var(--font-size-h2-desktop);
+        line-height: var(--line-height-h2-desktop);
+      }
+    }
+
+    .recently-viewed__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+
+    @media (min-width: 640px) {
+      .recently-viewed__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .recently-viewed__grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-xl);
+      }
+    }
+  </style>
+
+  <script src="{{ 'recently-viewed.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Recently Viewed Products",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_recently_viewed",
+      "label": "Show recently viewed products",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Recently Viewed"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed Products"
+    }
+  ]
+}
+{% endschema %}
+

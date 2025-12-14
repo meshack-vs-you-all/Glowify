@@ -1,0 +1,163 @@
+{% comment %}
+  Cookie Policy Page Template
+  Shopify recognizes this as a policy page
+{% endcomment %}
+
+<div class="policy-page section">
+  <div class="page-width">
+    <div class="policy-page__header">
+      <h1 class="policy-page__title">{{ page.title | default: 'Cookie Policy' }}</h1>
+      <p class="policy-page__updated">
+        {%- if page.published_at -%}
+          Last updated: {{ page.published_at | date: "%B %d, %Y" }}
+        {%- else -%}
+          Last updated: {{ 'now' | date: "%B %d, %Y" }}
+        {%- endif -%}
+      </p>
+    </div>
+
+    <div class="policy-page__content rte">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {%- comment -%} Default placeholder content {%- endcomment -%}
+        <div class="policy-page__default-content">
+          <h2>1. What Are Cookies</h2>
+          <p>Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.</p>
+
+          <h2>2. How We Use Cookies</h2>
+          <p>Glowify uses cookies to:</p>
+          <ul>
+            <li>Remember your preferences and settings</li>
+            <li>Improve website functionality and user experience</li>
+            <li>Analyze website traffic and usage patterns</li>
+            <li>Provide personalized content and recommendations</li>
+            <li>Process transactions and maintain your shopping cart</li>
+          </ul>
+
+          <h2>3. Types of Cookies We Use</h2>
+          <h3>Essential Cookies</h3>
+          <p>These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility.</p>
+
+          <h3>Analytics Cookies</h3>
+          <p>These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.</p>
+
+          <h3>Functional Cookies</h3>
+          <p>These cookies allow the website to remember choices you make (such as your username, language, or region) and provide enhanced, personalized features.</p>
+
+          <h3>Marketing Cookies</h3>
+          <p>These cookies are used to track visitors across websites to display relevant advertisements and measure the effectiveness of our marketing campaigns.</p>
+
+          <h2>4. Third-Party Cookies</h2>
+          <p>We may also use third-party cookies from trusted partners, including:</p>
+          <ul>
+            <li>Google Analytics for website analytics</li>
+            <li>Social media platforms for sharing features</li>
+            <li>Payment processors for secure transactions</li>
+          </ul>
+
+          <h2>5. Managing Cookies</h2>
+          <p>You can control and manage cookies in various ways:</p>
+          <ul>
+            <li><strong>Browser Settings:</strong> Most browsers allow you to refuse or accept cookies. You can also delete cookies that have already been set.</li>
+            <li><strong>Opt-Out Tools:</strong> You can use opt-out tools provided by third-party analytics and advertising services.</li>
+            <li><strong>Cookie Preferences:</strong> Use our cookie preference center (if available) to manage your cookie settings.</li>
+          </ul>
+          <p><em>Please note: Disabling certain cookies may affect the functionality of our website.</em></p>
+
+          <h2>6. Changes to This Cookie Policy</h2>
+          <p>We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any changes by posting the new Cookie Policy on this page.</p>
+
+          <h2>7. Contact Us</h2>
+          <p>If you have any questions about our use of cookies, please contact us at glowifystore333@gmail.com or Jemimah Rd.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .policy-page {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .policy-page__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border-gray);
+  }
+
+  .policy-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .policy-page__updated {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-primary);
+  }
+
+  .policy-page__content h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__content h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .policy-page__content h3 {
+    font-size: var(--font-size-h3-mobile);
+    line-height: var(--line-height-h3-mobile);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  .policy-page__content p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content ul,
+  .policy-page__content ol {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-2xl);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .policy-page__content strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+</style>
+

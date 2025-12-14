@@ -1,0 +1,55 @@
+{% comment %}
+  FAQ Page Template
+  Can use the FAQ accordion section
+{% endcomment %}
+
+<div class="faq-page section">
+  <div class="page-width">
+    <div class="faq-page__header">
+      <h1 class="faq-page__title">{{ page.title | default: 'Frequently Asked Questions' }}</h1>
+      {%- if page.content != blank -%}
+        <div class="faq-page__intro">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Use FAQ Accordion Section {%- endcomment -%}
+    {% section 'faq-accordion' %}
+  </div>
+</div>
+
+<style>
+  .faq-page {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .faq-page__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .faq-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .faq-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .faq-page__intro {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: var(--font-size-body-large);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-secondary);
+  }
+</style>
+

@@ -68,8 +68,13 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'animations.css' | asset_url | stylesheet_tag }}
 
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+    
+    {%- comment -%} SEO Structured Data {%- endcomment -%}
+    {% render 'structured-data', type: 'website' %}
+    {% render 'structured-data', type: 'organization' %}
   </head>
 
   <body class="template-{{ template.name | handle }} template-{{ template.suffix | handle }}">
@@ -85,6 +90,11 @@
     </main>
 
     {% section 'footer' %}
+    
+    {%- comment -%} Global Components {%- endcomment -%}
+    {% render 'cart-drawer' %}
+    {% render 'mobile-search' %}
+    {% render 'quick-view-modal' %}
     
     {% render 'discount-popup' %}
     {% render 'toast' %}

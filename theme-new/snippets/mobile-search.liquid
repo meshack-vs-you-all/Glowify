@@ -1,0 +1,194 @@
+{%- comment -%}
+  Mobile Search Bar Component
+  Search bar for mobile devices
+{%- endcomment -%}
+
+<div class="mobile-search" id="mobile-search">
+  <div class="mobile-search__overlay" data-mobile-search-close></div>
+  <div class="mobile-search__content">
+    <form action="{{ routes.search_url }}" method="get" class="mobile-search__form" role="search">
+      <div class="mobile-search__input-wrapper">
+        <input 
+          type="search" 
+          name="q" 
+          class="mobile-search__input"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          aria-label="{{ 'general.search.placeholder' | t }}"
+        >
+        <button type="submit" class="mobile-search__submit" aria-label="{{ 'general.search.submit' | t }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <button type="button" class="mobile-search__close" data-mobile-search-close aria-label="{{ 'general.accessibility.close' | t }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .mobile-search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s var(--ease-in-out), opacity 0.3s var(--ease-in-out);
+  }
+
+  .mobile-search.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .mobile-search__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  .mobile-search__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-white);
+    padding: var(--space-xl);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-search.active .mobile-search__content {
+    transform: translateY(0);
+  }
+
+  .mobile-search__form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    position: relative;
+  }
+
+  .mobile-search__input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--color-border-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-white);
+    transition: border-color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .mobile-search__input-wrapper:focus-within {
+    border-color: var(--color-accent);
+  }
+
+  .mobile-search__input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-size: var(--font-size-body);
+    padding: var(--space-sm) 0;
+    outline: none;
+  }
+
+  .mobile-search__submit {
+    background: none;
+    border: none;
+    padding: var(--space-xs);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-fast) var(--ease-in-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-search__submit:hover {
+    color: var(--color-accent);
+  }
+
+  .mobile-search__close {
+    background: none;
+    border: none;
+    padding: var(--space-sm);
+    cursor: pointer;
+    color: var(--color-text-primary);
+    transition: transform var(--duration-fast) var(--ease-in-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-search__close:hover {
+    transform: rotate(90deg);
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-search {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileSearch = document.getElementById('mobile-search');
+    const searchTrigger = document.querySelector('[data-mobile-search-trigger]');
+    const closeButtons = document.querySelectorAll('[data-mobile-search-close]');
+
+    function openMobileSearch() {
+      if (mobileSearch) {
+        mobileSearch.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        const input = mobileSearch.querySelector('.mobile-search__input');
+        if (input) {
+          setTimeout(() => input.focus(), 100);
+        }
+      }
+    }
+
+    function closeMobileSearch() {
+      if (mobileSearch) {
+        mobileSearch.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (searchTrigger) {
+      searchTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        openMobileSearch();
+      });
+    }
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', closeMobileSearch);
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileSearch?.classList.contains('active')) {
+        closeMobileSearch();
+      }
+    });
+  });
+</script>
+

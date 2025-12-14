@@ -1,0 +1,87 @@
+{% comment %}
+  Generic Page Section for Online Store 2.0
+  Can be used with any page template
+{% endcomment %}
+
+<div class="page-section">
+  <div class="page-width">
+    {%- if page.title != blank -%}
+      <h1 class="page-section__title">{{ page.title }}</h1>
+    {%- endif -%}
+
+    {%- if page.content != blank -%}
+      <div class="page-section__content rte">
+        {{ page.content }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .page-section {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .page-section__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-3xl);
+    text-align: center;
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-section__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .page-section__content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-primary);
+  }
+
+  .page-section__content h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .page-section__content h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .page-section__content p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .page-section__content ul,
+  .page-section__content ol {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-2xl);
+    color: var(--color-text-secondary);
+  }
+
+  .page-section__content li {
+    margin-bottom: var(--space-sm);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}
+

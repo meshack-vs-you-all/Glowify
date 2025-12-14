@@ -1,0 +1,153 @@
+{% comment %}
+  Shipping Policy Page Template
+  Shopify recognizes this as a policy page
+{% endcomment %}
+
+<div class="policy-page section">
+  <div class="page-width">
+    <div class="policy-page__header">
+      <h1 class="policy-page__title">{{ page.title | default: 'Shipping Policy' }}</h1>
+      <p class="policy-page__updated">
+        {%- if page.published_at -%}
+          Last updated: {{ page.published_at | date: "%B %d, %Y" }}
+        {%- else -%}
+          Last updated: {{ 'now' | date: "%B %d, %Y" }}
+        {%- endif -%}
+      </p>
+    </div>
+
+    <div class="policy-page__content rte">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {%- comment -%} Default placeholder content {%- endcomment -%}
+        <div class="policy-page__default-content">
+          <h2>1. Shipping Methods and Rates</h2>
+          <p>We offer various shipping options to meet your needs. Shipping rates and delivery times vary based on your location and the shipping method selected at checkout.</p>
+
+          <h2>2. Processing Time</h2>
+          <p>Orders are typically processed within 1-3 business days (excluding weekends and holidays) after payment confirmation. During peak seasons, processing may take longer.</p>
+
+          <h2>3. Shipping Times</h2>
+          <p>Estimated delivery times:</p>
+          <ul>
+            <li><strong>Standard Shipping:</strong> 5-10 business days</li>
+            <li><strong>Express Shipping:</strong> 2-5 business days</li>
+            <li><strong>Overnight Shipping:</strong> 1-2 business days (where available)</li>
+          </ul>
+          <p><em>Please note: Delivery times are estimates and may vary due to factors beyond our control, including weather conditions and carrier delays.</em></p>
+
+          <h2>4. Shipping Costs</h2>
+          <p>Shipping costs are calculated at checkout based on:</p>
+          <ul>
+            <li>Package weight and dimensions</li>
+            <li>Shipping destination</li>
+            <li>Selected shipping method</li>
+          </ul>
+          <p>Free shipping may be available for orders over a certain amount. Check our current promotions for details.</p>
+
+          <h2>5. Order Tracking</h2>
+          <p>Once your order ships, you will receive a tracking number via email. You can use this number to track your package on the carrier's website.</p>
+
+          <h2>6. International Shipping</h2>
+          <p>We currently ship to select international destinations. International orders may be subject to:</p>
+          <ul>
+            <li>Customs duties and taxes (paid by the customer)</li>
+            <li>Longer delivery times</li>
+            <li>Additional shipping fees</li>
+          </ul>
+
+          <h2>7. Address Accuracy</h2>
+          <p>Please ensure your shipping address is correct at checkout. We are not responsible for packages delivered to incorrect addresses provided by the customer. If you need to change your address, contact us immediately at glowifystore333@gmail.com.</p>
+
+          <h2>8. Lost or Stolen Packages</h2>
+          <p>If your package is lost or stolen, please contact us at glowifystore333@gmail.com. We will work with the shipping carrier to resolve the issue and may provide a replacement or refund at our discretion.</p>
+
+          <h2>9. Undeliverable Packages</h2>
+          <p>If a package is returned to us as undeliverable, we will contact you to arrange reshipment. Additional shipping fees may apply.</p>
+
+          <h2>10. Contact Us</h2>
+          <p>If you have any questions about our shipping policy, please contact us at glowifystore333@gmail.com or Jemimah Rd.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .policy-page {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .policy-page__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border-gray);
+  }
+
+  .policy-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .policy-page__updated {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-primary);
+  }
+
+  .policy-page__content h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__content h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .policy-page__content p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content ul,
+  .policy-page__content ol {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-2xl);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .policy-page__content strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+</style>
+

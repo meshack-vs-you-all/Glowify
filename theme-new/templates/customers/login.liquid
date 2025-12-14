@@ -1,0 +1,175 @@
+{% comment %}
+  Customer Login Page
+{% endcomment %}
+
+<div class="customer-login section">
+  <div class="page-width">
+    <div class="customer-login__container">
+      <div class="customer-login__form-wrapper">
+        <h1 class="customer-login__title">{{ 'customer.login.title' | t }}</h1>
+
+        {%- form 'customer_login', class: 'customer-login__form' -%}
+          {%- if form.errors -%}
+            <div class="customer-login__errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="customer-login__field">
+            <label for="CustomerEmail" class="customer-login__label">
+              {{ 'customer.login.email' | t }}
+            </label>
+            <input
+              type="email"
+              name="customer[email]"
+              id="CustomerEmail"
+              class="customer-login__input"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          {%- if form.password_needed -%}
+            <div class="customer-login__field">
+              <label for="CustomerPassword" class="customer-login__label">
+                {{ 'customer.login.password' | t }}
+              </label>
+              <input
+                type="password"
+                value=""
+                name="customer[password]"
+                id="CustomerPassword"
+                class="customer-login__input"
+                autocomplete="current-password"
+                required
+              >
+            </div>
+          {%- endif -%}
+
+          <div class="customer-login__actions">
+            <button type="submit" class="button button--primary">
+              {{ 'customer.login.sign_in' | t }}
+            </button>
+            <a href="{{ routes.account_recover_url }}" class="customer-login__forgot">
+              {{ 'customer.login.forgot_password' | t }}
+            </a>
+          </div>
+        {%- endform -%}
+      </div>
+
+      <div class="customer-login__register">
+        <h2>{{ 'customer.register.title' | t }}</h2>
+        <p>{{ 'customer.register.description' | t }}</p>
+        <a href="{{ routes.account_register_url }}" class="button button--secondary">
+          {{ 'customer.register.submit' | t }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .customer-login {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .customer-login__container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4xl);
+  }
+
+  @media (min-width: 768px) {
+    .customer-login__container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .customer-login__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-2xl);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .customer-login__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .customer-login__field {
+    margin-bottom: var(--space-xl);
+  }
+
+  .customer-login__label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  .customer-login__input {
+    width: 100%;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    font-family: inherit;
+    transition: border-color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .customer-login__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(124, 152, 133, 0.1);
+  }
+
+  .customer-login__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .customer-login__forgot {
+    text-align: center;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: var(--font-size-small);
+  }
+
+  .customer-login__forgot:hover {
+    text-decoration: underline;
+  }
+
+  .customer-login__errors {
+    background: var(--color-error);
+    color: white;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .customer-login__register {
+    padding: var(--space-2xl);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-lg);
+  }
+
+  .customer-login__register h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  .customer-login__register p {
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-secondary);
+  }
+</style>
+

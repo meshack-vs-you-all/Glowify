@@ -1,0 +1,327 @@
+# 📋 Ready-to-Paste Content for Shopify Pages
+
+**Store:** Glowify  
+**Email:** glowifystore333@gmail.com  
+**Address:** Jemimah Rd
+
+---
+
+## ✅ IMPORTANT: How to Paste HTML in Shopify
+
+**Shopify's Rich Text Editor:**
+- If you paste HTML into the **rich text editor**, it will render as formatted text
+- If you paste HTML into the **HTML view** (click the `</>` icon), it will render as HTML
+- **Best practice:** Use the HTML view (`</>`) to paste formatted content
+
+---
+
+## 1. TERMS OF SERVICE
+
+### **Ready-to-Paste HTML:**
+
+```html
+<h2>1. Agreement to Terms</h2>
+<p>By accessing or using Glowify's website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+
+<h2>2. Use License</h2>
+<p>Permission is granted to temporarily download one copy of the materials on Glowify's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+<ul>
+<li>Modify or copy the materials</li>
+<li>Use the materials for any commercial purpose or for any public display</li>
+<li>Attempt to reverse engineer any software contained on the website</li>
+<li>Remove any copyright or other proprietary notations from the materials</li>
+</ul>
+
+<h2>3. Products and Services</h2>
+<p>We reserve the right to limit the quantities of any products or services that we offer. All descriptions of products or product pricing are subject to change at any time without notice, at our sole discretion.</p>
+
+<h2>4. Accuracy of Information</h2>
+<p>We do not warrant that product descriptions or other content on this site is accurate, complete, reliable, current, or error-free. If a product offered by us is not as described, your sole remedy is to return it in unused condition.</p>
+
+<h2>5. Limitation of Liability</h2>
+<p>In no case shall Glowify, our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, service providers, or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind.</p>
+
+<h2>6. Indemnification</h2>
+<p>You agree to defend, indemnify, and hold harmless Glowify and our licensee, licensors, and suppliers and their respective directors, officers, employees, contractors, agents, licensors, suppliers, successors, and assigns from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms of Service.</p>
+
+<h2>7. Governing Law</h2>
+<p>These Terms of Service and any separate agreements whereby we provide you services shall be governed by and construed in accordance with applicable laws.</p>
+
+<h2>8. Changes to Terms</h2>
+<p>We reserve the right, at our sole discretion, to update, change, or replace any part of these Terms of Service by posting updates and changes to our website. It is your responsibility to check our website periodically for changes.</p>
+
+<h2>9. Contact Information</h2>
+<p>Questions about the Terms of Service should be sent to us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> or Jemimah Rd.</p>
+```
+
+---
+
+## 2. PRIVACY POLICY
+
+### **Ready-to-Paste HTML:**
+
+```html
+<h2>1. Information We Collect</h2>
+<p>We collect information that you provide directly to us, including:</p>
+<ul>
+<li><strong>Personal Information:</strong> Name, email address, phone number, shipping and billing address, payment information</li>
+<li><strong>Account Information:</strong> Username, password, and preferences</li>
+<li><strong>Transaction Information:</strong> Details about products you purchase, returns, and exchanges</li>
+<li><strong>Communication Information:</strong> Records of correspondence when you contact us</li>
+</ul>
+
+<h2>2. How We Use Your Information</h2>
+<p>We use the information we collect to:</p>
+<ul>
+<li>Process and fulfill your orders</li>
+<li>Send you order confirmations and updates</li>
+<li>Respond to your comments, questions, and requests</li>
+<li>Provide customer service and support</li>
+<li>Send you marketing communications (with your consent)</li>
+<li>Improve our website and services</li>
+<li>Detect and prevent fraud</li>
+<li>Comply with legal obligations</li>
+</ul>
+
+<h2>3. Information Sharing and Disclosure</h2>
+<p>We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+<ul>
+<li><strong>Service Providers:</strong> We may share information with third-party service providers who perform services on our behalf, such as payment processing, shipping, and data analysis</li>
+<li><strong>Legal Requirements:</strong> We may disclose your information if required to do so by law or in response to valid requests by public authorities</li>
+<li><strong>Business Transfers:</strong> If we are involved in a merger, acquisition, or asset sale, your information may be transferred</li>
+</ul>
+
+<h2>4. Data Security</h2>
+<p>We implement appropriate technical and organizational security measures to protect your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure.</p>
+
+<h2>5. Your Rights</h2>
+<p>You have the right to:</p>
+<ul>
+<li>Access your personal information</li>
+<li>Correct inaccurate information</li>
+<li>Request deletion of your information</li>
+<li>Object to processing of your information</li>
+<li>Request restriction of processing</li>
+<li>Data portability</li>
+</ul>
+
+<h2>6. Cookies and Tracking Technologies</h2>
+<p>We use cookies and similar tracking technologies to track activity on our website and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.</p>
+
+<h2>7. Children's Privacy</h2>
+<p>Our service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.</p>
+
+<h2>8. Changes to This Privacy Policy</h2>
+<p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+
+<h2>9. Contact Us</h2>
+<p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> or Jemimah Rd.</p>
+```
+
+---
+
+## 3. REFUND POLICY
+
+### **Ready-to-Paste HTML:**
+
+```html
+<h2>1. Returns and Refunds</h2>
+<p>At Glowify, we want you to be completely satisfied with your purchase. If you are not satisfied, you may return eligible items within 30 days of delivery for a full refund.</p>
+
+<h2>2. Eligibility for Returns</h2>
+<p>To be eligible for a return, your item must be:</p>
+<ul>
+<li>Unused and in the same condition that you received it</li>
+<li>In the original packaging</li>
+<li>Accompanied by proof of purchase</li>
+</ul>
+
+<h2>3. Non-Returnable Items</h2>
+<p>Certain items are not eligible for return, including:</p>
+<ul>
+<li>Personalized or custom-made products</li>
+<li>Items that have been used or damaged by the customer</li>
+<li>Items without original packaging or tags</li>
+<li>Gift cards</li>
+</ul>
+
+<h2>4. Return Process</h2>
+<p>To initiate a return:</p>
+<ol>
+<li>Contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> within 30 days of delivery</li>
+<li>Provide your order number and reason for return</li>
+<li>We will provide you with a return authorization and shipping instructions</li>
+<li>Ship the item back to us at the address provided</li>
+</ol>
+
+<h2>5. Refund Processing</h2>
+<p>Once we receive and inspect your returned item, we will:</p>
+<ul>
+<li>Process your refund within 5-10 business days</li>
+<li>Refund the original payment method used for the purchase</li>
+<li>Send you a confirmation email once the refund is processed</li>
+</ul>
+
+<h2>6. Shipping Costs</h2>
+<p>Original shipping costs are non-refundable unless the item was defective or we made an error. Return shipping costs are the responsibility of the customer unless otherwise stated.</p>
+
+<h2>7. Exchanges</h2>
+<p>We currently do not offer direct exchanges. If you need a different size or color, please return the original item and place a new order.</p>
+
+<h2>8. Damaged or Defective Items</h2>
+<p>If you receive a damaged or defective item, please contact us immediately at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a>. We will arrange for a replacement or full refund, including return shipping costs.</p>
+
+<h2>9. Contact Us</h2>
+<p>If you have any questions about our refund policy, please contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> or Jemimah Rd.</p>
+```
+
+---
+
+## 4. SHIPPING POLICY
+
+### **Ready-to-Paste HTML:**
+
+```html
+<h2>1. Shipping Methods and Rates</h2>
+<p>We offer various shipping options to meet your needs. Shipping rates and delivery times vary based on your location and the shipping method selected at checkout.</p>
+
+<h2>2. Processing Time</h2>
+<p>Orders are typically processed within 1-3 business days (excluding weekends and holidays) after payment confirmation. During peak seasons, processing may take longer.</p>
+
+<h2>3. Shipping Times</h2>
+<p>Estimated delivery times:</p>
+<ul>
+<li><strong>Standard Shipping:</strong> 5-10 business days</li>
+<li><strong>Express Shipping:</strong> 2-5 business days</li>
+<li><strong>Overnight Shipping:</strong> 1-2 business days (where available)</li>
+</ul>
+<p><em>Please note: Delivery times are estimates and may vary due to factors beyond our control, including weather conditions and carrier delays.</em></p>
+
+<h2>4. Shipping Costs</h2>
+<p>Shipping costs are calculated at checkout based on:</p>
+<ul>
+<li>Package weight and dimensions</li>
+<li>Shipping destination</li>
+<li>Selected shipping method</li>
+</ul>
+<p>Free shipping may be available for orders over a certain amount. Check our current promotions for details.</p>
+
+<h2>5. Order Tracking</h2>
+<p>Once your order ships, you will receive a tracking number via email. You can use this number to track your package on the carrier's website.</p>
+
+<h2>6. International Shipping</h2>
+<p>We currently ship to select international destinations. International orders may be subject to:</p>
+<ul>
+<li>Customs duties and taxes (paid by the customer)</li>
+<li>Longer delivery times</li>
+<li>Additional shipping fees</li>
+</ul>
+
+<h2>7. Address Accuracy</h2>
+<p>Please ensure your shipping address is correct at checkout. We are not responsible for packages delivered to incorrect addresses provided by the customer. If you need to change your address, contact us immediately at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a>.</p>
+
+<h2>8. Lost or Stolen Packages</h2>
+<p>If your package is lost or stolen, please contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a>. We will work with the shipping carrier to resolve the issue and may provide a replacement or refund at our discretion.</p>
+
+<h2>9. Undeliverable Packages</h2>
+<p>If a package is returned to us as undeliverable, we will contact you to arrange reshipment. Additional shipping fees may apply.</p>
+
+<h2>10. Contact Us</h2>
+<p>If you have any questions about our shipping policy, please contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> or Jemimah Rd.</p>
+```
+
+---
+
+## 5. COOKIE POLICY
+
+### **Ready-to-Paste HTML:**
+
+```html
+<h2>1. What Are Cookies</h2>
+<p>Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.</p>
+
+<h2>2. How We Use Cookies</h2>
+<p>Glowify uses cookies to:</p>
+<ul>
+<li>Remember your preferences and settings</li>
+<li>Improve website functionality and user experience</li>
+<li>Analyze website traffic and usage patterns</li>
+<li>Provide personalized content and recommendations</li>
+<li>Process transactions and maintain your shopping cart</li>
+</ul>
+
+<h2>3. Types of Cookies We Use</h2>
+<h3>Essential Cookies</h3>
+<p>These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility.</p>
+
+<h3>Analytics Cookies</h3>
+<p>These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.</p>
+
+<h3>Functional Cookies</h3>
+<p>These cookies allow the website to remember choices you make (such as your username, language, or region) and provide enhanced, personalized features.</p>
+
+<h3>Marketing Cookies</h3>
+<p>These cookies are used to track visitors across websites to display relevant advertisements and measure the effectiveness of our marketing campaigns.</p>
+
+<h2>4. Third-Party Cookies</h2>
+<p>We may also use third-party cookies from trusted partners, including:</p>
+<ul>
+<li>Google Analytics for website analytics</li>
+<li>Social media platforms for sharing features</li>
+<li>Payment processors for secure transactions</li>
+</ul>
+
+<h2>5. Managing Cookies</h2>
+<p>You can control and manage cookies in various ways:</p>
+<ul>
+<li><strong>Browser Settings:</strong> Most browsers allow you to refuse or accept cookies. You can also delete cookies that have already been set.</li>
+<li><strong>Opt-Out Tools:</strong> You can use opt-out tools provided by third-party analytics and advertising services.</li>
+<li><strong>Cookie Preferences:</strong> Use our cookie preference center (if available) to manage your cookie settings.</li>
+</ul>
+<p><em>Please note: Disabling certain cookies may affect the functionality of our website.</em></p>
+
+<h2>6. Changes to This Cookie Policy</h2>
+<p>We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any changes by posting the new Cookie Policy on this page.</p>
+
+<h2>7. Contact Us</h2>
+<p>If you have any questions about our use of cookies, please contact us at <a href="mailto:glowifystore333@gmail.com">glowifystore333@gmail.com</a> or Jemimah Rd.</p>
+```
+
+---
+
+## 📝 HOW TO USE THIS CONTENT
+
+### **Method 1: Paste HTML Directly (Recommended)**
+
+1. **Create a page in Shopify Admin:**
+   - Go to: `https://admin.shopify.com/store/ccxwq4-cp/pages`
+   - Click "Add page"
+   - Enter title (e.g., "Terms of Service")
+   - **Select template:** `page.terms-of-service` (or corresponding template)
+
+2. **Paste HTML content:**
+   - In the content editor, click the **`</>` icon** (HTML view)
+   - Paste the HTML content from above
+   - Click "Save"
+
+3. **Result:** HTML will render as formatted text, not show as raw HTML
+
+### **Method 2: Use Rich Text Editor**
+
+1. **Create page** (same as above)
+2. **Paste content** directly into the rich text editor
+3. **Format manually** using the editor tools
+4. **Result:** Formatted text (but you'll need to format headings, lists, etc. manually)
+
+---
+
+## ✅ VERIFICATION
+
+**To verify templates are on Shopify:**
+1. Go to Theme Editor: `https://admin.shopify.com/store/ccxwq4-cp/themes/186110280050/editor`
+2. Click "..." → "Edit code"
+3. Open "templates" folder
+4. You should see all `page.*.liquid` files
+
+**If templates are missing:** They may need to be pushed again. Let me know and I'll verify and push them.
+

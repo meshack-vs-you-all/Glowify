@@ -1,0 +1,138 @@
+{% comment %}
+  Terms of Service Page Template
+  Shopify recognizes this as a policy page
+{% endcomment %}
+
+<div class="policy-page section">
+  <div class="page-width">
+    <div class="policy-page__header">
+      <h1 class="policy-page__title">{{ page.title | default: 'Terms of Service' }}</h1>
+      <p class="policy-page__updated">
+        {%- if page.published_at -%}
+          Last updated: {{ page.published_at | date: "%B %d, %Y" }}
+        {%- else -%}
+          Last updated: {{ 'now' | date: "%B %d, %Y" }}
+        {%- endif -%}
+      </p>
+    </div>
+
+    <div class="policy-page__content rte">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {%- comment -%} Default placeholder content {%- endcomment -%}
+        <div class="policy-page__default-content">
+          <h2>1. Agreement to Terms</h2>
+          <p>By accessing or using Glowify's website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+
+          <h2>2. Use License</h2>
+          <p>Permission is granted to temporarily download one copy of the materials on Glowify's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+          <ul>
+            <li>Modify or copy the materials</li>
+            <li>Use the materials for any commercial purpose or for any public display</li>
+            <li>Attempt to reverse engineer any software contained on the website</li>
+            <li>Remove any copyright or other proprietary notations from the materials</li>
+          </ul>
+
+          <h2>3. Products and Services</h2>
+          <p>We reserve the right to limit the quantities of any products or services that we offer. All descriptions of products or product pricing are subject to change at any time without notice, at our sole discretion.</p>
+
+          <h2>4. Accuracy of Information</h2>
+          <p>We do not warrant that product descriptions or other content on this site is accurate, complete, reliable, current, or error-free. If a product offered by us is not as described, your sole remedy is to return it in unused condition.</p>
+
+          <h2>5. Limitation of Liability</h2>
+          <p>In no case shall Glowify, our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, service providers, or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind.</p>
+
+          <h2>6. Indemnification</h2>
+          <p>You agree to defend, indemnify, and hold harmless Glowify and our licensee, licensors, and suppliers and their respective directors, officers, employees, contractors, agents, licensors, suppliers, successors, and assigns from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms of Service.</p>
+
+          <h2>7. Governing Law</h2>
+          <p>These Terms of Service and any separate agreements whereby we provide you services shall be governed by and construed in accordance with applicable laws.</p>
+
+          <h2>8. Changes to Terms</h2>
+          <p>We reserve the right, at our sole discretion, to update, change, or replace any part of these Terms of Service by posting updates and changes to our website. It is your responsibility to check our website periodically for changes.</p>
+
+          <h2>9. Contact Information</h2>
+          <p>Questions about the Terms of Service should be sent to us at glowifystore333@gmail.com or Jemimah Rd.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .policy-page {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .policy-page__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border-gray);
+  }
+
+  .policy-page__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .policy-page__updated {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-large);
+    color: var(--color-text-primary);
+  }
+
+  .policy-page__content h2 {
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-h2-mobile);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .policy-page__content h2 {
+      font-size: var(--font-size-h2-desktop);
+      line-height: var(--line-height-h2-desktop);
+    }
+  }
+
+  .policy-page__content p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content ul,
+  .policy-page__content ol {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-2xl);
+    color: var(--color-text-secondary);
+  }
+
+  .policy-page__content li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .policy-page__content strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+</style>

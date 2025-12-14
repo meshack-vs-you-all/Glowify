@@ -1,0 +1,173 @@
+{% comment %}
+  Customer Account Dashboard
+{% endcomment %}
+
+<div class="customer-account section">
+  <div class="page-width">
+    <h1 class="customer-account__title">{{ 'customer.account.title' | t }}</h1>
+
+    <div class="customer-account__grid">
+      <div class="customer-account__sidebar">
+        <nav class="customer-account__nav">
+          <a href="{{ routes.account_url }}" class="customer-account__nav-link {% if request.page_type == 'customers/account' %}customer-account__nav-link--active{% endif %}">
+            {{ 'customer.account.overview' | t }}
+          </a>
+          <a href="{{ routes.account_addresses_url }}" class="customer-account__nav-link">
+            {{ 'customer.account.addresses' | t }}
+          </a>
+          <a href="{{ routes.account_logout_url }}" class="customer-account__nav-link">
+            {{ 'customer.account.log_out' | t }}
+          </a>
+        </nav>
+      </div>
+
+      <div class="customer-account__content">
+        <div class="customer-account__welcome">
+          <h2>{{ 'customer.account.welcome' | t: first_name: customer.first_name }}</h2>
+        </div>
+
+        <div class="customer-account__orders">
+          <h3>{{ 'customer.orders.title' | t }}</h3>
+          {%- if customer.orders.size > 0 -%}
+            <div class="customer-orders">
+              {%- for order in customer.orders -%}
+                <div class="customer-order">
+                  <div class="customer-order__header">
+                    <div>
+                      <strong>{{ 'customer.orders.order_number' | t }}: {{ order.name }}</strong>
+                      <p>{{ order.created_at | date: format: 'month_day_year' }}</p>
+                    </div>
+                    <div>
+                      <span class="customer-order__status">{{ order.financial_status_label }}</span>
+                      <p class="customer-order__total">{{ order.total_price | money }}</p>
+                    </div>
+                  </div>
+                  <a href="{{ order.customer_url }}" class="button button--secondary">
+                    {{ 'customer.orders.view_order' | t }}
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <p>{{ 'customer.orders.none' | t }}</p>
+          {%- endif -%}
+        </div>
+
+        <div class="customer-account__address">
+          <h3>{{ 'customer.account.default_address' | t }}</h3>
+          {%- if customer.default_address -%}
+            {{ customer.default_address | format_address }}
+            <a href="{{ routes.account_addresses_url }}" class="button button--secondary">
+              {{ 'customer.account.view_addresses' | t }}
+            </a>
+          {%- else -%}
+            <p>{{ 'customer.account.no_addresses' | t }}</p>
+            <a href="{{ routes.account_addresses_url }}" class="button button--primary">
+              {{ 'customer.account.add_address' | t }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .customer-account {
+    padding: var(--space-4xl) 0;
+    min-height: 60vh;
+  }
+
+  .customer-account__title {
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-h1-mobile);
+    margin-bottom: var(--space-3xl);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 768px) {
+    .customer-account__title {
+      font-size: var(--font-size-h1-desktop);
+      line-height: var(--line-height-h1-desktop);
+    }
+  }
+
+  .customer-account__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+  }
+
+  @media (min-width: 1024px) {
+    .customer-account__grid {
+      grid-template-columns: 250px 1fr;
+    }
+  }
+
+  .customer-account__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .customer-account__nav-link {
+    padding: var(--space-md);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--duration-fast) var(--ease-in-out);
+  }
+
+  .customer-account__nav-link:hover {
+    background: var(--color-light-gray);
+    color: var(--color-text-primary);
+  }
+
+  .customer-account__nav-link--active {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .customer-account__content h2,
+  .customer-account__content h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-primary);
+  }
+
+  .customer-orders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-3xl);
+  }
+
+  .customer-order {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border-gray);
+    border-radius: var(--radius-lg);
+  }
+
+  .customer-order__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .customer-order__status {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-small);
+  }
+
+  .customer-order__total {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+</style>
+

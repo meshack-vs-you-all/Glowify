@@ -1,6 +1,9 @@
+{% render 'structured-data', type: 'product', product: product %}
+
 <div class="product-page section" data-product-id="{{ product.id }}">
   <div class="page-width">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
+      {% render 'structured-data', type: 'breadcrumb', breadcrumbs: breadcrumbs %}
       <ol class="breadcrumbs__list">
         <li class="breadcrumbs__item">
           <a href="{{ routes.root_url }}" class="breadcrumbs__link">{{ 'general.breadcrumbs.home' | t }}</a>
@@ -138,6 +141,12 @@
         {%- endform -%}
       </div>
     </div>
+    
+    {%- comment -%} Recently Viewed Products {%- endcomment -%}
+    {% section 'recently-viewed-products' %}
+    
+    {%- comment -%} Product Reviews {%- endcomment -%}
+    {% section 'product-reviews' %}
   </div>
 </div>
 

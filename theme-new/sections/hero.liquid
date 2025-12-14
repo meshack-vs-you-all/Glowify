@@ -1,6 +1,10 @@
 <div class="hero-section" id="shopify-section-{{ section.id }}" style="margin: 0; padding: 0;">
   {%- if section.blocks.size > 0 -%}
-    <div class="hero-slider" data-hero-slider>
+    <div class="hero-slider" 
+         data-hero-slider
+         data-autoplay="{{ section.settings.autoplay_enabled | default: true }}"
+         data-autoplay-delay="{{ section.settings.autoplay_delay | default: 5000 }}"
+         data-pause-on-hover="{{ section.settings.pause_on_hover | default: true }}">
       {%- for block in section.blocks -%}
         <div class="hero-slide" {{ block.shopify_attributes }}>
           <div class="hero-slide__container">
@@ -344,6 +348,11 @@
     const dots = document.querySelectorAll('.hero-dot');
     let currentSlide = 0;
     let slideInterval;
+    
+    // Get settings from data attributes
+    const autoplayEnabled = slider?.dataset.autoplay !== 'false';
+    const autoplayDelay = parseInt(slider?.dataset.autoplayDelay || '5000', 10);
+    const pauseOnHover = slider?.dataset.pauseOnHover === 'true';
 
     if (!slider || dots.length === 0) return;
 
@@ -353,6 +362,7 @@
     function showSlide(index) {
       slides.forEach((slide, i) => {
         slide.style.display = i === index ? 'block' : 'none';
+        slide.style.opacity = i === index ? '1' : '0';
       });
       
       dots.forEach((dot, i) => {
@@ -376,12 +386,20 @@
 
     function resetInterval() {
       clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5000);
+      if (autoplayEnabled) {
+        slideInterval = setInterval(nextSlide, autoplayDelay);
+      }
     }
 
     // Initialize
     showSlide(0);
     resetInterval();
+    
+    // Pause on hover if enabled
+    if (pauseOnHover) {
+      slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+      slider.addEventListener('mouseleave', resetInterval);
+    }
   });
 </script>
 
@@ -389,6 +407,33 @@
 {
   "name": "Hero",
   "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay_enabled",
+      "label": "Enable autoplay",
+      "default": true,
+      "info": "Automatically advance slides"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay delay",
+      "default": 5000,
+      "info": "Time between slide transitions"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true,
+      "info": "Pause autoplay when hovering over slider"
+    }
+  ],
   "blocks": [
     {
       "type": "slide",
