@@ -292,12 +292,53 @@
   font-size: var(--font-size-body);
 }
 
-.product-page__description p {
+.product-page__description-intro {
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body-large);
+  color: var(--color-text-primary);
+}
+
+.product-page__description-full {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border-gray);
+}
+
+.product-page__description-full p {
   margin: 0 0 var(--space-md) 0;
 }
 
-.product-page__description p:last-child {
+.product-page__description-full p:last-child {
   margin-bottom: 0;
+}
+
+.product-page__description-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-accent);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: color 0.3s var(--ease-in-out);
+  margin-top: var(--space-sm);
+}
+
+.product-page__description-toggle:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+.product-page__description-toggle svg {
+  transition: transform 0.3s var(--ease-in-out);
+}
+
+.product-page__description-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
 }
 
 /* ==========================================================================
@@ -461,11 +502,20 @@
   font-size: var(--font-size-body);
   text-align: center;
   min-width: 0;
+  min-height: 44px;
+  -moz-appearance: textfield;
+}
+
+.product-form__quantity-input::-webkit-outer-spin-button,
+.product-form__quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .product-form__quantity-input:focus {
   outline: none;
   border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(124, 152, 133, 0.1);
 }
 
 /* ==========================================================================
@@ -495,6 +545,162 @@
 .product-form__submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Reassurance Microcopy
+   ========================================================================== */
+
+.product-form__reassurance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-off-white);
+  border-radius: var(--radius-md);
+}
+
+.product-form__reassurance-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.product-form__reassurance-item svg {
+  flex-shrink: 0;
+  color: var(--color-success);
+}
+
+/* ==========================================================================
+   Reviews Summary
+   ========================================================================== */
+
+.product-page__reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.product-reviews__stars--inline {
+  display: flex;
+  gap: 2px;
+}
+
+.product-reviews__average-inline {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.product-reviews__link {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-in-out);
+}
+
+.product-reviews__link:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Variant Selection Improvements
+   ========================================================================== */
+
+.product-form__required {
+  color: var(--color-error);
+  margin-left: 2px;
+}
+
+.product-form__size-guide-link {
+  font-size: var(--font-size-small);
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-left: var(--space-sm);
+  transition: color 0.3s var(--ease-in-out);
+}
+
+.product-form__size-guide-link:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+.product-form__option[data-product-option] {
+  position: relative;
+}
+
+.product-form__option--error {
+  animation: shake 0.4s ease-in-out;
+}
+
+.product-form__option--error .product-form__label {
+  color: var(--color-error);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ==========================================================================
+   Size Guide
+   ========================================================================== */
+
+.product-page__size-guide {
+  margin: var(--space-xl) 0;
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.product-page__size-guide-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-off-white);
+  border: none;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background 0.3s var(--ease-in-out);
+}
+
+.product-page__size-guide-toggle:hover {
+  background: var(--color-light-gray);
+}
+
+.product-page__size-guide-toggle svg {
+  transition: transform 0.3s var(--ease-in-out);
+  flex-shrink: 0;
+}
+
+.product-page__size-guide-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.product-page__size-guide-content {
+  padding: var(--space-lg);
+  background: var(--color-white);
+  line-height: var(--line-height-body-large);
+  color: var(--color-text-secondary);
+}
+
+.product-page__size-guide-content p {
+  margin: 0 0 var(--space-md) 0;
+}
+
+.product-page__size-guide-content p:last-child {
+  margin-bottom: 0;
 }
 
 /* ==========================================================================

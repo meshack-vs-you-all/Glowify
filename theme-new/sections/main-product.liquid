@@ -87,6 +87,25 @@
 
         <h1 class="product-page__title">{{ product.title }}</h1>
         
+        {%- comment -%} Reviews Summary (if available) {%- endcomment -%}
+        {%- if section.settings.show_reviews_summary -%}
+          <div class="product-page__reviews-summary">
+            <div class="product-reviews__stars product-reviews__stars--inline">
+              {%- assign avg_rating = section.settings.average_rating | default: 4.5 -%}
+              {%- for i in (1..5) -%}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
+                        fill="{% if i <= avg_rating %}#FCAF45{% else %}#E5E5E5{% endif %}"/>
+                </svg>
+              {%- endfor -%}
+            </div>
+            <span class="product-reviews__average-inline">{{ avg_rating }}</span>
+            <a href="#product-reviews" class="product-reviews__link">
+              ({{ section.settings.review_count | default: 24 }} {{ 'products.reviews.reviews' | t | default: 'reviews' }})
+            </a>
+          </div>
+        {%- endif -%}
+        
         {%- comment -%} Price {%- endcomment -%}
         <div class="product-page__price" data-product-price>
           {%- if current_variant.compare_at_price > current_variant.price -%}
@@ -150,10 +169,30 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} Product Description (Short) {%- endcomment -%}
+        {%- comment -%} Product Description (Short, Scannable) {%- endcomment -%}
         {%- if product.description != blank -%}
           <div class="product-page__description">
-            {{ product.description | truncatewords: 30 }}
+            {%- assign desc_parts = product.description | split: '<p>' -%}
+            {%- if desc_parts.size > 1 -%}
+              {%- comment -%} Has multiple paragraphs - show first as intro {%- endcomment -%}
+              <div class="product-page__description-intro">
+                {{ desc_parts[1] | split: '</p>' | first | strip_html | truncatewords: 25 }}
+              </div>
+            {%- else -%}
+              {%- comment -%} Single paragraph or plain text {%- endcomment -%}
+              <div class="product-page__description-intro">
+                {{ product.description | strip_html | truncatewords: 30 }}
+              </div>
+            {%- endif -%}
+            <button type="button" class="product-page__description-toggle" data-description-toggle>
+              <span data-toggle-text>{{ 'products.description.read_more' | t | default: 'Read full description' }}</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="product-page__description-full" data-description-full hidden>
+              {{ product.description }}
+            </div>
           </div>
         {%- endif -%}
 
@@ -162,13 +201,19 @@
         {%- form 'product', product, class: 'product-form' -%}
           {%- unless product.has_only_default_variant -%}
             {%- for option in product.options_with_values -%}
-              <div class="product-form__option">
+              <div class="product-form__option" data-product-option>
                 <label class="product-form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
                   {{ option.name }}
+                  <span class="product-form__required" aria-label="required">*</span>
                   {%- if option.name == 'Color' or option.name == 'Colour' -%}
                     <span class="product-form__selected-value" data-selected-{{ option.name | handle }}></span>
                   {%- endif -%}
                 </label>
+                {%- if option.name == 'Size' -%}
+                  <a href="#size-guide" class="product-form__size-guide-link" data-size-guide-link>
+                    {{ 'products.size_guide.link' | t | default: 'Size guide' }}
+                  </a>
+                {%- endif -%}
                 <div class="product-form__options product-form__options--{{ option.name | handle }}">
                   {%- for value in option.values -%}
                     {%- liquid
@@ -248,6 +293,28 @@
               {{ 'products.product.sold_out' | t }}
             {%- endif -%}
           </button>
+          
+          {%- comment -%} Reassurance Microcopy {%- endcomment -%}
+          <div class="product-form__reassurance">
+            <div class="product-form__reassurance-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ 'products.reassurance.free_shipping' | t | default: 'Free shipping on orders over $500' }}</span>
+            </div>
+            <div class="product-form__reassurance-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ 'products.reassurance.returns' | t | default: '30-day returns' }}</span>
+            </div>
+            <div class="product-form__reassurance-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ 'products.reassurance.secure' | t | default: 'Secure checkout' }}</span>
+            </div>
+          </div>
 
           {%- comment -%} Trust Badges {%- endcomment -%}
           {%- if show_trust_badges -%}
@@ -270,6 +337,21 @@
           {%- endif -%}
         {%- endform -%}
         </div>
+
+        {%- comment -%} Size Guide (Collapsible) {%- endcomment -%}
+        {%- if section.settings.show_size_guide -%}
+          <div class="product-page__size-guide" id="size-guide" data-size-guide>
+            <button type="button" class="product-page__size-guide-toggle" data-size-guide-toggle aria-expanded="false">
+              <span>{{ 'products.size_guide.title' | t | default: 'Size & Fit Guide' }}</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="product-page__size-guide-content" data-size-guide-content hidden>
+              {{ section.settings.size_guide_content | default: '<p>Please refer to our size guide for accurate measurements.</p>' }}
+            </div>
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Product Details Tabs (if needed) {%- endcomment -%}
         {%- if section.settings.show_tabs -%}
@@ -431,6 +513,38 @@
       "type": "richtext",
       "id": "shipping_content",
       "label": "Shipping & Returns content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews_summary",
+      "label": "Show reviews summary near title",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "average_rating",
+      "label": "Average rating",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 4.5
+    },
+    {
+      "type": "number",
+      "id": "review_count",
+      "label": "Review count",
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_guide",
+      "label": "Show size guide",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "size_guide_content",
+      "label": "Size guide content"
     }
   ],
   "blocks": [

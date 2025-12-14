@@ -75,6 +75,23 @@
       "on_sale": "Sale",
       "quick_view": "Quick view",
       "placeholder_title": "Product title"
+    },
+    "description": {
+      "read_more": "Read full description",
+      "read_less": "Show less"
+    },
+    "reviews": {
+      "reviews": "reviews",
+      "review": "review"
+    },
+    "reassurance": {
+      "free_shipping": "Free shipping on orders over $500",
+      "returns": "30-day returns",
+      "secure": "Secure checkout"
+    },
+    "size_guide": {
+      "title": "Size & Fit Guide",
+      "link": "Size guide"
     }
   },
   "sections": {
