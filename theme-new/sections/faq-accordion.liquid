@@ -227,7 +227,15 @@
   }
 
   .faq-item__button[aria-expanded="true"] .faq-item__icon {
-    transform: rotate(180deg);
+    transform: rotate(45deg);
+  }
+  
+  .faq-item__icon-plus {
+    transition: opacity 0.3s var(--ease-in-out);
+  }
+  
+  .faq-item__button[aria-expanded="true"] .faq-item__icon-plus {
+    opacity: 0;
   }
 
   .faq-item__question {
