@@ -322,9 +322,12 @@
 
     // Load more functionality (if pagination exists)
     if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', function() {
-        // This would typically load next page via AJAX
-        // For now, just show a message
+      loadMoreBtn.addEventListener('click', function(e) {
+        // If it's a link, let it navigate naturally
+        if (this.tagName === 'A') {
+          return; // Allow default link behavior
+        }
+        // Otherwise, navigate to next page
         const url = new URL(window.location.href);
         const currentPage = parseInt(url.searchParams.get('page') || '1');
         url.searchParams.set('page', currentPage + 1);

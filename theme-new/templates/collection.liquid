@@ -116,21 +116,23 @@
       </aside>
 
       <div class="collection-page__products">
-        <div class="collection-page__grid collection-page__grid--grid" data-collection-grid>
-          {%- for product in collection.products -%}
-            {% render 'product-card', product: product %}
-          {%- else -%}
-            <p class="collection-page__empty">{{ 'collections.general.no_products' | t }}</p>
-          {%- endfor -%}
-        </div>
-        {%- comment -%} Load More Button {%- endcomment -%}
-        {%- if paginate.next -%}
-          <div class="collection-page__load-more">
-            <button class="button button--secondary" data-load-more>
-              {{ 'collections.general.load_more' | t }}
-            </button>
+        {%- paginate collection.products by 24 -%}
+          <div class="collection-page__grid collection-page__grid--grid" data-collection-grid>
+            {%- for product in collection.products -%}
+              {% render 'product-card', product: product %}
+            {%- else -%}
+              <p class="collection-page__empty">{{ 'collections.general.no_products' | t }}</p>
+            {%- endfor -%}
           </div>
-        {%- endif -%}
+          {%- comment -%} Load More Button {%- endcomment -%}
+          {%- if paginate.next -%}
+            <div class="collection-page__load-more">
+              <a href="{{ paginate.next.url }}" class="button button--secondary" data-load-more>
+                {{ 'collections.general.load_more' | t }}
+              </a>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
       </div>
     </div>
   </div>
