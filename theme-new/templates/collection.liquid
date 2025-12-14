@@ -419,38 +419,4 @@
   }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const filterToggle = document.querySelector('[data-filter-toggle]');
-    const filters = document.querySelector('[data-collection-filters]');
-    const filterClose = document.querySelector('[data-filter-close]');
-    const viewToggle = document.querySelectorAll('[data-view]');
-    const grid = document.querySelector('[data-collection-grid]');
-
-    // Filter toggle
-    if (filterToggle && filters) {
-      filterToggle.addEventListener('click', () => {
-        filters.classList.toggle('active');
-      });
-    }
-
-    if (filterClose && filters) {
-      filterClose.addEventListener('click', () => {
-        filters.classList.remove('active');
-      });
-    }
-
-    // View toggle
-    viewToggle.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const view = this.dataset.view;
-        viewToggle.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        
-        if (grid) {
-          grid.className = `collection-page__grid collection-page__grid--${view}`;
-        }
-      });
-    });
-  });
-</script>
+{{ 'collection.js' | asset_url | script_tag }}
