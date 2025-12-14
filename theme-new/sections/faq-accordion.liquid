@@ -72,7 +72,8 @@
           >
             <span class="faq-item__question">{{ block.settings.question }}</span>
             <svg class="faq-item__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 6V18M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="faq-item__icon-vertical" d="M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="faq-item__icon-horizontal" d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
           <div 
@@ -226,16 +227,17 @@
     color: var(--color-accent);
   }
 
-  .faq-item__button[aria-expanded="true"] .faq-item__icon {
-    transform: rotate(45deg);
+  .faq-item__icon-vertical,
+  .faq-item__icon-horizontal {
+    transition: transform 0.3s var(--ease-in-out), opacity 0.3s var(--ease-in-out);
   }
   
-  .faq-item__icon-plus {
-    transition: opacity 0.3s var(--ease-in-out);
+  .faq-item__button[aria-expanded="true"] .faq-item__icon-vertical {
+    transform: rotate(90deg);
   }
   
-  .faq-item__button[aria-expanded="true"] .faq-item__icon-plus {
-    opacity: 0;
+  .faq-item__button[aria-expanded="true"] .faq-item__icon-horizontal {
+    transform: rotate(90deg);
   }
 
   .faq-item__question {
