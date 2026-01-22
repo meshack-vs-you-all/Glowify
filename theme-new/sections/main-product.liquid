@@ -121,81 +121,6 @@
           {%- endif -%}
         </div>
 
-        {%- comment -%} Stock Indicator {%- endcomment -%}
-        {%- if show_stock_indicator -%}
-          <div class="product-page__stock" data-product-stock>
-            {%- if current_variant.available -%}
-              {%- if current_variant.inventory_quantity <= 10 and current_variant.inventory_quantity > 0 -%}
-                <span class="product-stock product-stock--low">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
-                    <path d="M8 4V8L10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                  Only {{ current_variant.inventory_quantity }} left in stock
-                </span>
-              {%- else -%}
-                <span class="product-stock product-stock--in-stock">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  In Stock
-                </span>
-              {%- endif -%}
-            {%- else -%}
-              <span class="product-stock product-stock--out">
-                Out of Stock
-              </span>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Why People Love This Product {%- endcomment -%}
-        {%- if show_why_love -%}
-          <div class="product-page__why-love">
-            <h3 class="product-why-love__title">{{ section.settings.why_love_title | default: 'Why People Love This Product' }}</h3>
-            <ul class="product-why-love__list">
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'benefit' -%}
-                  <li class="product-why-love__item" {{ block.shopify_attributes }}>
-                    <svg class="product-why-love__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="2"/>
-                      <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    {{ block.settings.benefit_text }}
-                  </li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Product Description (Short, Scannable) {%- endcomment -%}
-        {%- if product.description != blank -%}
-          <div class="product-page__description">
-            {%- assign desc_parts = product.description | split: '<p>' -%}
-            {%- if desc_parts.size > 1 -%}
-              {%- comment -%} Has multiple paragraphs - show first as intro {%- endcomment -%}
-              <div class="product-page__description-intro">
-                {{ desc_parts[1] | split: '</p>' | first | strip_html | truncatewords: 25 }}
-              </div>
-            {%- else -%}
-              {%- comment -%} Single paragraph or plain text {%- endcomment -%}
-              <div class="product-page__description-intro">
-                {{ product.description | strip_html | truncatewords: 30 }}
-              </div>
-            {%- endif -%}
-            <button type="button" class="product-page__description-toggle" data-description-toggle>
-              <span data-toggle-text>{{ 'products.description.read_more' | t | default: 'Read full description' }}</span>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="product-page__description-full" data-description-full hidden>
-              {{ product.description }}
-            </div>
-          </div>
-        {%- endif -%}
-
         {%- comment -%} Product Form {%- endcomment -%}
         <div class="product-form-wrapper" data-product-form>
         {%- form 'product', product, class: 'product-form' -%}
@@ -337,6 +262,81 @@
           {%- endif -%}
         {%- endform -%}
         </div>
+
+        {%- comment -%} Stock Indicator {%- endcomment -%}
+        {%- if show_stock_indicator -%}
+          <div class="product-page__stock" data-product-stock>
+            {%- if current_variant.available -%}
+              {%- if current_variant.inventory_quantity <= 10 and current_variant.inventory_quantity > 0 -%}
+                <span class="product-stock product-stock--low">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 4V8L10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Only {{ current_variant.inventory_quantity }} left in stock
+                </span>
+              {%- else -%}
+                <span class="product-stock product-stock--in-stock">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  In Stock
+                </span>
+              {%- endif -%}
+            {%- else -%}
+              <span class="product-stock product-stock--out">
+                Out of Stock
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Why People Love This Product {%- endcomment -%}
+        {%- if show_why_love -%}
+          <div class="product-page__why-love">
+            <h3 class="product-why-love__title">{{ section.settings.why_love_title | default: 'Why People Love This Product' }}</h3>
+            <ul class="product-why-love__list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'benefit' -%}
+                  <li class="product-why-love__item" {{ block.shopify_attributes }}>
+                    <svg class="product-why-love__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    {{ block.settings.benefit_text }}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Product Description (Short, Scannable) {%- endcomment -%}
+        {%- if product.description != blank -%}
+          <div class="product-page__description">
+            {%- assign desc_parts = product.description | split: '<p>' -%}
+            {%- if desc_parts.size > 1 -%}
+              {%- comment -%} Has multiple paragraphs - show first as intro {%- endcomment -%}
+              <div class="product-page__description-intro">
+                {{ desc_parts[1] | split: '</p>' | first | strip_html | truncatewords: 25 }}
+              </div>
+            {%- else -%}
+              {%- comment -%} Single paragraph or plain text {%- endcomment -%}
+              <div class="product-page__description-intro">
+                {{ product.description | strip_html | truncatewords: 30 }}
+              </div>
+            {%- endif -%}
+            <button type="button" class="product-page__description-toggle" data-description-toggle>
+              <span data-toggle-text>{{ 'products.description.read_more' | t | default: 'Read full description' }}</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="product-page__description-full" data-description-full hidden>
+              {{ product.description }}
+            </div>
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Size Guide (Collapsible) {%- endcomment -%}
         {%- if section.settings.show_size_guide -%}
