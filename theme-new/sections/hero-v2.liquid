@@ -1,0 +1,181 @@
+{%- comment -%}
+  HERO V2 - Mobile-First Dual Layout
+  Optimized for baby products. No dependencies.
+{%- endcomment -%}
+
+<section class="hero-v2-section" id="hero-v2-{{ section.id }}">
+  <div class="hero-v2-container">
+    <div class="hero-v2-grid">
+      <!-- Block 1: Baby Gear -->
+      <a href="/collections/baby-gear" class="hero-v2-item group">
+        <div class="hero-v2-media">
+          <img 
+            src="{{ 'hero-1.jpg' | asset_url }}" 
+            alt="Essential Baby Gear" 
+            loading="eager"
+            width="800"
+            height="1000"
+            class="hero-v2-img"
+          >
+          <div class="hero-v2-overlay"></div>
+        </div>
+        <div class="hero-v2-content">
+          <span class="hero-v2-subtitle">New Arrivals</span>
+          <h2 class="hero-v2-title">Essential Gear</h2>
+          <span class="hero-v2-btn">Shop Collection</span>
+        </div>
+      </a>
+
+      <!-- Block 2: Nursery -->
+      <a href="/collections/nursery" class="hero-v2-item group">
+        <div class="hero-v2-media">
+          <img 
+            src="{{ 'hero-2.jpg' | asset_url }}" 
+            alt="Cozy Nursery Essentials" 
+            loading="eager"
+             width="800"
+            height="1000"
+            class="hero-v2-img"
+          >
+          <div class="hero-v2-overlay"></div>
+        </div>
+        <div class="hero-v2-content">
+          <span class="hero-v2-subtitle">Nursery</span>
+          <h2 class="hero-v2-title">Cozy Comfort</h2>
+          <span class="hero-v2-btn">Shop Nursery</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-v2-section {
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .hero-v2-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .hero-v2-grid {
+      flex-direction: row;
+    }
+  }
+
+  /* Item Container */
+  .hero-v2-item {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+    /* Aspect Ratio Control */
+    height: 60vh; /* Mobile height */
+    min-height: 400px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-v2-item {
+      height: 75vh; /* Desktop height */
+      min-height: 600px;
+    }
+  }
+
+  /* Image Handling */
+  .hero-v2-media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-v2-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-v2-item:hover .hero-v2-img {
+    transform: scale(1.05);
+  }
+
+  .hero-v2-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
+    z-index: 2;
+  }
+
+  /* Content */
+  .hero-v2-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: #fff;
+    padding: 2rem;
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+  }
+
+  .hero-v2-subtitle {
+    display: block;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+
+  .hero-v2-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+
+  @media (min-width: 768px) {
+    .hero-v2-title {
+      font-size: 3rem;
+    }
+  }
+
+  .hero-v2-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .hero-v2-item:hover .hero-v2-btn {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero V2 (Baby Theme)",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Hero V2 (Baby Theme)"
+    }
+  ]
+}
+{% endschema %}

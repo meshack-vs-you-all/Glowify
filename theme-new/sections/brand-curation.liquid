@@ -1,0 +1,156 @@
+{%- comment -%}
+  Brand Curation / Values Section
+  Trust-building content. No hard-coded badges.
+  Support for App Blocks (Generic).
+{%- endcomment -%}
+
+<section class="section brand-curation" id="brand-{{ section.id }}">
+  <div class="page-width">
+    <div class="curation-grid">
+      
+      <!-- Text Side -->
+      <div class="curation-content">
+        <h2 class="curation-title">Safety First. Always.</h2>
+        <div class="curation-text">
+          <p>
+            We know nothing matters more than your little one's safety. That's why every product in our collection undergoes rigorous testing to meet and exceed global safety standards.
+          </p>
+          <p>
+            Curated by parents, for parents. We only offer what we use ourselves.
+          </p>
+        </div>
+        
+        <!-- Placeholder for App Blocks / Trust Signals -->
+        <div class="trust-signals">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                <div class="trust-app-block">
+                  {% render block %}
+                </div>
+              {%- when 'feature' -%}
+                <div class="trust-feature">
+                  {%- if block.settings.icon != blank -%}
+                    <div class="trust-icon">{{ block.settings.icon }}</div>
+                  {%- endif -%}
+                  <span class="trust-label">{{ block.settings.text }}</span>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Image Side -->
+      <div class="curation-image">
+        <img 
+          src="{{ 'hero-2.jpg' | asset_url }}" 
+          alt="Happy Parent and Child" 
+          loading="lazy"
+          width="800"
+          height="600"
+          style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;"
+        >
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-curation {
+    padding: 5rem 0;
+    background: #fff;
+  }
+
+  .curation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 990px) {
+    .curation-grid {
+      grid-template-columns: 1fr 1fr; /* Text | Image */
+    }
+  }
+
+  .curation-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+  }
+
+  .curation-text p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .trust-signals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+
+  .trust-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Brand Curation",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "feature",
+      "name": "Trust Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Certified Safe"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (SVG/Emoji)",
+          "default": "🛡️"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Curation",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": { "text": "Certified Safe", "icon": "🛡️" }
+        },
+        {
+          "type": "feature",
+          "settings": { "text": "Parent Approved", "icon": "❤️" }
+        },
+        {
+          "type": "feature",
+          "settings": { "text": "Eco-Friendly", "icon": "🌿" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

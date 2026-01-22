@@ -1,0 +1,179 @@
+{%- comment -%}
+  Accessories Showcase Section
+  Highlights complementary products or bundles.
+  Visually lighter than the flagship section.
+{%- endcomment -%}
+
+<section class="section accessories-showcase" id="accessories-{{ section.id }}">
+  <div class="page-width">
+    <div class="section-header text-center">
+      <h2 class="section-title">Complete The Look</h2>
+      <p class="section-subtitle">Essential accessories for your journey.</p>
+    </div>
+
+    <div class="accessories-grid">
+      <!-- Item 1 -->
+      <a href="#" class="accessory-card">
+        <div class="accessory-image">
+           <img 
+            src="{{ 'hero-2.jpg' | asset_url }}" 
+            alt="Diaper Bag" 
+            loading="lazy"
+            width="400"
+            height="400"
+            style="width: 100%; height: 100%; object-fit: cover;"
+          >
+        </div>
+        <div class="accessory-info">
+          <h3 class="accessory-title">Everyday Diaper Bag</h3>
+          <span class="accessory-price">$89.00</span>
+        </div>
+      </a>
+
+      <!-- Item 2 -->
+      <a href="#" class="accessory-card">
+        <div class="accessory-image">
+           <img 
+            src="{{ 'hero-1.jpg' | asset_url }}" 
+            alt="Stroller Organizer" 
+            loading="lazy"
+            width="400"
+            height="400"
+            style="width: 100%; height: 100%; object-fit: cover;"
+          >
+        </div>
+        <div class="accessory-info">
+          <h3 class="accessory-title">Stroller Organizer</h3>
+          <span class="accessory-price">$35.00</span>
+        </div>
+      </a>
+
+      <!-- Item 3 -->
+      <a href="#" class="accessory-card">
+        <div class="accessory-image">
+           <img 
+            src="{{ 'hero-2.jpg' | asset_url }}" 
+            alt="Cozy Blanket" 
+            loading="lazy"
+            width="400"
+            height="400"
+            style="width: 100%; height: 100%; object-fit: cover;"
+          >
+        </div>
+        <div class="accessory-info">
+          <h3 class="accessory-title">Organic Cotton Blanket</h3>
+          <span class="accessory-price">$45.00</span>
+        </div>
+      </a>
+      
+       <!-- Item 4 -->
+      <a href="#" class="accessory-card">
+        <div class="accessory-image">
+           <img 
+            src="{{ 'hero-1.jpg' | asset_url }}" 
+            alt="Bottle Warmer" 
+            loading="lazy"
+            width="400"
+            height="400"
+            style="width: 100%; height: 100%; object-fit: cover;"
+          >
+        </div>
+        <div class="accessory-info">
+          <h3 class="accessory-title">Portable Bottle Warmer</h3>
+          <span class="accessory-price">$59.00</span>
+        </div>
+      </a>
+    </div>
+    
+    <div class="text-center" style="margin-top: 3rem;">
+      <a href="/collections/accessories" class="button button--secondary">View All Accessories</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .accessories-showcase {
+    padding: 4rem 0;
+    background: #fafafa; /* Lighter background */
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+  }
+
+  .section-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .accessories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 col on mobile */
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .accessories-grid {
+      grid-template-columns: repeat(4, 1fr); /* 4 col on desktop */
+      gap: 2rem;
+    }
+  }
+
+  .accessory-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .accessory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .accessory-image {
+    aspect-ratio: 1;
+    background: #f0f0f0;
+    overflow: hidden;
+  }
+
+  .accessory-info {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .accessory-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+  }
+
+  .accessory-price {
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Accessories Showcase",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Accessories Showcase"
+    }
+  ]
+}
+{% endschema %}
