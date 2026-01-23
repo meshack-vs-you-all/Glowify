@@ -149,23 +149,26 @@
     },
     "filters": {
       "title": "Filters",
-      "price": "Price",
+      "filter": "Filter",
+      "filters_selected": "{{ count }} filters applied",
       "availability": "Availability",
+      "price": "Price",
       "in_stock": "In stock",
       "out_of_stock": "Out of stock",
       "apply": "Apply filters",
-      "clear": "Clear all"
+      "clear": "Clear all",
+      "from": "From",
+      "to": "To"
     },
     "sorting": {
       "title": "Sort by",
       "featured": "Featured",
       "price_ascending": "Price: Low to High",
       "price_descending": "Price: High to Low",
-      "az": "Alphabetically: A-Z",
-      "za": "Alphabetically: Z-A",
+      "alphabetical_asc": "Alphabetically: A-Z",
+      "alphabetical_desc": "Alphabetically: Z-A",
       "date_ascending": "Date: Old to New",
       "date_descending": "Date: New to Old"
     }
   }
 }
-
