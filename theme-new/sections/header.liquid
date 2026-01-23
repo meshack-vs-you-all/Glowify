@@ -5,9 +5,7 @@
       <!-- Mobile Menu Trigger -->
       <button class="header__menu-trigger hidden-desktop-up" aria-label="{{ 'general.accessibility.menu' | t }}" aria-expanded="false" aria-controls="mobile-menu">
         <svg class="icon icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
+          <path d="M4 8h16M4 16h16" />
         </svg>
       </button>
 
@@ -35,7 +33,7 @@
           {%- if section.settings.menu != blank -%}
             {%- for link in linklists[section.settings.menu].links -%}
               <li class="header__nav-item">
-                <a href="{{ link.url }}" class="header__nav-link {% if link.active %}header__nav-link--active{% endif %}">
+                <a href="{{ link.url }}" class="header__nav-link hover-underline-animation {% if link.active %}header__nav-link--active{% endif %}">
                   {{ link.title }}
                 </a>
               </li>
@@ -222,21 +220,11 @@
     color: #666;
   }
   
-  .header__nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: currentColor;
-    transition: width 0.3s ease;
+  .header__nav-link:hover {
+    color: #666;
   }
-
-  .header__nav-link:hover::after,
-  .header__nav-link--active::after {
-    width: 100%;
-  }
+  
+  /* Link underline handled by .hover-underline-animation in animations.css */
 
   /* ==========================================================================
      Icons (Soft & Rounded)

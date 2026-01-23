@@ -276,7 +276,10 @@ a:hover {
   user-select: none;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  transition: all var(--duration-normal) var(--ease-in-out);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s ease,
+              color 0.3s ease;
 }
 
 .button--primary {

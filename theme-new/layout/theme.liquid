@@ -11,14 +11,14 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    {%- unless settings.heading_font.system? and settings.body_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
+    {%- comment -%} Preconnect to critical domains {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     
-    {%- comment -%} Load DM Serif Display for hero headlines {%- endcomment -%}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    {%- comment -%} Preload LCP Image (Hero V2) {%- endcomment -%}
+    {%- if template.name == 'index' -%}
+      <link rel="preload" as="image" href="{{ 'hero-1.jpg' | asset_url }}" imagesrcset="{{ 'hero-1.jpg' | asset_url }} 800w, {{ 'hero-1.jpg' | asset_url }} 1200w" imagesizes="(min-width: 768px) 50vw, 100vw" fetchpriority="high">
+    {%- endif -%}
 
     <title>
       {{ page_title }}
@@ -33,49 +33,60 @@
 
     {% render 'meta-tags' %}
 
-    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'recently-viewed.js' | asset_url }}" defer="defer"></script>
-    {{ content_for_header }}
+    {%- comment -%} Critical CSS (Inlined for LCP) {%- endcomment -%}
 
-    {%- liquid
-      assign body_font_bold = settings.body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = settings.body_font | font_modify: 'style', 'italic'
-      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-    %}
 
     {% style %}
-      {{ settings.heading_font | font_face: font_display: 'swap' }}
-      {{ settings.body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
-      {{ body_font_italic | font_face: font_display: 'swap' }}
-      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-
       :root {
-        --font-heading-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
-        --font-heading-weight: {{ settings.heading_font.weight }};
-        --font-heading-style: {{ settings.heading_font.style }};
-        --font-body-family: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
-        --font-body-weight: {{ settings.body_font.weight }};
-        --font-body-style: {{ settings.body_font.style }};
-        --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+        --font-heading-family: 'Tenor Sans', sans-serif;
+        --font-heading-weight: 400;
+        --font-heading-style: normal;
+        --font-body-family: 'Inter', sans-serif;
+        --font-body-weight: 400;
+        --font-body-style: normal;
+        --font-body-weight-bold: 600;
 
         --color-accent: {{ settings.accent_color }};
         --color-text: {{ settings.text_color }};
         --color-background: {{ settings.background_color }};
       }
+      
+      /* Critical Base Styles */
+      body { margin: 0; font-family: var(--font-body-family); font-size: 1rem; line-height: 1.5; color: var(--color-text); background: var(--color-background); }
+      img { max-width: 100%; height: auto; display: block; }
+      .page-width { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; }
+      .visually-hidden { position: absolute !important; overflow: hidden; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; clip: rect(0 0 0 0); word-wrap: normal !important; }
+      
+      /* Critical Header Styles */
+      .site-header { position: sticky; top: 0; left: 0; width: 100%; z-index: 50; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.04); }
+      .header__wrapper { height: 70px; display: flex; align-items: center; }
+      .header__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 0 auto; padding: 0 1.5rem; max-width: 1280px; }
+      .header__nav { flex: 1; display: flex; justify-content: center; }
+      .header__nav-list { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
+      .header__nav-link { font-size: 15px; font-weight: 500; color: #1a1a1a; text-decoration: none; text-transform: uppercase; letter-spacing: 0.04em; }
+      @media (max-width: 989px) { .hidden-mobile { display: none; } }
+      @media (min-width: 990px) { .hidden-desktop-up { display: none; } }
     {% endstyle %}
 
-    {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'animations.css' | asset_url | stylesheet_tag }}
-    {{ 'performance.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Deferred Non-Critical CSS {%- endcomment -%}
+    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'animations.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'performance.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript>{{ 'base.css' | asset_url | stylesheet_tag }}</noscript>
+
+    {%- comment -%} Deferred Scripts {%- endcomment -%}
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'recently-viewed.js' | asset_url }}" defer="defer"></script>
 
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
     
     {%- comment -%} SEO Structured Data {%- endcomment -%}
     {% render 'structured-data', type: 'website' %}
     {% render 'structured-data', type: 'organization' %}
+
+    {{ content_for_header }}
   </head>
 
   <body class="template-{{ template.name | handle }} template-{{ template.suffix | handle }}">
