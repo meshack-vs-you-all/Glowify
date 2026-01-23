@@ -1,6 +1,6 @@
-<div class="product-card" data-product-card>
-  <a href="{{ product.url }}" class="product-card__link">
-    <div class="product-card__image-wrapper">
+<div class="product-card card-hover-premium group" data-product-card>
+  <div class="product-card__image-wrapper">
+    <a href="{{ product.url }}" class="product-card__link-image" aria-label="{{ product.title }}">
       {%- if product.featured_image != blank -%}
         <img 
           src="{{ product.featured_image | image_url: width: 500 }}"
@@ -16,184 +16,76 @@
           width="500"
           height="500"
         >
+        {%- comment -%} Secondary Image Hover {%- endcomment -%}
+        {%- if product.images[1] != blank -%}
+          <img 
+            src="{{ product.images[1] | image_url: width: 500 }}"
+            alt="{{ product.images[1].alt | escape }}"
+            loading="lazy"
+            class="product-card__image product-card__image--secondary"
+            width="500"
+            height="500"
+          >
+        {%- endif -%}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
       {%- endif -%}
-      
-      {%- if product.compare_at_price > product.price -%}
-        <span class="product-card__badge">{{ 'products.product.on_sale' | t }}</span>
-      {%- endif -%}
+    </a>
+    
+    {%- if product.compare_at_price > product.price -%}
+      <span class="product-card__badge">{{ 'products.product.on_sale' | t }}</span>
+    {%- endif -%}
 
-      <div class="product-card__overlay">
-        <button type="button" class="product-card__quick-view" data-quick-view="{{ product.id }}">
-          {{ 'products.product.quick_view' | t }}
+    <!-- Quick Add Button (Reveals on Hover) -->
+    <div class="product-card__actions">
+      {%- form 'product', product, class: 'product-card__form' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button 
+          type="submit" 
+          name="add" 
+          class="button button--primary product-card__quick-add"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {%- if product.available -%}
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          {%- else -%}
+            <span>{{ 'products.product.sold_out' | t }}</span>
+          {%- endif -%}
         </button>
-      </div>
+      {%- endform -%}
     </div>
+  </div>
 
-    <div class="product-card__content">
-      <h3 class="product-card__title">{{ product.title }}</h3>
-      <div class="product-card__price">
-        {%- if product.compare_at_price > product.price -%}
-          <span class="product-card__price--sale">{{ product.price | money }}</span>
-          <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
-        {%- else -%}
-          <span>{{ product.price | money }}</span>
+  <div class="product-card__content">
+    {%- if show_swatches -%}
+      {%- for option in product.options_with_values -%}
+        {%- if option.name == 'Color' or option.name == 'Colour' -%}
+          <div class="product-card__swatches">
+            {%- for value in option.values limit: 5 -%}
+              <div class="product-card__swatch" title="{{ value }}" {% render 'color-swatch', value: value %}></div>
+            {%- endfor -%}
+            {%- if option.values.size > 5 -%}
+              <span class="product-card__swatch-more">+{{ option.values.size | minus: 5 }}</span>
+            {%- endif -%}
+          </div>
         {%- endif -%}
-      </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    
+    <div class="product-card__price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__price--sale">{{ product.price | money }}</span>
+        <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span>{{ product.price | money }}</span>
+      {%- endif -%}
     </div>
-  </a>
+  </div>
 </div>
 
-<style>
-  .product-card {
-    position: relative;
-    background: var(--color-white);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                border-color 0.3s var(--ease-in-out);
-    border: 1px solid transparent;
-  }
 
-  .product-card:hover,
-  .product-card:focus-within {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 
-                0 4px 12px rgba(124, 152, 133, 0.15),
-                0 0 0 2px rgba(124, 152, 133, 0.2);
-    border-color: rgba(124, 152, 133, 0.4);
-  }
-
-  .product-card:focus-within {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-  }
-
-  .product-card__link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .product-card__image-wrapper {
-    position: relative;
-    padding-top: 100%; /* 1:1 square aspect ratio for uniform display */
-    background-color: var(--color-light-gray);
-    overflow: hidden;
-  }
-
-  .product-card__image,
-  .product-card__placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 30%; /* Crop to focus on stroller (upper-middle portion) */
-    transition: transform var(--duration-slow) var(--ease-in-out);
-  }
-
-  .product-card:hover .product-card__image,
-  .product-card:focus-within .product-card__image {
-    transform: scale(1.08);
-  }
-
-  .product-card__image {
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .product-card__badge {
-    position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
-    background-color: var(--color-accent);
-    color: var(--color-white);
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-semibold);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--radius-sm);
-    z-index: 2;
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-nav);
-  }
-
-  .product-card__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(26, 26, 26, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity var(--duration-normal) var(--ease-in-out);
-    z-index: 1;
-  }
-
-  .product-card:hover .product-card__overlay,
-  .product-card:focus-within .product-card__overlay {
-    opacity: 1;
-  }
-
-  .product-card__overlay {
-    backdrop-filter: blur(4px);
-  }
-
-  .product-card__quick-view {
-    background: var(--color-white);
-    color: var(--color-text-primary);
-    border: none;
-    padding: var(--space-md) var(--space-xl);
-    border-radius: var(--radius-md);
-    font-weight: var(--font-weight-semibold);
-    cursor: pointer;
-    transition: all var(--duration-fast) var(--ease-in-out);
-  }
-
-  .product-card__quick-view:hover {
-    background: var(--color-accent);
-    color: var(--color-white);
-    transform: translateY(-2px);
-  }
-
-  .product-card__content {
-    padding: var(--space-lg);
-  }
-
-  .product-card__title {
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-sm);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .product-card__price {
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-  }
-
-  .product-card__price--sale {
-    color: var(--color-accent);
-    margin-right: var(--space-sm);
-  }
-
-  .product-card__price--compare {
-    text-decoration: line-through;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-regular);
-  }
-</style>
 
