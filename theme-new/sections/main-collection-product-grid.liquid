@@ -1,0 +1,287 @@
+{%- comment -%}
+  Main Collection Grid Section
+  Handles dynamic filtering, sorting, and product grid display.
+{%- endcomment -%}
+
+{{ 'main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection.js' | asset_url }}" defer="defer"></script>
+
+<div class="collection-page section" data-section-id="{{ section.id }}" data-section-type="collection-grid">
+  <div class="page-width">
+    {%- comment -%} Collection Banner {%- endcomment -%}
+    {%- if section.settings.show_banner and collection.image != blank -%}
+      <div class="collection-banner">
+        <img 
+          src="{{ collection.image | image_url: width: 1920 }}"
+          srcset="{{ collection.image | image_url: width: 960 }} 960w,
+                  {{ collection.image | image_url: width: 1920 }} 1920w"
+          sizes="100vw"
+          alt="{{ collection.title | escape }}"
+          class="collection-banner__image"
+          loading="eager"
+        >
+        <div class="collection-banner__overlay"></div>
+        <div class="collection-banner__content">
+          <h1 class="collection-banner__title">{{ collection.title }}</h1>
+          {%- if collection.description != blank -%}
+            <p class="collection-banner__description">{{ collection.description }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="collection-header">
+        <h1 class="collection-page__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="collection-page__description">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Layout: Sidebar (Left) + Product Grid (Right) {%- endcomment -%}
+    <div class="collection-page__content">
+      
+      {%- comment -%} Sidebar Column {%- endcomment -%}
+      {%- if section.settings.enable_filtering -%}
+        <aside class="collection-page__filters" data-collection-filters id="CollectionFilters">
+            
+            {%- comment -%} Sidebar Categories (New) {%- endcomment -%}
+            {%- if section.settings.sidebar_menu != blank -%}
+              <nav class="collection-sidebar-nav">
+                <h3 class="collection-sidebar-title">{{ 'collections.filters.categories' | t | default: 'Categories' }}</h3>
+                <ul class="collection-sidebar-menu">
+                  {%- for link in linklists[section.settings.sidebar_menu].links -%}
+                    <li class="collection-sidebar-item {% if link.active %}active{% endif %}">
+                      <a href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+
+          <form class="filters-form" data-filters-form>
+             <div class="collection-page__filters-header">
+              <h2 class="collection-page__filters-title">{{ 'collections.filters.title' | t }}</h2>
+              <button type="button" class="collection-page__filters-close" data-filter-close aria-label="{{ 'general.accessibility.close' | t }}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="icon">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="collection-page__filters-body">
+              {%- for filter in collection.filters -%}
+                <details class="filter-group" open>
+                  <summary class="filter-group__summary">
+                    <span>{{ filter.label }}</span>
+                    <svg class="icon-plus" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                  </summary>
+                  
+                  <div class="filter-group__content">
+                    {%- case filter.type -%}
+                      {%- when 'boolean' or 'list' -%}
+                        <ul class="filter-list">
+                          {%- for value in filter.values -%}
+                            <li class="filter-item">
+                              <label class="filter-checkbox {% if value.count == 0 and value.active == false %}filter-checkbox--disabled{% endif %}">
+                                <input type="checkbox"
+                                  name="{{ value.param_name }}"
+                                  value="{{ value.value }}"
+                                  {% if value.active %}checked{% endif %}
+                                  {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                                >
+                                <span class="checkmark"></span>
+                                <span class="filter-label">{{ value.label | escape }}</span>
+                                <span class="filter-count">({{ value.count }})</span>
+                              </label>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      
+                      {%- when 'price_range' -%}
+                        <div class="filter-price">
+                          <div class="price-input-group">
+                            <label class="price-label">{{ 'collections.filters.from' | t }}</label>
+                            <div class="price-input-wrapper">
+                              <span class="currency-symbol">{{ cart.currency.symbol }}</span>
+                              <input 
+                                name="{{ filter.min_value.param_name }}"
+                                id="Filter-{{ filter.min_value.param_name }}"
+                                {% if filter.min_value.value -%}
+                                  value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                                {%- endif %}
+                                type="number"
+                                placeholder="0"
+                                min="0"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              >
+                            </div>
+                          </div>
+                          <div class="price-input-group">
+                            <label class="price-label">{{ 'collections.filters.to' | t }}</label>
+                            <div class="price-input-wrapper">
+                              <span class="currency-symbol">{{ cart.currency.symbol }}</span>
+                              <input 
+                                name="{{ filter.max_value.param_name }}"
+                                id="Filter-{{ filter.max_value.param_name }}"
+                                {% if filter.max_value.value -%}
+                                  value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                                {%- endif %}
+                                type="number"
+                                placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                min="0"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              >
+                            </div>
+                          </div>
+                        </div>
+                    {%- endcase -%}
+                  </div>
+                </details>
+              {%- endfor -%}
+              
+              <div class="filter-actions">
+                 <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="button button--secondary full-width">{{ 'collections.filters.clear' | t }}</a>
+                 <button type="submit" class="button button--primary full-width">{{ 'collections.filters.apply' | t }}</button>
+              </div>
+            </div>
+          </form>
+        </aside>
+        <div class="collection-page__filters-overlay" data-filter-close></div>
+      {%- endif -%}
+
+      {%- comment -%} Product Grid Column {%- endcomment -%}
+      <div class="collection-page__products" id="ProductGridContainer">
+        
+        {%- comment -%} Toolbar (Moved inside Grid Column) {%- endcomment -%}
+        <div class="collection-page__toolbar">
+          <div class="collection-page__toolbar-left">
+            {%- comment -%} Mobile Filter Toggle {%- endcomment -%}
+            {%- if section.settings.enable_filtering -%}
+              <button class="collection-page__filter-toggle mobile-only" data-filter-toggle aria-label="{{ 'collections.filters.title' | t }}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="icon icon-filter">
+                  <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ 'collections.filters.filter' | t }}
+              </button>
+            {%- endif -%}
+            
+            <div class="collection-page__count" data-collection-count>
+              {{ collection.products_count }} {{ 'collections.general.products' | t }}
+            </div>
+          </div>
+          
+          <div class="collection-page__toolbar-right">
+            {%- if section.settings.enable_sorting -%}
+              <div class="collection-page__sort-wrapper">
+                <label for="SortBy" class="collection-page__sort-label">{{ 'collections.sorting.title' | t }}</label>
+                <div class="select-wrapper">
+                  <select name="sort_by" id="SortBy" class="collection-page__sort" data-collection-sort aria-label="{{ 'collections.sorting.title' | t }}">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    <option value="manual" {% if sort_by == 'manual' %}selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+                    <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+                    <option value="price-descending" {% if sort_by == 'price-descending' %}selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+                    <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected="selected"{% endif %}>{{ 'collections.sorting.alphabetical_asc' | t }}</option>
+                    <option value="title-descending" {% if sort_by == 'title-descending' %}selected="selected"{% endif %}>{{ 'collections.sorting.alphabetical_desc' | t }}</option>
+                    <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+                    <option value="created-descending" {% if sort_by == 'created-descending' %}selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+                  </select>
+                  <svg class="icon-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- paginate collection.products by section.settings.products_per_page -%}
+          <div class="collection-page__grid" data-collection-grid style="--grid-columns: {{ section.settings.columns_desktop }}">
+            {%- for product in collection.products -%}
+              {% render 'product-card', product: product, show_quick_add: section.settings.show_quick_add, show_swatches: section.settings.show_swatches %}
+            {%- else -%}
+              <p class="collection-page__empty">{{ 'collections.general.no_products' | t }}</p>
+            {%- endfor -%}
+          </div>
+          
+          {%- if paginate.next -%}
+            <div class="pagination-wrapper">
+              <button class="button button--secondary load-more-btn" data-load-more data-next-url="{{ paginate.next.url }}">
+                <span>Load More</span>
+                <span class="loading-spinner hidden"></span>
+              </button>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show collection banner",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Filtering & Sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+       "type": "link_list",
+       "id": "sidebar_menu",
+       "label": "Sidebar Menu",
+       "info": "Select a menu to display product categories in the sidebar."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show color swatches",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

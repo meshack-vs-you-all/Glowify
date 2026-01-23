@@ -1,343 +1,146 @@
 /**
  * Collection Page Functionality
- * Handles sorting, filtering, view toggle, and load more
+ * Handles sorting, filtering, and view toggle using Shopify URL parameters
  */
 
-(function() {
+(function () {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const collectionPage = document.querySelector('[data-collection-page]');
-    if (!collectionPage) return;
-
-    const filterToggle = document.querySelector('[data-filter-toggle]');
-    const filters = document.querySelector('[data-collection-filters]');
-    const filterClose = document.querySelector('[data-filter-close]');
-    const viewToggle = document.querySelectorAll('[data-view]');
-    const grid = document.querySelector('[data-collection-grid]');
+  document.addEventListener('DOMContentLoaded', function () {
+    const filterForm = document.querySelector('[data-filters-form]');
     const sortSelect = document.querySelector('[data-collection-sort]');
-    const priceFilter = document.querySelector('[data-price-filter]');
-    const availabilityFilters = document.querySelectorAll('[data-filter-availability]');
-    const filterApply = document.querySelector('[data-filter-apply]');
-    const filterClear = document.querySelector('[data-filter-clear]');
-    const loadMoreBtn = document.querySelector('[data-load-more]');
-    const countDisplay = document.querySelector('[data-collection-count]');
+    const filterToggle = document.querySelector('[data-filter-toggle]');
+    const filterContainer = document.querySelector('[data-collection-filters]');
+    const filterClose = document.querySelector('[data-filter-close]');
 
-    let allProducts = [];
-    let filteredProducts = [];
-    let currentSort = 'manual';
-    let currentFilters = {
-      priceMin: 0,
-      priceMax: 1000,
-      availability: []
-    };
+    // bind events
+    if (filterForm) {
+      filterForm.addEventListener('input', debounce((e) => {
+        // Only submit on change for text/number inputs after delay
+        submitForm();
+      }, 500));
 
-    // Initialize products array
-    function initProducts() {
-      const productCards = grid.querySelectorAll('.product-card');
-      allProducts = Array.from(productCards).map(card => {
-        const link = card.querySelector('a[href*="/products/"]');
-        const priceEl = card.querySelector('.product-card__price');
-        let price = 0;
-        
-        // Extract price - check for sale price first, then regular price
-        if (priceEl) {
-          const salePrice = priceEl.querySelector('.product-card__price--sale');
-          const regularPrice = priceEl.querySelector('span:not(.product-card__price--compare)');
-          const priceText = salePrice ? salePrice.textContent : (regularPrice ? regularPrice.textContent : priceEl.textContent);
-          price = extractPrice(priceText);
-        }
-        
-        // Check availability - if badge says "Sale" it's available, otherwise check if sold out
-        const badge = card.querySelector('.product-card__badge');
-        const isAvailable = !badge || !badge.textContent.toLowerCase().includes('sold');
-        
-        return {
-          element: card,
-          title: card.querySelector('.product-card__title')?.textContent.trim() || '',
-          price: price,
-          available: isAvailable,
-          url: link?.href || ''
-        };
-      });
-      filteredProducts = [...allProducts];
-    }
-
-    // Extract price from text (handles $, commas, etc.)
-    function extractPrice(text) {
-      const match = text.match(/[\d,]+\.?\d*/);
-      if (match) {
-        return parseFloat(match[0].replace(/,/g, ''));
-      }
-      return 0;
-    }
-
-    // Filter toggle
-    if (filterToggle && filters) {
-      filterToggle.addEventListener('click', () => {
-        filters.classList.toggle('active');
-      });
-    }
-
-    if (filterClose && filters) {
-      filterClose.addEventListener('click', () => {
-        filters.classList.remove('active');
-      });
-    }
-
-    // View toggle
-    if (viewToggle.length > 0) {
-      viewToggle.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const view = this.dataset.view;
-          viewToggle.forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          
-          if (grid) {
-            grid.className = `collection-page__grid collection-page__grid--${view}`;
-          }
-        });
-      });
-    }
-
-    // Price filter sliders
-    if (priceFilter) {
-      const priceMin = priceFilter.querySelector('[data-price-min]');
-      const priceMax = priceFilter.querySelector('[data-price-max]');
-      const priceMinDisplay = priceFilter.querySelector('[data-price-min-display]');
-      const priceMaxDisplay = priceFilter.querySelector('[data-price-max-display]');
-
-      if (priceMin && priceMax) {
-        // Set max based on actual product prices
-        const prices = allProducts.map(p => p.price).filter(p => p > 0);
-        const maxPrice = prices.length > 0 ? Math.ceil(Math.max(...prices) / 100) * 100 : 1000;
-        const minPrice = prices.length > 0 ? Math.floor(Math.min(...prices) / 100) * 100 : 0;
-        
-        priceMin.min = minPrice;
-        priceMin.max = maxPrice;
-        priceMax.min = minPrice;
-        priceMax.max = maxPrice;
-        priceMin.value = minPrice;
-        priceMax.value = maxPrice;
-        currentFilters.priceMin = minPrice;
-        currentFilters.priceMax = maxPrice;
-
-        // Update displays
-        function updatePriceDisplays() {
-          if (priceMinDisplay) {
-            priceMinDisplay.textContent = `$${parseInt(priceMin.value)}`;
-          }
-          if (priceMaxDisplay) {
-            const maxVal = parseInt(priceMax.value);
-            priceMaxDisplay.textContent = maxVal >= maxPrice ? `$${maxVal}+` : `$${maxVal}`;
-          }
-          currentFilters.priceMin = parseFloat(priceMin.value);
-          currentFilters.priceMax = parseFloat(priceMax.value);
-        }
-
-        priceMin.addEventListener('input', updatePriceDisplays);
-        priceMax.addEventListener('input', updatePriceDisplays);
-        updatePriceDisplays();
-      }
-    }
-
-    // Availability filters
-    if (availabilityFilters.length > 0) {
-      availabilityFilters.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-          const value = this.value;
-          if (this.checked) {
-            if (!currentFilters.availability.includes(value)) {
-              currentFilters.availability.push(value);
-            }
-          } else {
-            currentFilters.availability = currentFilters.availability.filter(v => v !== value);
-          }
-        });
-      });
-    }
-
-    // Apply filters
-    if (filterApply) {
-      filterApply.addEventListener('click', function() {
-        applyFilters();
-        if (filters) {
-          filters.classList.remove('active');
+      filterForm.addEventListener('change', (e) => {
+        // Immediate submit for checkboxes/radio
+        if (e.target.type !== 'number' && e.target.type !== 'text') {
+          submitForm();
         }
       });
-    }
 
-    // Clear filters
-    if (filterClear) {
-      filterClear.addEventListener('click', function() {
-        // Reset price sliders
-        if (priceFilter) {
-          const priceMin = priceFilter.querySelector('[data-price-min]');
-          const priceMax = priceFilter.querySelector('[data-price-max]');
-          const maxPrice = Math.max(...allProducts.map(p => p.price), 1000);
-          if (priceMin) priceMin.value = 0;
-          if (priceMax) priceMax.value = maxPrice;
-          currentFilters.priceMin = 0;
-          currentFilters.priceMax = maxPrice;
-        }
-
-        // Reset availability checkboxes
-        availabilityFilters.forEach(checkbox => {
-          checkbox.checked = false;
-        });
-        currentFilters.availability = [];
-
-        applyFilters();
-        if (filters) {
-          filters.classList.remove('active');
-        }
+      // Prevent double submit on price inputs
+      filterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitForm();
       });
     }
 
-    // Apply filters function
-    function applyFilters() {
-      filteredProducts = allProducts.filter(product => {
-        // Price filter
-        const priceMatch = product.price >= currentFilters.priceMin && 
-                          product.price <= currentFilters.priceMax;
-
-        // Availability filter
-        let availabilityMatch = true;
-        if (currentFilters.availability.length > 0) {
-          if (currentFilters.availability.includes('in_stock')) {
-            availabilityMatch = product.available;
-          } else if (currentFilters.availability.includes('out_of_stock')) {
-            availabilityMatch = !product.available;
-          }
-          // If both are selected, show all
-          if (currentFilters.availability.includes('in_stock') && 
-              currentFilters.availability.includes('out_of_stock')) {
-            availabilityMatch = true;
-          }
-        }
-
-        return priceMatch && availabilityMatch;
-      });
-
-      // Sort filtered products
-      sortProducts(filteredProducts);
-      renderProducts(filteredProducts);
-      updateCount();
-    }
-
-    // Sort products
-    function sortProducts(products) {
-      const sorted = [...products];
-      
-      switch(currentSort) {
-        case 'price-ascending':
-          sorted.sort((a, b) => a.price - b.price);
-          break;
-        case 'price-descending':
-          sorted.sort((a, b) => b.price - a.price);
-          break;
-        case 'title-ascending':
-          sorted.sort((a, b) => a.title.localeCompare(b.title));
-          break;
-        case 'title-descending':
-          sorted.sort((a, b) => b.title.localeCompare(a.title));
-          break;
-        case 'created-ascending':
-          // Fallback to manual if no date available
-          break;
-        case 'created-descending':
-          // Fallback to manual if no date available
-          break;
-        case 'manual':
-        default:
-          // Keep original order
-          break;
-      }
-
-      return sorted;
-    }
-
-    // Render products
-    function renderProducts(products) {
-      if (!grid) return;
-
-      // Hide all products
-      allProducts.forEach(p => {
-        p.element.style.display = 'none';
-      });
-
-      // Show filtered products
-      products.forEach(p => {
-        p.element.style.display = '';
-      });
-
-      // Show empty message if no products
-      const emptyMsg = grid.querySelector('.collection-page__empty');
-      if (products.length === 0) {
-        if (!emptyMsg) {
-          const empty = document.createElement('p');
-          empty.className = 'collection-page__empty';
-          empty.textContent = 'No products found';
-          grid.appendChild(empty);
-        }
-      } else if (emptyMsg) {
-        emptyMsg.remove();
-      }
-    }
-
-    // Update product count
-    function updateCount() {
-      if (countDisplay) {
-        const count = filteredProducts.length;
-        const text = count === 1 ? 'product' : 'products';
-        countDisplay.textContent = `${count} ${text}`;
-      }
-    }
-
-    // Sort select handler - Use Shopify's native sorting via URL
+    // Sort Select
     if (sortSelect) {
-      // Set current sort value from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const sortParam = urlParams.get('sort_by');
-      if (sortParam) {
-        sortSelect.value = sortParam;
-        currentSort = sortParam;
+      sortSelect.addEventListener('change', () => {
+        // Determine if we should update a hidden input in the form or redirect
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', sortSelect.value);
+        window.location.href = url.toString();
+      });
+    }
+
+    // Mobile Drawer Toggles
+    if (filterToggle && filterContainer) {
+      filterToggle.addEventListener('click', () => {
+        filterContainer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    if (filterClose && filterContainer) {
+      filterClose.addEventListener('click', () => {
+        filterContainer.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      // Close on overlay click
+      const overlay = document.querySelector('[data-filter-close]:not(button)');
+      if (overlay) {
+        overlay.addEventListener('click', () => {
+          filterContainer.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }
+    }
+
+    // Load More Functionality
+    const loadMoreBtn = document.querySelector('[data-load-more]');
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', async () => {
+        const nextUrl = loadMoreBtn.dataset.nextUrl;
+        if (!nextUrl) return;
+
+        // Loading state
+        loadMoreBtn.classList.add('loading');
+        loadMoreBtn.querySelector('span:not(.loading-spinner)').classList.add('hidden');
+        loadMoreBtn.querySelector('.loading-spinner').classList.remove('hidden');
+
+        try {
+          const response = await fetch(nextUrl);
+          const text = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'text/html');
+
+          // Append Products
+          const newProducts = doc.querySelectorAll('.product-card');
+          const grid = document.querySelector('[data-collection-grid]');
+          newProducts.forEach(product => {
+            // Ensure animation classes are reset so they fade in
+            grid.appendChild(product);
+          });
+
+          // Update Load More Button
+          const newBtn = doc.querySelector('[data-load-more]');
+          if (newBtn && newBtn.dataset.nextUrl) {
+            loadMoreBtn.dataset.nextUrl = newBtn.dataset.nextUrl;
+            loadMoreBtn.classList.remove('loading');
+            loadMoreBtn.querySelector('span:not(.loading-spinner)').classList.remove('hidden');
+            loadMoreBtn.querySelector('.loading-spinner').classList.add('hidden');
+          } else {
+            loadMoreBtn.remove(); // No more pages
+          }
+
+          // Re-init any product card listeners (if needed)
+
+        } catch (e) {
+          console.error('Error loading more products:', e);
+          loadMoreBtn.classList.remove('loading');
+        }
+      });
+    }
+
+    // Helper: Debounce
+    function debounce(fn, wait) {
+      let t;
+      return function () {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, arguments), wait);
+      };
+    }
+
+    // Helper: Submit Form
+    function submitForm() {
+      const formData = new FormData(filterForm);
+      const searchParams = new URLSearchParams(formData).toString();
+      const url = new URL(window.location.href);
+
+      // Keep sort_by if it exists
+      const currentSort = url.searchParams.get('sort_by');
+
+      // Construct new URL
+      let newPath = window.location.pathname + '?' + searchParams;
+      if (currentSort) {
+        newPath += '&sort_by=' + currentSort;
       }
 
-      sortSelect.addEventListener('change', function() {
-        currentSort = this.value;
-        
-        // Update URL with sort parameter
-        const url = new URL(window.location.href);
-        if (this.value === 'manual') {
-          url.searchParams.delete('sort_by');
-        } else {
-          url.searchParams.set('sort_by', this.value);
-        }
-        
-        // Reload page with new sort (Shopify handles server-side sorting)
-        window.location.href = url.toString();
-      });
+      // Navigate
+      window.location.href = newPath;
     }
-
-    // Load more functionality (if pagination exists)
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', function(e) {
-        // If it's a link, let it navigate naturally
-        if (this.tagName === 'A') {
-          return; // Allow default link behavior
-        }
-        // Otherwise, navigate to next page
-        const url = new URL(window.location.href);
-        const currentPage = parseInt(url.searchParams.get('page') || '1');
-        url.searchParams.set('page', currentPage + 1);
-        window.location.href = url.toString();
-      });
-    }
-
-    // Initialize
-    initProducts();
-    updateCount();
   });
 })();
 
