@@ -195,10 +195,15 @@
     const wasDismissedRecently = popupDismissedTime && parseInt(popupDismissedTime) > sevenDaysAgo;
     
     function showPopup() {
-      if (popupDismissed || popupShown || wasDismissedRecently) return;
-      popup.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      localStorage.setItem('discount-popup-shown', 'true');
+      try {
+        if (popupDismissed || popupShown || wasDismissedRecently) return;
+        popup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        localStorage.setItem('discount-popup-shown', 'true');
+      } catch (e) {
+        console.error('Discount popup error:', e);
+        document.body.style.overflow = ''; // Reset on error
+      }
     }
 
     function hidePopup() {
