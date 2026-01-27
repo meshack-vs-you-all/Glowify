@@ -7,6 +7,8 @@
 <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
 
 <div class="product-page section" data-section-id="{{ section.id }}" data-product-id="{{ product.id }}">
+  <script src="{{ 'product-gallery.js' | asset_url }}" defer="defer"></script>
+
   <div class="page-width">
     <!-- Breadcrumbs (Minimal) -->
     <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -19,200 +21,216 @@
       </ol>
     </nav>
 
-    <div class="product-layout">
-      <!-- Gallery Column (Left) -->
-      <div class="product-gallery__wrapper">
-        <div class="product-gallery sticky-gallery">
-          <div class="product-gallery__main" data-gallery-main>
-            {%- if product.featured_image -%}
-              <div class="product-gallery__image-container">
+    <div class="product-layout product-gallery-section {% if product.images.size <= 1 %}product-layout--single-image{% endif %}">
+      <!-- Column A: Thumbnails (Left, Sticky) -->
+      {%- if product.images.size > 1 -%}
+        <div class="product-thumbnails-col">
+          {%- for image in product.images -%}
+            <button 
+              class="product-thumbnail {% if forloop.first %}active{% endif %}"
+              data-thumbnail-id="{{ image.id }}"
+              data-image-index="{{ forloop.index0 }}"
+              aria-label="View Image {{ forloop.index }}"
+            >
+              <img src="{{ image | image_url: width: 160 }}" alt="{{ image.alt | escape }}" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <!-- Empty div to maintain grid if only 1 image (optional, or hide via CSS) -->
+        <div class="product-thumbnails-col" style="display:none;"></div>
+      {%- endif -%}
+
+      <!-- Column B: Content (Right) = Main Image + Info -->
+      <div class="product-content-col">
+        
+        <!-- 1. Main Images (Swipeable on Mobile) -->
+        <div class="product-main-image-container">
+          <div class="product-main-images-track">
+            {%- for image in product.images -%}
+              <div class="product-main-image-item {% if forloop.first %}active{% endif %}" data-main-image-item data-image-index="{{ forloop.index0 }}">
                 <img 
-                  src="{{ product.featured_image | image_url: width: 1400 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  loading="eager"
-                  class="product-gallery__image"
-                  data-main-image
+                  src="{{ image | image_url: width: 1400 }}"
+                  alt="{{ image.alt | escape }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="1400"
+                  height="{{ 1400 | divided_by: image.aspect_ratio | ceil }}"
                 >
               </div>
-            {%- endif -%}
+            {%- else -%}
+              <!-- Fallback for no images -->
+               <div class="product-main-image-item active">
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+               </div>
+            {%- endfor -%}
           </div>
-          
-          <!-- Thumbnails (Editorial Grid) -->
-          {%- if product.images.size > 1 -%}
-            <div class="product-gallery__thumbs">
-              {%- for image in product.images -%}
-                <button 
-                  class="product-gallery__thumb {% if forloop.first %}active{% endif %}"
-                  data-thumbnail-id="{{ image.id }}"
-                  data-image-url="{{ image | image_url: width: 1400 }}"
-                  aria-label="View Image {{ forloop.index }}"
-                >
-                  <img src="{{ image | image_url: width: 120 }}" alt="{{ image.alt | escape }}" loading="lazy">
-                </button>
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
         </div>
-      </div>
 
-      <!-- Info Column (Right) -->
-      <div class="product-info__wrapper">
-        <div class="product-info">
-          
-          <!-- Header Block -->
-          <div class="product-header">
-            {%- if section.settings.show_vendor -%}
-              <div class="product-vendor">{{ product.vendor }}</div>
-            {%- endif -%}
+        <!-- 2. Product Info Stack -->
+        <div class="product-info-wrapper">
+          <div class="product-info">
             
-            <h1 class="product-title">{{ product.title }}</h1>
-            
-            <div class="product-price-container">
-              <div class="product-price">
-                {%- if product.compare_at_price > product.price -%}
-                  <span class="price price--sale">{{ product.price | money }}</span>
-                  <span class="price price--compare">{{ product.compare_at_price | money }}</span>
-                {%- else -%}
-                  <span class="price">{{ product.price | money }}</span>
+            <!-- Header Block -->
+            <div class="product-header">
+              {%- if section.settings.show_vendor -%}
+                <div class="product-vendor">{{ product.vendor }}</div>
+              {%- endif -%}
+              
+              <h1 class="product-title">{{ product.title }}</h1>
+              
+                <div class="product-price-container price-component price-component--large">
+                  <div class="product-price">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="price-item price-item--sale">{{ product.price | money }}</span>
+                      <span class="price-item price-item--compare">{{ product.compare_at_price | money }}</span>
+                    {%- else -%}
+                      <span class="price-item price-item--regular">{{ product.price | money }}</span>
+                    {%- endif -%}
+                  </div>
+                
+                <!-- Review Badge (Subtle) -->
+                {%- if section.settings.show_reviews -%}
+                  <div class="product-reviews-badge">
+                    <span class="stars">★★★★★</span>
+                    <span class="text">4.9 (128 reviews)</span>
+                  </div>
                 {%- endif -%}
               </div>
-              
-              <!-- Review Badge (Subtle) -->
-              {%- if section.settings.show_reviews -%}
-                <div class="product-reviews-badge">
-                  <span class="stars">★★★★★</span>
-                  <span class="text">4.9 (128 reviews)</span>
-                </div>
-              {%- endif -%}
             </div>
-          </div>
-
-          <!-- Product Form -->
-          {%- form 'product', product, class: 'product-form' -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
             
-            <!-- Variants -->
-            {%- unless product.has_only_default_variant -%}
-              <div class="product-options">
-                {%- for option in product.options_with_values -%}
-                  {%- if option.name == 'Color' or option.name == 'Colour' -%}
-                    <div class="option-group option-group--color">
-                      <label class="option-label">
-                        Color: <span class="option-current-value">{{ option.selected_value }}</span>
-                      </label>
-                      <div class="option-values">
-                        {%- for value in option.values -%}
-                          <label class="color-swatch {% if option.selected_value == value %}active{% endif %}">
-                            <input type="radio" name="options[{{ option.name }}]" value="{{ value }}" {% if option.selected_value == value %}checked{% endif %}>
-                            <span class="swatch-visual" {% render 'color-swatch', value: value %}></span>
-                          </label>
-                        {%- endfor -%}
+            <!-- Overview Block -->
+            {%- if product.description != blank -%}
+              <div class="product-overview">
+                {{ product.description | strip_html | truncatewords: 30 }}
+              </div>
+            {%- endif -%}
+
+            <!-- Highlights Grid -->
+            {%- if section.blocks.size > 0 -%}
+              <div class="product-highlights">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'highlight' -%}
+                    <div class="highlight-item" {{ block.shopify_attributes }}>
+                      {%- if block.settings.icon_svg != blank -%}
+                        <div class="highlight-icon">{{ block.settings.icon_svg }}</div>
+                      {%- else -%}
+                        <div class="highlight-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      {%- endif -%}
+                      <div class="highlight-text">
+                        <span class="highlight-title">{{ block.settings.title }}</span>
                       </div>
                     </div>
-                  {%- else -%}
-                     <div class="option-group">
-                       <div class="option-header">
-                         <label class="option-label">{{ option.name }}</label>
-                         {%- if option.name == 'Size' -%}
-                           <button type="button" class="size-guide-btn" data-modal="size-guide">Size Guide</button>
-                         {%- endif -%}
-                       </div>
-                       <div class="option-chips">
-                         {%- for value in option.values -%}
-                           <label class="chip-label {% if option.selected_value == value %}active{% endif %}">
-                             <input type="radio" name="options[{{ option.name }}]" value="{{ value }}" {% if option.selected_value == value %}checked{% endif %}>
-                             <span class="chip-text">{{ value }}</span>
-                           </label>
-                         {%- endfor -%}
-                       </div>
-                     </div>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
-            {%- endunless -%}
+            {%- endif -%}
 
-            <!-- Actions -->
-            <div class="product-actions">
-              <div class="quantity-wrapper" data-quantity-wrapper>
-                <label class="quantity-label">Quantity</label>
-                <div class="quantity-selector">
-                  <button type="button" class="qty-btn" data-action="decrease">-</button>
-                  <input type="number" name="quantity" value="1" min="1" class="qty-input">
-                  <button type="button" class="qty-btn" data-action="increase">+</button>
+            <!-- Product Form -->
+            {%- form 'product', product, class: 'product-form' -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              
+              <!-- Variants -->
+              {%- unless product.has_only_default_variant -%}
+                <div class="product-options">
+                  {%- for option in product.options_with_values -%}
+                    {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                      <div class="option-group option-group--color">
+                        <label class="option-label">
+                          Color: <span class="option-current-value">{{ option.selected_value }}</span>
+                        </label>
+                        <div class="option-values">
+                          {%- for value in option.values -%}
+                            <label class="color-swatch {% if option.selected_value == value %}active{% endif %}">
+                              <input type="radio" name="options[{{ option.name }}]" value="{{ value }}" {% if option.selected_value == value %}checked{% endif %}>
+                              <span class="swatch-visual" {% render 'color-swatch', value: value %}></span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- else -%}
+                       <div class="option-group">
+                         <div class="option-header">
+                           <label class="option-label">{{ option.name }}</label>
+                           {%- if option.name == 'Size' -%}
+                             <button type="button" class="size-guide-btn" data-modal="size-guide">Size Guide</button>
+                           {%- endif -%}
+                         </div>
+                         <div class="option-chips">
+                           {%- for value in option.values -%}
+                             <label class="chip-label {% if option.selected_value == value %}active{% endif %}">
+                               <input type="radio" name="options[{{ option.name }}]" value="{{ value }}" {% if option.selected_value == value %}checked{% endif %}>
+                               <span class="chip-text">{{ value }}</span>
+                             </label>
+                           {%- endfor -%}
+                         </div>
+                       </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+              <!-- Actions -->
+              <div class="product-actions">
+                <div class="quantity-wrapper" data-quantity-wrapper>
+                  <label class="quantity-label">Quantity</label>
+                  <div class="quantity-selector">
+                    <button type="button" class="qty-btn" data-action="decrease" aria-label="Decrease quantity">−</button>
+                    <input type="number" name="quantity" value="1" min="1" class="qty-input" aria-label="Quantity">
+                    <button type="button" class="qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  name="add" 
+                  class="button button--primary add-to-cart-btn"
+                  {% unless product.available %}disabled{% endunless %}
+                >
+                  {%- if product.available -%}
+                    <span>Add to Registry / Cart</span>
+                  {%- else -%}
+                    Sold Out
+                  {%- endif -%}
+                </button>
+              </div>
+
+              <!-- Reassurance -->
+              <div class="product-reassurance">
+                <div class="reassurance-item">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <span>Ships within 24 hours</span>
+                </div>
+                <div class="reassurance-item">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                  <span>Free returns & exchanges</span>
                 </div>
               </div>
-              
-              <button 
-                type="submit" 
-                name="add" 
-                class="button button--primary add-to-cart-btn"
-                {% unless product.available %}disabled{% endunless %}
-              >
-                {%- if product.available -%}
-                  <span>Add to Bag</span>
-                  <span class="separator">•</span>
-                  <span class="btn-price">{{ product.price | money }}</span>
-                {%- else -%}
-                  Sold Out
-                {%- endif -%}
-              </button>
-            </div>
+            {%- endform -%}
 
-            <!-- Reassurance -->
-            <div class="product-reassurance">
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                <span>Ships within 24 hours</span>
-              </div>
-              <div class="reassurance-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                <span>Free returns & exchanges</span>
-              </div>
-            </div>
-          {%- endform -%}
-
-          <!-- Content Accordions (Progressive Disclosure) -->
-          <div class="product-accordions">
-            <!-- Description -->
-            <details class="accordion-item" open>
-              <summary class="accordion-header">
-                <span>Description</span>
-                <span class="icon">+</span>
-              </summary>
-              <div class="accordion-content">
+            <!-- Full Description Block -->
+            <div class="product-description-block">
+              <h3>Description</h3>
+              <div class="rte">
                 {{ product.description }}
               </div>
-            </details>
+            </div>
             
-            <!-- Features (Dynamic) -->
-            {%- if section.blocks.size > 0 -%}
-              <details class="accordion-item">
-                <summary class="accordion-header">
-                  <span>Features & Benefits</span>
-                  <span class="icon">+</span>
-                </summary>
-                <div class="accordion-content">
-                  <ul class="features-list">
-                    {%- for block in section.blocks -%}
-                      {%- if block.type == 'feature' -%}
-                        <li><strong>{{ block.settings.title }}:</strong> {{ block.settings.text }}</li>
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </ul>
-                </div>
-              </details>
-            {%- endif -%}
-            
-            <!-- Shipping -->
-            <details class="accordion-item">
-              <summary class="accordion-header">
-                <span>Shipping & Delivery</span>
-                <span class="icon">+</span>
-              </summary>
-              <div class="accordion-content">
-                <p>Free shipping on orders over $50. All orders ship within 1-2 business days via FedEx or UPS Ground.</p>
-              </div>
-            </details>
+            <!-- Specs / Details -->
+            <div class="product-description-block">
+               <h3>Details</h3>
+               <table class="features-table">
+                 <tbody>
+                   <tr>
+                     <td>Material</td>
+                     <td>Sustainable Cotton</td>
+                   </tr>
+                   <tr>
+                     <td>Care Guide</td>
+                     <td>Machine Washable</td>
+                   </tr>
+                 </tbody>
+               </table>
+            </div>
           </div>
         </div>
       </div>
@@ -222,7 +240,7 @@
 
 {% schema %}
 {
-  "name": "Editorial Product Page",
+  "name": "BabyList Product Layout",
   "settings": [
     {
       "type": "checkbox",
@@ -239,20 +257,20 @@
   ],
   "blocks": [
     {
-      "type": "feature",
-      "name": "Feature Point",
+      "type": "highlight",
+      "name": "Product Highlight",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Material"
+          "label": "Highlight Text",
+          "default": "Reversible Seat"
         },
         {
-          "type": "textarea",
-          "id": "text",
-          "label": "Description",
-          "default": "100% Organic Cotton"
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG",
+          "info": "Paste SVG code here"
         }
       ]
     }
