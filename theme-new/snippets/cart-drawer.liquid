@@ -41,7 +41,14 @@
                 {%- unless item.product.has_only_default_variant -%}
                   <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
                 {%- endunless -%}
-                <p class="cart-drawer__item-price">{{ item.final_line_price | money }}</p>
+                <div class="cart-drawer__item-price price-component price-component--small">
+                  {%- if item.original_line_price > item.final_line_price -%}
+                    <span class="price-item price-item--sale">{{ item.final_line_price | money }}</span>
+                    <span class="price-item price-item--compare">{{ item.original_line_price | money }}</span>
+                  {%- else -%}
+                    <span class="price-item price-item--regular">{{ item.original_line_price | money }}</span>
+                  {%- endif -%}
+                </div>
                 
                 <div class="cart-drawer__item-quantity">
                   <button 
