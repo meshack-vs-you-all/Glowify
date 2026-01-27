@@ -10,7 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const thumbs = gallery.querySelectorAll('[data-thumbnail-id]');
   const mainImages = gallery.querySelectorAll('[data-main-image-item]');
 
-  function activateImage(index) {
+  /**
+   * Activate an image by index
+   * @param {number|string} index - Image index
+   * @param {boolean} shouldScroll - Whether to scroll (false on page load, true on click)
+   */
+  function activateImage(index, shouldScroll = false) {
     // Update Thumbs
     thumbs.forEach(thumb => {
       thumb.classList.toggle('active', thumb.dataset.imageIndex == index);
@@ -18,22 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Update Main Images
-    // For desktop: scroll to or show the image
-    // For mobile: scroll snap
     mainImages.forEach(img => {
       const isMatch = img.dataset.imageIndex == index;
       img.classList.toggle('active', isMatch);
-      if (isMatch) {
-         img.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      // Only scroll on user interaction, NOT on page load
+      if (isMatch && shouldScroll) {
+        img.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
     });
   }
 
-  // Thumb Click Handler
+  // Thumb Click Handler — passes shouldScroll=true
   thumbs.forEach(thumb => {
-    thumb.addEventListener('click', function() {
+    thumb.addEventListener('click', function () {
       const index = this.dataset.imageIndex;
-      activateImage(index);
+      activateImage(index, true);
     });
   });
 
@@ -41,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('variant:changed', (e) => {
     const variant = e.detail.variant;
     if (variant && variant.featured_media) {
-       const mediaId = variant.featured_media.id;
-       const targetThumb = Array.from(thumbs).find(t => t.dataset.thumbnailId == mediaId);
-       if (targetThumb) {
-         activateImage(targetThumb.dataset.imageIndex);
-       }
+      const mediaId = variant.featured_media.id;
+      const targetThumb = Array.from(thumbs).find(t => t.dataset.thumbnailId == mediaId);
+      if (targetThumb) {
+        activateImage(targetThumb.dataset.imageIndex, true);
+      }
     }
   });
 });
