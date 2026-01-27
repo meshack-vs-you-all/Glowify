@@ -17,14 +17,15 @@
   /* Theme Colors */
   --theme-primary: #7C9885;
   --theme-accent: #7C9885;
-  
+
   /* Accent Colors */
   --color-accent-sage: #7C9885;
   --color-accent-terracotta: #C97064;
   --color-accent-navy: #2C3E50;
   --color-accent-gold: #B8956A;
   --color-accent-slate: #64748B;
-  --color-accent: var(--theme-accent); /* Default accent */
+  --color-accent: var(--theme-accent);
+  /* Default accent */
 
   /* Semantic Colors */
   --color-success: #10B981;
@@ -33,30 +34,32 @@
   --color-info: #3B82F6;
 
   /* Typography */
-  --font-display-family: 'DM Serif Display', serif; /* Primary display font for hero headlines */
+  --font-display-family: 'DM Serif Display', serif;
+  /* Primary display font for hero headlines */
   --font-heading-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* Clean sans-serif for body, subline, footer */
-  
+  --font-body-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Clean sans-serif for body, subline, footer */
+
   /* Type Scale */
   --font-size-h1-desktop: 56px;
   --font-size-h1-mobile: 36px;
   --line-height-h1-desktop: 64px;
   --line-height-h1-mobile: 44px;
-  
+
   --font-size-h2-desktop: 40px;
   --font-size-h2-mobile: 28px;
   --line-height-h2-desktop: 48px;
   --line-height-h2-mobile: 36px;
-  
+
   --font-size-h3: 28px;
   --line-height-h3: 36px;
-  
+
   --font-size-body-large: 18px;
   --line-height-body-large: 28px;
-  
+
   --font-size-body: 16px;
   --line-height-body: 26px;
-  
+
   --font-size-small: 14px;
   --line-height-small: 22px;
 
@@ -154,7 +157,12 @@ main,
    TYPOGRAPHY
    ========================================================================== */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading-family);
   font-weight: var(--font-weight-semibold);
   line-height: 1.2;
@@ -184,7 +192,7 @@ h3 {
     font-size: var(--font-size-h1-desktop);
     line-height: var(--line-height-h1-desktop);
   }
-  
+
   h2 {
     font-size: var(--font-size-h2-desktop);
     line-height: var(--line-height-h2-desktop);
@@ -236,24 +244,29 @@ a:hover {
 }
 
 .section {
-  padding: var(--space-3xl) 0; /* Reduced from 4xl for premium spacing */
+  padding: var(--space-3xl) 0;
+  /* Reduced from 4xl for premium spacing */
 }
 
 .section--padded {
-  padding: var(--space-4xl) 0; /* Reduced from 5xl */
+  padding: var(--space-4xl) 0;
+  /* Reduced from 5xl */
 }
 
 .section--compact {
-  padding: var(--space-xl) 0; /* Reduced from 2xl */
+  padding: var(--space-xl) 0;
+  /* Reduced from 2xl */
 }
 
 @media (max-width: 639px) {
   .section {
-    padding: var(--space-2xl) 0; /* Reduced on mobile */
+    padding: var(--space-2xl) 0;
+    /* Reduced on mobile */
   }
-  
+
   .section--compact {
-    padding: var(--space-lg) 0; /* Reduced on mobile */
+    padding: var(--space-lg) 0;
+    /* Reduced on mobile */
   }
 }
 
@@ -276,10 +289,10 @@ a:hover {
   user-select: none;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              background-color 0.3s ease,
-              color 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .button--primary {
@@ -309,6 +322,62 @@ a:hover {
 .button--large {
   padding: var(--space-lg) var(--space-2xl);
   font-size: var(--font-size-body-large);
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+
+/* Price Component - Single Source of Truth */
+.price-component {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  line-height: normal;
+}
+
+.price-item {
+  display: inline-block;
+  font-family: var(--font-body-family);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.price-item--regular {
+  color: var(--color-text-primary);
+}
+
+.price-item--sale {
+  color: var(--color-error);
+  /* Consistently Red/Error color for sales */
+  font-weight: var(--font-weight-semibold);
+}
+
+.price-item--compare {
+  color: var(--color-text-secondary);
+  text-decoration: line-through;
+  opacity: 0.8;
+  font-weight: var(--font-weight-regular);
+  margin-left: var(--space-xs);
+}
+
+/* Modifier: Large (PDP) */
+.price-component--large .price-item {
+  font-size: var(--font-size-h3);
+}
+
+.price-component--large .price-item--compare {
+  font-size: var(--font-size-body-large);
+}
+
+/* Modifier: Small (Cards) */
+.price-component--small .price-item {
+  font-size: var(--font-size-body);
+}
+
+.price-component--small .price-item--compare {
+  font-size: var(--font-size-small);
 }
 
 /* ==========================================================================
@@ -370,7 +439,7 @@ a:hover {
   body {
     font-size: 15px;
   }
-  
+
   .page-width {
     padding: 0 var(--space-md);
   }
@@ -384,6 +453,7 @@ img {
 
 /* Touch-friendly tap targets on mobile */
 @media (max-width: 639px) {
+
   .button,
   a,
   button {
@@ -391,4 +461,3 @@ img {
     min-width: 44px;
   }
 }
-
