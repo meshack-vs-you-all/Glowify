@@ -7,14 +7,28 @@
   <div class="hero-v2-container">
     <div class="hero-v2-grid">
       {%- for block in section.blocks -%}
+        {%- assign block_product = block.settings.product -%}
+        {%- assign display_image = block.settings.image | default: block_product.featured_image -%}
+        
+        {%- comment -%} Title Logic: Use Override if set/changed, else Product Title, else Default/Fallback {%- endcomment -%}
+        {%- assign display_title = block.settings.title -%}
+        {%- if block_product != blank and block.settings.title == 'Collection Name' -%}
+          {%- assign display_title = block_product.title -%}
+        {%- elsif block_product != blank and block.settings.title == blank -%}
+           {%- assign display_title = block_product.title -%}
+        {%- endif -%}
+
+        {%- assign display_link = block.settings.link | default: block_product.url -%}
+        {%- assign display_subtitle = block.settings.subtitle -%}
+
         <div class="hero-v2-item group" {{ block.shopify_attributes }}>
           <div class="hero-v2-media">
-            {%- if block.settings.image != blank -%}
+            {%- if display_image != blank -%}
               <img 
-                src="{{ block.settings.image | image_url: width: 800 }}" 
-                srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                src="{{ display_image | image_url: width: 800 }}" 
+                srcset="{{ display_image | image_url: width: 800 }} 800w, {{ display_image | image_url: width: 1200 }} 1200w"
                 sizes="(min-width: 768px) 50vw, 100vw"
-                alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" 
+                alt="{{ display_image.alt | default: display_title | escape }}" 
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                 fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
                 width="800"
@@ -27,14 +41,25 @@
             <div class="hero-v2-overlay"></div>
           </div>
           <div class="hero-v2-content">
-            {%- if block.settings.subtitle != blank -%}
-              <span class="hero-v2-subtitle">{{ block.settings.subtitle }}</span>
+            {%- if display_subtitle != blank -%}
+              <span class="hero-v2-subtitle">{{ display_subtitle }}</span>
             {%- endif -%}
             
-            <h2 class="hero-v2-title">{{ block.settings.title }}</h2>
+            <h2 class="hero-v2-title">{{ display_title }}</h2>
             
-            {%- if block.settings.link != blank -%}
-              <a href="{{ block.settings.link }}" class="hero-v2-btn">{{ block.settings.link_text }}</a>
+            {%- if block_product != blank and block.settings.show_price -%}
+              <div class="hero-v2-price price-component price-component--large" style="justify-content: center; margin-bottom: 1rem;">
+                <span class="price-item price-item--regular" style="color: #fff;">{{ block_product.price | money }}</span>
+                {%- if block_product.compare_at_price > block_product.price -%}
+                  <span class="price-item price-item--compare" style="color: rgba(255,255,255,0.7);">
+                    {{ block_product.compare_at_price | money }}
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            
+            {%- if display_link != blank -%}
+              <a href="{{ display_link }}" class="hero-v2-btn">{{ block.settings.link_text }}</a>
             {%- endif -%}
           </div>
         </div>
@@ -184,14 +209,36 @@
       "name": "Banner",
       "settings": [
         {
+          "type": "header",
+          "content": "Product Content (Dynamic)"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Select a product to automatically populate image, title, and link."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show Price",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Manual Overrides"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image Override",
+          "info": "Leave empty to use Product Image"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
+          "label": "Title Override",
+          "info": "Leave empty to use Product Title",
           "default": "Collection Name"
         },
         {
@@ -203,7 +250,8 @@
         {
           "type": "url",
           "id": "link",
-          "label": "Link Link"
+          "label": "Link Override",
+          "info": "Leave empty to use Product URL"
         },
         {
           "type": "text",
