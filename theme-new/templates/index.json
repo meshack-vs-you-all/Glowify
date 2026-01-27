@@ -1,0 +1,94 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-v2",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "title": "Essential Gear",
+            "subtitle": "Best Sellers",
+            "link_text": "Shop Now"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "title": "Nursery Favorites",
+            "subtitle": "Cozy Comfort",
+            "link_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {}
+    },
+    "flagship": {
+      "type": "flagship-product",
+      "settings": {
+        "subheading": "The Ultimate Choice",
+        "badge_text": "Best Seller",
+        "show_view_details": true
+      }
+    },
+    "accessories": {
+      "type": "accessories-showcase",
+      "settings": {
+        "title": "Complete The Look",
+        "subtitle": "Essential accessories for your journey.",
+        "show_view_all": true,
+        "view_all_text": "View All Accessories"
+      }
+    },
+    "brand": {
+      "type": "brand-curation",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "text": "Certified Safe",
+            "icon": "🛡️"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+             "text": "Parent Approved",
+             "icon": "❤️"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+             "text": "Eco-Friendly",
+             "icon": "🌿"
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Stay in the know",
+        "text": "Subscribe to receive updates, access to exclusive deals, and more.",
+        "button_label": "Subscribe"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "flagship",
+    "accessories",
+    "brand",
+    "newsletter"
+  ]
+}
