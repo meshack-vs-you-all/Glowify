@@ -64,16 +64,18 @@
    * Update UI based on selected variant
    */
   function updateVariantUI(variant) {
-    // Update price
-    const priceContainer = document.querySelector('.product-price');
+    // Update price - Scoped traversal
+    const productContainer = productForm.closest('.product-page') || productForm.closest('.product-card') || document;
+    const priceContainer = productContainer.querySelector('.product-price') || productContainer.querySelector('.price-component');
+
     if (priceContainer) {
       if (variant.compare_at_price > variant.price) {
         priceContainer.innerHTML = `
-          <span class="price price--sale">${formatMoney(variant.price)}</span>
-          <span class="price price--compare">${formatMoney(variant.compare_at_price)}</span>
+          <span class="price-item price-item--sale">${formatMoney(variant.price)}</span>
+          <span class="price-item price-item--compare">${formatMoney(variant.compare_at_price)}</span>
         `;
       } else {
-        priceContainer.innerHTML = `<span class="price">${formatMoney(variant.price)}</span>`;
+        priceContainer.innerHTML = `<span class="price-item price-item--regular">${formatMoney(variant.price)}</span>`;
       }
     }
 
