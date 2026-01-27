@@ -1,5 +1,5 @@
-<div class="product-card card-hover-premium group" data-product-card>
-  <div class="product-card__image-wrapper">
+<div class="product-card card-hover-premium group" data-product-card style="display: flex; flex-direction: column; height: 100%;">
+  <div class="product-card__image-wrapper" style="position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; background: #f5f5f5;">
     <a href="{{ product.url }}" class="product-card__link-image" aria-label="{{ product.title }}">
       {%- if product.featured_image != blank -%}
         <img 
@@ -76,12 +76,12 @@
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
     
-    <div class="product-card__price">
+    <div class="product-card__price price-component price-component--small">
       {%- if product.compare_at_price > product.price -%}
-        <span class="product-card__price--sale">{{ product.price | money }}</span>
-        <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
+        <span class="price-item price-item--sale">{{ product.price | money }}</span>
+        <span class="price-item price-item--compare">{{ product.compare_at_price | money }}</span>
       {%- else -%}
-        <span>{{ product.price | money }}</span>
+        <span class="price-item price-item--regular">{{ product.price | money }}</span>
       {%- endif -%}
     </div>
   </div>
