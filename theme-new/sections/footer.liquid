@@ -3,6 +3,14 @@
     {%- comment -%} Trust Badges Row (Payment Icons + Social Icons) {%- endcomment -%}
     <div class="footer__trust-row">
       <div class="footer__payment-badges">
+        {%- comment -%} 
+          NOTE: These payment icons are hardcoded SVGs for premium visual styling. 
+          To use dynamic icons based on your store settings, use the code below:
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          {%- endfor -%}
+        {%- endcomment -%}
+        
         {%- comment -%} Visa - Official SVG from datatrans/payment-logos {%- endcomment -%}
         <div class="footer__payment-icon" title="Visa" aria-label="Visa">
           <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa">
