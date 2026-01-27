@@ -3,7 +3,7 @@
  * Tracks and displays recently viewed products using LocalStorage
  */
 
-(function() {
+(function () {
   'use strict';
 
   const STORAGE_KEY = 'glowify_recently_viewed';
@@ -40,10 +40,10 @@
     if (!productData || !productData.id) return;
 
     let products = getRecentlyViewed();
-    
+
     // Remove if already exists
     products = products.filter(p => p.id !== productData.id);
-    
+
     // Add to beginning
     products.unshift({
       id: productData.id,
@@ -57,7 +57,7 @@
 
     // Keep only max items
     products = products.slice(0, MAX_ITEMS);
-    
+
     saveRecentlyViewed(products);
   }
 
@@ -109,7 +109,7 @@
     if (!container) return;
 
     const products = getRecentlyViewed();
-    
+
     // Hide if less than 2 items
     if (products.length < 2) {
       container.style.display = 'none';
@@ -140,19 +140,19 @@
       productCard.innerHTML = `
         <a href="${product.url}" class="recently-viewed__link">
           <div class="recently-viewed__image-wrapper">
-            ${product.image 
-              ? `<img src="${product.image}" alt="${product.title}" loading="lazy" class="recently-viewed__image">`
-              : '<div class="recently-viewed__placeholder"></div>'
-            }
+            ${product.image
+          ? `<img src="${product.image}" alt="${product.title}" loading="lazy" class="recently-viewed__image">`
+          : '<div class="recently-viewed__placeholder"></div>'
+        }
           </div>
           <div class="recently-viewed__info">
             <h3 class="recently-viewed__title">${product.title}</h3>
-            <div class="recently-viewed__price">
+            <div class="product-card__price price-component price-component--small">
               ${product.compare_at_price && product.compare_at_price > product.price
-                ? `<span class="recently-viewed__price-sale">${formatMoney(product.price)}</span>
-                   <span class="recently-viewed__price-compare">${formatMoney(product.compare_at_price)}</span>`
-                : `<span>${formatMoney(product.price)}</span>`
-              }
+          ? `<span class="price-item price-item--sale">${formatMoney(product.price)}</span>
+                   <span class="price-item price-item--compare">${formatMoney(product.compare_at_price)}</span>`
+          : `<span class="price-item price-item--regular">${formatMoney(product.price)}</span>`
+        }
             </div>
           </div>
         </a>
